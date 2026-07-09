@@ -1,0 +1,23 @@
+import { cn } from "@/lib/cn";
+
+export function ProgressBar({
+  value,
+  className,
+}: {
+  value: number;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "h-2 w-full overflow-hidden rounded-full bg-black/10",
+        className,
+      )}
+    >
+      <div
+        className="h-full rounded-full bg-primary transition-all"
+        style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
+      />
+    </div>
+  );
+}

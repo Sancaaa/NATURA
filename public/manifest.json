@@ -1,0 +1,10 @@
+{
+  "name": "NATURA — Belajar Farmakognosi",
+  "short_name": "NATURA",
+  "description": "Augmented reality untuk pembelajaran Farmakognosi SMK Farmasi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#2e7d4f",
+  "icons": []
+}

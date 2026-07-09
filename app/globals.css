@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2e7d4f;
+  --color-primary-dark: #1b5e3a;
+  --color-accent: #d98a3d;
+  --color-surface: #ffffff;
+  --color-ink: #1a2420;
+  --color-muted: #5b6b63;
+  --color-line: #e6e8e3;
+  --color-success: #2e7d4f;
+  --color-warn: #d98a3d;
+  --color-danger: #c0392b;
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --bg: #fafaf7;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Penanda purwarupa agar tidak dikira produk jadi */
+.mockup-ribbon {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 60;
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: rgba(26, 36, 32, 0.72);
+  padding: 4px 8px;
+  border-radius: 999px;
+}
