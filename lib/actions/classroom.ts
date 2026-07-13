@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { quizzes as seedQuizzes } from "@/lib/data/quizzes";
 
 export type ActionState = { error?: string; ok?: string };
 
@@ -75,10 +74,14 @@ export async function createAssignment(
   const deadline = String(formData.get("deadline") ?? "").trim();
   if (!classId || !quizId) return { error: "Pilih kuis terlebih dahulu." };
 
-  const quiz = seedQuizzes.find((q) => q.id === quizId);
-  const judul = quiz ? quiz.judul : "Tugas";
-
   const supabase = await createClient();
+  const { data: quiz } = await supabase
+    .from("quizzes")
+    .select("judul")
+    .eq("id", quizId)
+    .maybeSingle();
+  const judul = quiz?.judul ?? "Tugas";
+
   const { error } = await supabase.from("assignments").insert({
     class_id: classId,
     quiz_id: quizId,
@@ -90,6 +93,32 @@ export async function createAssignment(
   revalidatePath(`/kelas/${classId}`);
   revalidatePath("/dashboard");
   return { ok: "Tugas ditugaskan." };
+}
+
+export async function deleteAssignment(
+  assignmentId: string,
+  classId: string,
+): Promise<{ ok?: boolean; error?: string }> {
+  if (!isSupabaseConfigured)
+    return { error: "Aktifkan Supabase untuk mengelola tugas." };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Sesi berakhir." };
+
+  // RLS (teaches_class) memastikan hanya guru pemilik kelas yang bisa hapus.
+  const { error } = await supabase
+    .from("assignments")
+    .delete()
+    .eq("id", assignmentId);
+  if (error) return { error: error.message };
+
+  revalidatePath(`/kelas/${classId}`);
+  revalidatePath("/dashboard");
+  revalidatePath("/kuis");
+  return { ok: true };
 }
 
 /** Dipanggil dari halaman kuis (client) saat siswa mengumpulkan jawaban. */

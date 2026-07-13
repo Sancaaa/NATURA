@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Leaf } from "lucide-react";
 import Sidebar from "@/components/teacher/Sidebar";
+import { requireRole } from "@/lib/auth";
 
-export default function TeacherLayout({
+export default async function TeacherLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await requireRole(["teacher", "admin"]);
   return (
     <div className="flex min-h-dvh">
       <Sidebar />

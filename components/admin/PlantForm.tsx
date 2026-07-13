@@ -1,0 +1,164 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { createPlant, updatePlant, type PlantInput } from "@/lib/actions/content";
+import type { Plant } from "@/lib/data/plants";
+import { buttonClass } from "@/components/ui/Button";
+import { Field, TextInput, TextArea } from "@/components/admin/formFields";
+
+export function PlantForm({ plant }: { plant?: Plant }) {
+  const editing = !!plant;
+  const [f, setF] = useState<PlantInput>({
+    namaLokal: plant?.namaLokal ?? "",
+    namaLatin: plant?.namaLatin ?? "",
+    familia: plant?.familia ?? "",
+    bagianDigunakan: plant?.bagianDigunakan ?? "",
+    namaSimplisia: plant?.namaSimplisia ?? "",
+    kandungan: plant?.kandungan ?? [],
+    khasiat: plant?.khasiat ?? "",
+    makroskopik: plant?.makroskopik ?? "",
+    mikroskopik: plant?.mikroskopik ?? "",
+    model3dUrl: plant?.model3dUrl ?? "",
+    arTargetUrl: plant?.arTargetUrl ?? "",
+  });
+  const [kandunganText, setKandunganText] = useState(
+    (plant?.kandungan ?? []).join(", "),
+  );
+  const [err, setErr] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const set = (patch: Partial<PlantInput>) => setF((p) => ({ ...p, ...patch }));
+
+  const submit = () => {
+    setErr(null);
+    const input: PlantInput = {
+      ...f,
+      kandungan: kandunganText
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+    };
+    startTransition(async () => {
+      const res = editing
+        ? await updatePlant(plant!.id, input)
+        : await createPlant(input);
+      if (res.error) {
+        setErr(res.error);
+        return;
+      }
+      router.push("/admin/tanaman");
+      router.refresh();
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Nama lokal *">
+          <TextInput
+            value={f.namaLokal}
+            onChange={(e) => set({ namaLokal: e.target.value })}
+            placeholder="Sambiloto"
+          />
+        </Field>
+        <Field label="Nama latin *">
+          <TextInput
+            value={f.namaLatin}
+            onChange={(e) => set({ namaLatin: e.target.value })}
+            placeholder="Andrographis paniculata"
+          />
+        </Field>
+        <Field label="Familia">
+          <TextInput
+            value={f.familia}
+            onChange={(e) => set({ familia: e.target.value })}
+            placeholder="Acanthaceae"
+          />
+        </Field>
+        <Field label="Bagian digunakan">
+          <TextInput
+            value={f.bagianDigunakan}
+            onChange={(e) => set({ bagianDigunakan: e.target.value })}
+            placeholder="Herba, Daun, Rimpang…"
+          />
+        </Field>
+        <Field label="Nama simplisia">
+          <TextInput
+            value={f.namaSimplisia}
+            onChange={(e) => set({ namaSimplisia: e.target.value })}
+            placeholder="Andrographidis Herba"
+          />
+        </Field>
+        <Field label="Kandungan" hint="Pisahkan dengan koma">
+          <TextInput
+            value={kandunganText}
+            onChange={(e) => setKandunganText(e.target.value)}
+            placeholder="Andrografolid, Flavonoid"
+          />
+        </Field>
+      </div>
+
+      <Field label="Khasiat">
+        <TextArea
+          value={f.khasiat}
+          onChange={(e) => set({ khasiat: e.target.value })}
+        />
+      </Field>
+      <Field label="Ciri makroskopik">
+        <TextArea
+          value={f.makroskopik}
+          onChange={(e) => set({ makroskopik: e.target.value })}
+        />
+      </Field>
+      <Field label="Ciri mikroskopik">
+        <TextArea
+          value={f.mikroskopik}
+          onChange={(e) => set({ mikroskopik: e.target.value })}
+        />
+      </Field>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="URL model 3D (.glb)" hint="Opsional">
+          <TextInput
+            value={f.model3dUrl}
+            onChange={(e) => set({ model3dUrl: e.target.value })}
+            placeholder="/models/sambiloto.glb"
+          />
+        </Field>
+        <Field label="URL target AR (.mind)" hint="Opsional">
+          <TextInput
+            value={f.arTargetUrl}
+            onChange={(e) => set({ arTargetUrl: e.target.value })}
+            placeholder="/ar/sambiloto.mind"
+          />
+        </Field>
+      </div>
+
+      {err && (
+        <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">
+          {err}
+        </p>
+      )}
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={submit}
+          disabled={pending}
+          className={buttonClass("primary", "md")}
+        >
+          {pending ? "Menyimpan…" : editing ? "Simpan Perubahan" : "Tambah Tanaman"}
+        </button>
+        <button
+          type="button"
+          onClick={() => router.push("/admin/tanaman")}
+          className={buttonClass("outline", "md")}
+        >
+          Batal
+        </button>
+      </div>
+    </div>
+  );
+}

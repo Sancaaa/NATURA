@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getLibraryItem } from "@/lib/data/library";
+import { getLibraryItemDb } from "@/lib/db/library";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Badge } from "@/components/ui/Badge";
 
@@ -9,7 +9,7 @@ export default async function Read({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const item = getLibraryItem(id);
+  const item = await getLibraryItemDb(id);
   if (!item) notFound();
 
   return (

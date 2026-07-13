@@ -17,8 +17,11 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   role public.user_role not null default 'student',
   nama text not null default '',
+  email text,
   created_at timestamptz not null default now()
 );
+-- kolom email (untuk instalasi lama)
+alter table public.profiles add column if not exists email text;
 
 -- Konten master -------------------------------------------------
 create table if not exists public.plants (
@@ -132,10 +135,11 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.profiles (id, nama, role)
+  insert into public.profiles (id, nama, email, role)
   values (
     new.id,
     coalesce(new.raw_user_meta_data ->> 'nama', ''),
+    new.email,
     coalesce((new.raw_user_meta_data ->> 'role')::public.user_role, 'student')
   )
   on conflict (id) do nothing;
@@ -154,6 +158,14 @@ for each row execute function public.handle_new_user();
 create or replace function public.my_role()
 returns public.user_role language sql stable security definer set search_path = public as $$
   select role from public.profiles where id = auth.uid();
+$$;
+
+-- Profil pengguna saat ini — kebal masalah RLS pada tabel profiles.
+-- Hanya mengembalikan baris milik pemanggil sendiri (where id = auth.uid()).
+create or replace function public.current_profile()
+returns table (id uuid, nama text, role public.user_role)
+language sql stable security definer set search_path = public as $$
+  select id, nama, role from public.profiles where id = auth.uid();
 $$;
 
 create or replace function public.teaches_class(cid uuid)
@@ -205,11 +217,42 @@ alter table public.assignments    enable row level security;
 alter table public.submissions    enable row level security;
 alter table public.quiz_attempts  enable row level security;
 
--- profiles: baca diri sendiri / siswa yang diampu / admin; ubah diri sendiri
+-- (idempoten) hapus policy lama agar skrip aman dijalankan ulang
+drop policy if exists profiles_select on public.profiles;
+drop policy if exists profiles_update on public.profiles;
+drop policy if exists plants_read on public.plants;
+drop policy if exists tools_read on public.lab_tools;
+drop policy if exists library_read on public.library_items;
+drop policy if exists plants_admin on public.plants;
+drop policy if exists tools_admin on public.lab_tools;
+drop policy if exists library_admin on public.library_items;
+drop policy if exists quizzes_read on public.quizzes;
+drop policy if exists quizzes_write on public.quizzes;
+drop policy if exists questions_read on public.questions;
+drop policy if exists questions_write on public.questions;
+drop policy if exists classes_select on public.classes;
+drop policy if exists classes_insert on public.classes;
+drop policy if exists classes_modify on public.classes;
+drop policy if exists classes_delete on public.classes;
+drop policy if exists enrollments_select on public.enrollments;
+drop policy if exists enrollments_insert on public.enrollments;
+drop policy if exists enrollments_delete on public.enrollments;
+drop policy if exists assignments_select on public.assignments;
+drop policy if exists assignments_write on public.assignments;
+drop policy if exists submissions_select on public.submissions;
+drop policy if exists submissions_upsert on public.submissions;
+drop policy if exists submissions_update_self on public.submissions;
+drop policy if exists submissions_grade on public.submissions;
+drop policy if exists attempts_select on public.quiz_attempts;
+drop policy if exists attempts_insert on public.quiz_attempts;
+
+-- profiles: baca diri sendiri / siswa yang diampu / admin; ubah diri sendiri atau oleh admin
 create policy profiles_select on public.profiles for select using (
   id = auth.uid() or public.my_role() = 'admin' or public.teaches_student(id)
 );
-create policy profiles_update on public.profiles for update using (id = auth.uid());
+create policy profiles_update on public.profiles for update using (
+  id = auth.uid() or public.my_role() = 'admin'
+);
 
 -- konten master: dapat dibaca semua pengguna terautentikasi; tulis = admin
 create policy plants_read on public.plants for select to authenticated using (true);

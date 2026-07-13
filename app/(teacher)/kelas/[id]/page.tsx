@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getClassDetail } from "@/lib/db/classroom";
+import { getAssignableQuizzes } from "@/lib/db/quizzes";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { AssignmentForm } from "@/components/teacher/AssignmentForm";
+import { DeleteAssignmentButton } from "@/components/teacher/DeleteAssignmentButton";
 import { formatDeadline } from "@/lib/format";
 
 export default async function KelasDetail({
@@ -14,6 +16,7 @@ export default async function KelasDetail({
   const { id } = await params;
   const kelas = await getClassDetail(id);
   if (!kelas) notFound();
+  const assignable = await getAssignableQuizzes();
 
   return (
     <div className="space-y-6">
@@ -26,7 +29,7 @@ export default async function KelasDetail({
 
       <Card>
         <h2 className="mb-3 font-bold">Tugaskan kuis</h2>
-        <AssignmentForm classId={kelas.id} />
+        <AssignmentForm classId={kelas.id} quizzes={assignable} />
       </Card>
 
       <section>
@@ -47,6 +50,11 @@ export default async function KelasDetail({
                 <Badge tone="primary">
                   {a.jumlahSubmit}/{a.totalSiswa} submit
                 </Badge>
+                <DeleteAssignmentButton
+                  assignmentId={a.id}
+                  classId={kelas.id}
+                  judul={a.judul}
+                />
               </Card>
             ))}
           </div>

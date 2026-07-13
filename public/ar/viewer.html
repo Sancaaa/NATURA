@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>NATURA AR — Sambiloto</title>
+    <!-- Versi yang terbukti bekerja: A-Frame 1.5.0 + MindAR 1.2.5 -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: system-ui, -apple-system, sans-serif;
+        touch-action: none;
+      }
+      .back {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 10000;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        text-decoration: none;
+        font: 600 14px system-ui, sans-serif;
+        padding: 8px 14px;
+        border-radius: 999px;
+      }
+      #hint {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 12px;
+        text-align: center;
+        z-index: 9998;
+        pointer-events: none;
+      }
+      #hint span {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font: 500 12px system-ui, sans-serif;
+        padding: 6px 12px;
+        border-radius: 999px;
+      }
+      #overlay {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        background: #fff;
+        border-radius: 18px 18px 0 0;
+        padding: 16px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+        max-height: 42%;
+        overflow: auto;
+      }
+      #overlay[hidden] {
+        display: none;
+      }
+      #overlay-back {
+        background: transparent;
+        border: none;
+        color: #2e7d4f;
+        font: 600 13px system-ui, sans-serif;
+        padding: 0;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+      #overlay-back[hidden] {
+        display: none;
+      }
+      #overlay .badge {
+        display: inline-block;
+        background: rgba(46, 125, 79, 0.1);
+        color: #2e7d4f;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      #overlay h3 {
+        margin: 8px 0 6px;
+        font-size: 18px;
+        color: #1a2420;
+      }
+      #overlay p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #374037;
+      }
+      #overlay ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #333;
+      }
+      #overlay li {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/pindai/sambiloto" class="back">← Keluar AR</a>
+    <div id="hint"><span>Ketuk layar untuk membuka · seret = putar · cubit = zoom · 2 jari = geser</span></div>
+
+    <div id="overlay" hidden>
+      <button id="overlay-back" type="button" hidden>← Kembali ke penjelasan umum</button>
+      <span class="badge" id="overlay-badge"></span>
+      <h3 id="overlay-title"></h3>
+      <div id="overlay-body"></div>
+    </div>
+
+    <!-- uiScanning: no → tanpa animasi scanning (clean) -->
+    <a-scene
+      mindar-image="imageTargetSrc: /ar/samiloto.mind; uiScanning: no;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-assets>
+        <a-asset-item id="avatarModel" src="/models/samiloto.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- ================= KARTU 1: SAMBILOTO ================= -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-entity class="activator">
+          <a-circle
+            radius="0.12"
+            color="#2e7d4f"
+            opacity="0.85"
+            animation="property: scale; to: 1.15 1.15 1.15; dir: alternate; loop: true; dur: 800; easing: easeInOutSine"
+          ></a-circle>
+          <a-text
+            value="Ketuk untuk buka"
+            align="center"
+            color="#ffffff"
+            width="1.4"
+            position="0 -0.22 0.01"
+          ></a-text>
+        </a-entity>
+
+        <a-entity class="content" visible="false">
+          <a-gltf-model
+            src="#avatarModel"
+            rotation="0 0 0"
+            position="0 0 0.1"
+            scale="1 1 1"
+          ></a-gltf-model>
+
+          <!-- ANOTASI = titik (di bagian) + garis penunjuk + label (dijauhkan).
+               Ketuk label → penjelasan bagian muncul di overlay bawah.
+               Tuning: "position" = letak TITIK di bagian model;
+                       "line end" DAN "label position" = letak LABEL (harus sama). -->
+          <a-entity class="annotations" visible="false">
+            <a-entity
+              class="annotation"
+              data-part="daun"
+              position="0.18 0.28 0.1"
+              line="start: 0 0 0; end: 0.22 0.28 0; color: #D98A3D; opacity: 0.9"
+            >
+              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
+              <a-entity class="label" face-camera position="0.22 0.28 0" scale="0.24 0.24 0.24">
+                <a-plane color="#ffffff" opacity="0.95" width="1.8" height="0.7"></a-plane>
+                <a-text value="Daun" color="#1a2420" align="center" width="1.6" position="0 0 0.01"></a-text>
+              </a-entity>
+            </a-entity>
+
+            <a-entity
+              class="annotation"
+              data-part="batang"
+              position="0 0.05 0.1"
+              line="start: 0 0 0; end: 0 0.5 0; color: #D98A3D; opacity: 0.9"
+            >
+              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
+              <a-entity class="label" face-camera position="0 0.5 0" scale="0.24 0.24 0.24">
+                <a-plane color="#ffffff" opacity="0.95" width="2" height="0.7"></a-plane>
+                <a-text value="Batang" color="#1a2420" align="center" width="1.8" position="0 0 0.01"></a-text>
+              </a-entity>
+            </a-entity>
+
+            <a-entity
+              class="annotation"
+              data-part="bunga"
+              position="-0.16 0.32 0.1"
+              line="start: 0 0 0; end: -0.22 0.24 0; color: #D98A3D; opacity: 0.9"
+            >
+              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
+              <a-entity class="label" face-camera position="-0.22 0.24 0" scale="0.24 0.24 0.24">
+                <a-plane color="#ffffff" opacity="0.95" width="1.9" height="0.7"></a-plane>
+                <a-text value="Bunga" color="#1a2420" align="center" width="1.7" position="0 0 0.01"></a-text>
+              </a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var THREE = AFRAME.THREE;
+
+        // Label anotasi selalu menghadap kamera.
+        AFRAME.registerComponent("face-camera", {
+          init: function () {
+            this._c = new THREE.Quaternion();
+            this._p = new THREE.Quaternion();
+          },
+          tick: function () {
+            var cam = this.el.sceneEl && this.el.sceneEl.camera;
+            if (!cam) return;
+            cam.getWorldQuaternion(this._c);
+            var parent = this.el.object3D.parent;
+            if (parent) {
+              parent.getWorldQuaternion(this._p);
+              this._p.invert();
+              this.el.object3D.quaternion.copy(this._p).multiply(this._c);
+            } else {
+              this.el.object3D.quaternion.copy(this._c);
+            }
+          },
+        });
+
+        // ---- Data penjelasan ----
+        var general = {
+          badge: "Andrographis paniculata",
+          title: "Sambiloto",
+          body:
+            "Herba berasa sangat pahit dari famili Acanthaceae. Simplisianya (Andrographidis Herba) mengandung andrografolid dan dikenal sebagai imunomodulator, antipiretik, serta antiinflamasi. Ketuk label bagian pada model untuk penjelasannya.",
+        };
+        var parts = {
+          daun: {
+            title: "Daun",
+            body: [
+              "Kandungan andrografolid tertinggi — bagian paling berkhasiat.",
+              "Berperan sebagai imunomodulator dan penurun demam (antipiretik).",
+              "Rasa sangat pahit, ciri khas sambiloto.",
+            ],
+          },
+          batang: {
+            title: "Batang",
+            body: [
+              "Berbentuk persegi, ciri khas famili Acanthaceae.",
+              "Turut mengandung senyawa aktif dengan kadar lebih rendah dari daun.",
+            ],
+          },
+          bunga: {
+            title: "Bunga",
+            body: [
+              "Bunga kecil berwarna putih keunguan.",
+              "Menandai fase generatif (pembungaan) tanaman.",
+            ],
+          },
+        };
+
+        var scene = document.querySelector("a-scene");
+        var hintEl = document.getElementById("hint");
+        var overlayEl = document.getElementById("overlay");
+        var overlayBack = document.getElementById("overlay-back");
+        var overlayBadge = document.getElementById("overlay-badge");
+        var overlayTitle = document.getElementById("overlay-title");
+        var overlayBody = document.getElementById("overlay-body");
+
+        var activeObj = null;
+        var foundTargets = new Set();
+
+        function setActive(contentEl) {
+          activeObj = contentEl ? contentEl.object3D : null;
+        }
+
+        function showOverlayGeneral() {
+          overlayBadge.textContent = general.badge;
+          overlayTitle.textContent = general.title;
+          overlayBody.innerHTML = "<p>" + general.body + "</p>";
+          overlayBack.hidden = true;
+        }
+        function showOverlayPart(key) {
+          var p = parts[key];
+          if (!p) return;
+          overlayBadge.textContent = "Bagian tanaman";
+          overlayTitle.textContent = p.title;
+          overlayBody.innerHTML =
+            "<ul>" +
+            p.body.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
+            "</ul>";
+          overlayBack.hidden = false;
+        }
+        overlayBack.addEventListener("click", showOverlayGeneral);
+
+        function activate(targetEl) {
+          if (!targetEl) return;
+          var content = targetEl.querySelector(".content");
+          var activator = targetEl.querySelector(".activator");
+          if (activator) activator.setAttribute("visible", "false");
+          if (content) {
+            content.setAttribute("visible", "true");
+            targetEl.dataset.activated = "1";
+            setActive(content);
+          }
+          targetEl.querySelectorAll(".annotations").forEach(function (a) {
+            a.setAttribute("visible", "true");
+          });
+          showOverlayGeneral();
+          overlayEl.hidden = false;
+          if (hintEl) hintEl.style.display = "none";
+        }
+
+        // Raycast manual untuk mendeteksi label yang diketuk.
+        var raycaster = new THREE.Raycaster();
+        var ndc = new THREE.Vector2();
+        function pickLabel(clientX, clientY) {
+          var canvas = scene.canvas;
+          var cam = scene.camera;
+          if (!canvas || !cam) return null;
+          var rect = canvas.getBoundingClientRect();
+          ndc.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+          ndc.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(ndc, cam);
+          var meshes = [];
+          foundTargets.forEach(function (t) {
+            if (!t.dataset.activated) return;
+            t.querySelectorAll(".label").forEach(function (label) {
+              var part = label.parentNode.dataset.part;
+              label.object3D.traverse(function (o) {
+                if (o.isMesh) {
+                  o.userData._part = part;
+                  meshes.push(o);
+                }
+              });
+            });
+          });
+          if (!meshes.length) return null;
+          var hits = raycaster.intersectObjects(meshes, false);
+          return hits.length ? hits[0].object.userData._part : null;
+        }
+
+        function handleTap(x, y) {
+          if (x != null) {
+            var part = pickLabel(x, y);
+            if (part) {
+              showOverlayPart(part);
+              return;
+            }
+          }
+          var toOpen = null;
+          foundTargets.forEach(function (t) {
+            if (!t.dataset.activated) toOpen = t;
+          });
+          if (toOpen) activate(toOpen);
+        }
+
+        scene.addEventListener("loaded", function () {
+          document.querySelectorAll("[mindar-image-target]").forEach(function (t) {
+            t.addEventListener("targetFound", function () {
+              foundTargets.add(t);
+              if (t.dataset.activated) setActive(t.querySelector(".content"));
+            });
+            t.addEventListener("targetLost", function () {
+              foundTargets.delete(t);
+            });
+          });
+          setupGestures(scene.canvas);
+        });
+
+        function setupGestures(canvas) {
+          var last1 = null,
+            lastDist = null,
+            lastMid = null,
+            dragging = false,
+            lastMouse = null,
+            downPos = null,
+            moved = false,
+            downTime = 0;
+          var TAP_MOVE = 12,
+            TAP_MS = 600;
+
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              if (e.touches.length === 1) {
+                last1 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                downPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                moved = false;
+                downTime = Date.now();
+              }
+              lastDist = null;
+              lastMid = null;
+            },
+            { passive: true },
+          );
+
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              if (e.touches.length === 1 && downPos) {
+                var t0 = e.touches[0];
+                if (
+                  Math.hypot(t0.clientX - downPos.x, t0.clientY - downPos.y) >
+                  TAP_MOVE
+                )
+                  moved = true;
+              }
+              if (!activeObj) return;
+              e.preventDefault();
+              if (e.touches.length === 1) {
+                var t = e.touches[0];
+                if (last1) {
+                  activeObj.rotation.y += (t.clientX - last1.x) * 0.01;
+                  activeObj.rotation.x += (t.clientY - last1.y) * 0.01;
+                }
+                last1 = { x: t.clientX, y: t.clientY };
+                lastDist = null;
+                lastMid = null;
+              } else if (e.touches.length >= 2) {
+                var a = e.touches[0],
+                  b = e.touches[1];
+                var dist = Math.hypot(
+                  a.clientX - b.clientX,
+                  a.clientY - b.clientY,
+                );
+                var mid = {
+                  x: (a.clientX + b.clientX) / 2,
+                  y: (a.clientY + b.clientY) / 2,
+                };
+                if (lastDist) {
+                  var s = THREE.MathUtils.clamp(
+                    activeObj.scale.x * (dist / lastDist),
+                    0.2,
+                    6,
+                  );
+                  activeObj.scale.set(s, s, s);
+                }
+                if (lastMid) {
+                  activeObj.position.x += (mid.x - lastMid.x) * 0.002;
+                  activeObj.position.y -= (mid.y - lastMid.y) * 0.002;
+                }
+                lastDist = dist;
+                lastMid = mid;
+                last1 = null;
+              }
+            },
+            { passive: false },
+          );
+
+          canvas.addEventListener("touchend", function (e) {
+            if (e.touches.length === 0) {
+              if (!moved && downPos && Date.now() - downTime < TAP_MS) {
+                var ct = e.changedTouches[0];
+                handleTap(ct.clientX, ct.clientY);
+              }
+              downPos = null;
+            }
+            last1 =
+              e.touches.length === 1
+                ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+                : null;
+            lastDist = null;
+            lastMid = null;
+          });
+
+          canvas.addEventListener("mousedown", function (e) {
+            dragging = true;
+            lastMouse = { x: e.clientX, y: e.clientY };
+            downPos = { x: e.clientX, y: e.clientY };
+            moved = false;
+            downTime = Date.now();
+          });
+          window.addEventListener("mouseup", function (e) {
+            if (dragging && !moved && downPos && Date.now() - downTime < TAP_MS)
+              handleTap(e.clientX, e.clientY);
+            dragging = false;
+            downPos = null;
+          });
+          canvas.addEventListener("mousemove", function (e) {
+            if (
+              downPos &&
+              Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y) > TAP_MOVE
+            )
+              moved = true;
+            if (!dragging || !activeObj || !lastMouse) return;
+            activeObj.rotation.y += (e.clientX - lastMouse.x) * 0.01;
+            activeObj.rotation.x += (e.clientY - lastMouse.y) * 0.01;
+            lastMouse = { x: e.clientX, y: e.clientY };
+          });
+          canvas.addEventListener(
+            "wheel",
+            function (e) {
+              if (!activeObj) return;
+              e.preventDefault();
+              var s = THREE.MathUtils.clamp(
+                activeObj.scale.x * (e.deltaY < 0 ? 1.1 : 0.9),
+                0.2,
+                6,
+              );
+              activeObj.scale.set(s, s, s);
+            },
+            { passive: false },
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

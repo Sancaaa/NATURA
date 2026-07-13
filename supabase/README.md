@@ -65,9 +65,21 @@ Restart `npm run dev`. Halaman awal kini menampilkan **Masuk/Daftar**.
 - **Email confirmation**: untuk dev, matikan di Auth settings (Studio →
   Authentication → Providers → Email → *Confirm email* off) agar daftar
   langsung mendapat sesi. Di produksi, aktifkan + pasang SMTP.
-- **Peran** ditentukan saat daftar (siswa/guru) dan disimpan di `profiles`
-  oleh trigger `handle_new_user`. Untuk membuat **admin**, ubah kolom `role`
-  di tabel `profiles` lewat Studio.
+- **Peran & satu login.** Semua peran memakai **satu halaman login** (`/masuk`);
+  setelah masuk, pengguna diarahkan sesuai perannya (murid → `/beranda`,
+  guru → `/dashboard`, admin → `/admin`). Pendaftaran (`/daftar`) hanya membuat
+  **murid** atau **guru**; trigger `handle_new_user` menyimpan `nama`, `email`,
+  dan `role` ke `profiles`.
+- **Membuat admin pertama** (bootstrap) lewat SQL setelah akun terdaftar:
+  ```sql
+  update public.profiles set role = 'admin'
+  where id = (select id from auth.users where email = 'email-anda@sekolah.id');
+  ```
+  Login lagi → diarahkan ke `/admin`. Dari sana **admin dapat mengubah peran
+  akun lain** (murid/guru/admin) tanpa SQL lagi.
+- **Kepemilikan jelas.** Kelas → `teacher_id` guru pembuat; tugas → miliki lewat
+  kelasnya; submission/attempt → `student_id` siswa; kuis buatan guru →
+  `created_by`. RLS memastikan tiap peran hanya mengakses datanya.
 - **RLS aktif** di semua tabel: siswa hanya melihat datanya & kelas yang
   diikuti; guru hanya kelas yang diampu. Uji dengan dua akun berbeda.
 - **Data siswa (anak di bawah umur)** tersimpan di infrastruktur Anda; hanya

@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { plants } from "@/lib/data/plants";
-import { tools } from "@/lib/data/tools";
+import { getPlants } from "@/lib/db/plants";
+import { getTools } from "@/lib/db/tools";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Card } from "@/components/ui/Card";
 import { Leaf, FlaskConical } from "lucide-react";
 
-export default function Pindai() {
+export default async function Pindai() {
+  const [plants, tools] = await Promise.all([getPlants(), getTools()]);
   return (
     <div>
       <PageHeader title="Pindai & Jelajah 3D" />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { plants } from "@/lib/data/plants";
+import { getPlants } from "@/lib/db/plants";
 import { getStudentAssignments } from "@/lib/db/classroom";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -14,7 +14,10 @@ import {
 } from "lucide-react";
 
 export default async function Beranda() {
-  const tugas = await getStudentAssignments();
+  const [tugas, plants] = await Promise.all([
+    getStudentAssignments(),
+    getPlants(),
+  ]);
 
   return (
     <div>
@@ -45,7 +48,7 @@ export default async function Beranda() {
         <section>
           <h2 className="mb-2 font-bold">Lanjutkan belajar</h2>
           <div className="flex gap-3 overflow-x-auto pb-1">
-            {plants.map((p) => (
+            {plants.slice(0, 8).map((p) => (
               <Link
                 key={p.id}
                 href={`/pindai/${p.id}`}

@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   FilePlus2,
+  FileStack,
   LogOut,
   Leaf,
 } from "lucide-react";
@@ -15,6 +16,7 @@ const items = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/kelas", label: "Kelas", icon: Users },
   { href: "/buat-kuis", label: "Buat Kuis", icon: FilePlus2 },
+  { href: "/bank-soal", label: "Bank Soal", icon: FileStack },
 ];
 
 export default function Sidebar() {

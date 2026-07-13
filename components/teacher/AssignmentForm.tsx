@@ -2,10 +2,16 @@
 
 import { useActionState } from "react";
 import { createAssignment, type ActionState } from "@/lib/actions/classroom";
-import { quizzes } from "@/lib/data/quizzes";
 import { Button } from "@/components/ui/Button";
+import type { AssignableQuiz } from "@/lib/db/quizzes";
 
-export function AssignmentForm({ classId }: { classId: string }) {
+export function AssignmentForm({
+  classId,
+  quizzes,
+}: {
+  classId: string;
+  quizzes: AssignableQuiz[];
+}) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     createAssignment,
     {},
@@ -21,7 +27,7 @@ export function AssignmentForm({ classId }: { classId: string }) {
           className="h-11 rounded-xl border border-line bg-white px-3 text-sm outline-none focus:border-primary"
         >
           <option value="" disabled>
-            Pilih kuis…
+            {quizzes.length ? "Pilih kuis…" : "Belum ada kuis — buat dulu"}
           </option>
           {quizzes.map((q) => (
             <option key={q.id} value={q.id}>

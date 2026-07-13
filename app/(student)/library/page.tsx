@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { library } from "@/lib/data/library";
+import { getLibrary } from "@/lib/db/library";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Download } from "lucide-react";
 
-export default function Library() {
+export default async function Library() {
+  const library = await getLibrary();
   return (
     <div>
       <PageHeader title="Library" />

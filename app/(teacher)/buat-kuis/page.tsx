@@ -1,24 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Sparkles, Check } from "lucide-react";
-import { quizzes } from "@/lib/data/quizzes";
+import { QuizDraftEditor } from "@/components/teacher/QuizDraftEditor";
+import {
+  generateQuiz,
+  publishQuiz,
+  type DraftQuestion,
+} from "@/lib/actions/quiz";
 
 export default function BuatKuis() {
-  const [topik, setTopik] = useState("Pengantar Simplisia");
+  const [topik, setTopik] = useState("");
+  const [judul, setJudul] = useState("");
   const [jumlah, setJumlah] = useState(3);
-  const [state, setState] = useState<
-    "idle" | "loading" | "draft" | "published"
-  >("idle");
-
-  const draft = quizzes[0].questions;
+  const [draft, setDraft] = useState<DraftQuestion[] | null>(null);
+  const [published, setPublished] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [genPending, startGen] = useTransition();
+  const [pubPending, startPub] = useTransition();
 
   function generate() {
-    setState("loading");
-    setTimeout(() => setState("draft"), 1200);
+    setError(null);
+    setPublished(false);
+    setDraft(null);
+    startGen(async () => {
+      const res = await generateQuiz(topik, jumlah);
+      if (res.error) setError(res.error);
+      else setDraft(res.questions ?? []);
+    });
+  }
+
+  function publish() {
+    if (!draft) return;
+    setError(null);
+    startPub(async () => {
+      const res = await publishQuiz(
+        judul || `Kuis: ${topik || "Farmakognosi"}`,
+        topik,
+        draft,
+      );
+      if (res.error) setError(res.error);
+      else setPublished(true);
+    });
   }
 
   return (
@@ -26,22 +53,36 @@ export default function BuatKuis() {
       <div>
         <h1 className="text-2xl font-extrabold">Buat Kuis</h1>
         <p className="text-sm text-muted">
-          Susun manual atau hasilkan draf dengan AI (Gemini), lalu tinjau
-          sebelum publikasi.
+          Hasilkan draf soal dengan AI (Gemini), tinjau, lalu publikasikan agar
+          bisa ditugaskan ke kelas.
         </p>
       </div>
 
       <Card className="space-y-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Topik</label>
-          <input
-            value={topik}
-            onChange={(e) => setTopik(e.target.value)}
-            className="h-11 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-primary"
-          />
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium">Topik</span>
+            <input
+              value={topik}
+              onChange={(e) => setTopik(e.target.value)}
+              placeholder="mis. Metode ekstraksi"
+              className="h-11 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-primary"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium">
+              Judul kuis (opsional)
+            </span>
+            <input
+              value={judul}
+              onChange={(e) => setJudul(e.target.value)}
+              placeholder="Otomatis dari topik"
+              className="h-11 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-primary"
+            />
+          </label>
         </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Jumlah soal</label>
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium">Jumlah soal</span>
           <input
             type="number"
             min={1}
@@ -50,56 +91,54 @@ export default function BuatKuis() {
             onChange={(e) => setJumlah(Number(e.target.value))}
             className="h-11 w-28 rounded-xl border border-line px-3 text-sm outline-none focus:border-primary"
           />
-        </div>
-        <Button onClick={generate} disabled={state === "loading"}>
+        </label>
+        <Button onClick={generate} disabled={genPending}>
           <Sparkles className="h-4 w-4" />
-          {state === "loading" ? "Menyusun…" : "Generate dengan AI"}
+          {genPending ? "Menyusun…" : "Generate dengan AI"}
         </Button>
+        {error && <p className="text-sm text-danger">{error}</p>}
         <p className="text-xs text-muted">
-          Catatan: pada mockup, draf memakai contoh statis. Di produksi ini
-          memanggil Gemini dengan output terstruktur.
+          Butuh GEMINI_API_KEY di .env.local. Draf ditampilkan untuk ditinjau
+          sebelum publikasi.
         </p>
       </Card>
 
-      {(state === "draft" || state === "published") && (
+      {draft && (
         <Card className="space-y-4">
           <div className="flex items-center gap-2">
-            <h2 className="flex-1 font-bold">Draf Soal ({draft.length})</h2>
-            {state === "published" ? (
+            <h2 className="flex-1 font-bold">
+              Tinjau &amp; Edit Draf ({draft.length} soal)
+            </h2>
+            {published ? (
               <Badge tone="success">
                 <Check className="mr-1 h-3 w-3" /> Dipublikasikan
               </Badge>
             ) : (
-              <Badge tone="accent">Perlu ditinjau</Badge>
+              <Badge tone="accent">Belum dipublikasikan</Badge>
             )}
           </div>
-          <div className="space-y-3">
-            {draft.map((q, i) => (
-              <div key={q.id} className="rounded-xl border border-line p-3">
-                <div className="text-sm font-semibold">
-                  {i + 1}. {q.pertanyaan}
-                </div>
-                <ul className="mt-2 space-y-1 text-sm">
-                  {q.opsi.map((o, oi) => (
-                    <li
-                      key={oi}
-                      className={
-                        oi === q.kunci
-                          ? "font-medium text-success"
-                          : "text-muted"
-                      }
-                    >
-                      {oi === q.kunci ? "✓ " : "• "}
-                      {o}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          {state === "draft" && (
-            <Button onClick={() => setState("published")} className="w-full">
-              Publikasikan ke Kelas
+          <QuizDraftEditor value={draft} onChange={setDraft} />
+          {published ? (
+            <div className="rounded-xl bg-success/10 p-3 text-sm">
+              Kuis tersimpan. Kelola di{" "}
+              <Link
+                href="/bank-soal"
+                className="font-semibold text-primary underline"
+              >
+                Bank Soal
+              </Link>{" "}
+              atau tugaskan lewat{" "}
+              <Link
+                href="/kelas"
+                className="font-semibold text-primary underline"
+              >
+                Kelas
+              </Link>
+              .
+            </div>
+          ) : (
+            <Button onClick={publish} disabled={pubPending} className="w-full">
+              {pubPending ? "Menyimpan…" : "Publikasikan"}
             </Button>
           )}
         </Card>

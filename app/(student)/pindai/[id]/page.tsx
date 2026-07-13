@@ -1,24 +1,14 @@
-"use client";
-
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import { getPlant, type Plant } from "@/lib/data/plants";
-import { getTool, type LabTool } from "@/lib/data/tools";
+import { notFound } from "next/navigation";
+import { getPlantDb, type Plant } from "@/lib/db/plants";
+import { getToolDb, type LabTool } from "@/lib/db/tools";
+import ModelViewerLazy from "@/components/three/ModelViewerLazy";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Box, Camera } from "lucide-react";
-
-const ModelViewer = dynamic(
-  () => import("@/components/three/ModelViewer"),
-  { ssr: false },
-);
-const ARScene = dynamic(() => import("@/components/ar/ARScene"), {
-  ssr: false,
-});
+import { buttonClass } from "@/components/ui/Button";
+import { Camera } from "lucide-react";
 
 function InfoRow({ label, value }: { label: string; value: string }) {
+  if (!value) return null;
   return (
     <div>
       <div className="text-xs font-semibold uppercase tracking-wide text-muted">
@@ -35,23 +25,26 @@ function PlantInfo({ plant }: { plant: Plant }) {
       <div>
         <div className="text-lg font-bold">{plant.namaLokal}</div>
         <div className="text-sm italic text-muted">
-          {plant.namaLatin} · {plant.familia}
+          {plant.namaLatin}
+          {plant.familia ? ` · ${plant.familia}` : ""}
         </div>
       </div>
       <InfoRow label="Nama simplisia" value={plant.namaSimplisia} />
       <InfoRow label="Bagian digunakan" value={plant.bagianDigunakan} />
-      <div>
-        <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
-          Kandungan
+      {plant.kandungan.length > 0 && (
+        <div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
+            Kandungan
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {plant.kandungan.map((k) => (
+              <Badge key={k} tone="primary">
+                {k}
+              </Badge>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {plant.kandungan.map((k) => (
-            <Badge key={k} tone="primary">
-              {k}
-            </Badge>
-          ))}
-        </div>
-      </div>
+      )}
       <InfoRow label="Khasiat" value={plant.khasiat} />
       <InfoRow label="Ciri makroskopik" value={plant.makroskopik} />
       <InfoRow label="Ciri mikroskopik" value={plant.mikroskopik} />
@@ -70,21 +63,15 @@ function ToolInfo({ tool }: { tool: LabTool }) {
   );
 }
 
-export default function Detail() {
-  const params = useParams();
-  const id = String(params.id);
-  const plant = getPlant(id);
-  const tool = getTool(id);
-  const [mode, setMode] = useState<"3d" | "ar">("3d");
+export default async function Detail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const [plant, tool] = await Promise.all([getPlantDb(id), getToolDb(id)]);
 
-  if (!plant && !tool) {
-    return (
-      <div>
-        <PageHeader title="Tidak ditemukan" back="/pindai" />
-        <p className="p-4 text-muted">Konten tidak ada.</p>
-      </div>
-    );
-  }
+  if (!plant && !tool) notFound();
 
   const title = plant ? plant.namaLokal : tool!.nama;
   const modelSrc = plant?.model3dUrl ?? tool?.model3dUrl;
@@ -94,36 +81,16 @@ export default function Detail() {
       <PageHeader title={title} back="/pindai" />
       <div className="space-y-4 p-4">
         <div className="h-72 overflow-hidden rounded-2xl border border-line">
-          {mode === "3d" ? (
-            <ModelViewer src={modelSrc} className="h-full w-full" />
-          ) : (
-            <ARScene
-              modelSrc={modelSrc ?? "/models/plant.glb"}
-              targetSrc={plant?.arTargetUrl ?? "/ar/targets.mind"}
-            />
-          )}
+          <ModelViewerLazy src={modelSrc} className="h-full w-full" />
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          <Button
-            variant={mode === "3d" ? "primary" : "outline"}
-            onClick={() => setMode("3d")}
+        {plant?.arTargetUrl && (
+          <a
+            href="/ar/viewer.html"
+            className={`${buttonClass("primary", "md")} w-full`}
           >
-            <Box className="h-4 w-4" /> Lihat 3D
-          </Button>
-          <Button
-            variant={mode === "ar" ? "primary" : "outline"}
-            onClick={() => setMode("ar")}
-          >
-            <Camera className="h-4 w-4" /> Mode AR
-          </Button>
-        </div>
-
-        {mode === "ar" && (
-          <p className="text-center text-xs text-muted">
-            Arahkan kamera ke kartu NATURA. Butuh aset target &amp; model — lihat
-            public/ar/README.md.
-          </p>
+            <Camera className="h-4 w-4" /> Buka Mode AR (Kamera)
+          </a>
         )}
 
         {plant ? <PlantInfo plant={plant} /> : <ToolInfo tool={tool!} />}
