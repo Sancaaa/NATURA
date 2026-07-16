@@ -3,6 +3,10 @@
 Mode AR (kamera) memakai **MindAR** dengan *image target*. Kartu AR harus
 dikompilasi menjadi berkas `.mind`.
 
+**Unggah:** setelah dikompilasi, unggah `.mind` lewat panel admin (Tanaman/Alat →
+form) — tersimpan ke Supabase Storage (`assets/ar-targets/`) dan tautannya
+dipakai otomatis oleh `viewer.html`. Alat kini juga bisa punya target AR.
+
 ## Cara membuat `targets.mind`
 
 1. Buka MindAR Image Target Compiler:

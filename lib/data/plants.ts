@@ -13,6 +13,8 @@ export type Plant = {
   model3dUrl?: string;
   /** Target MindAR (.mind) untuk mode AR kamera. */
   arTargetUrl?: string;
+  /** Paragraf intro yang tampil di overlay AR saat model pertama diketuk. */
+  arIntro?: string;
 };
 
 export const plants: Plant[] = [
@@ -32,6 +34,8 @@ export const plants: Plant[] = [
       "Fragmen pengenal: sistolit pada epidermis, stomata tipe diasitik, dan rambut kelenjar.",
     model3dUrl: "/models/samiloto.glb",
     arTargetUrl: "/ar/samiloto.mind",
+    arIntro:
+      "Herba berasa sangat pahit dari famili Acanthaceae. Simplisianya (Andrographidis Herba) mengandung andrografolid dan dikenal sebagai imunomodulator, antipiretik, serta antiinflamasi. Ketuk label bagian pada model untuk penjelasannya.",
   },
   {
     id: "kunyit",

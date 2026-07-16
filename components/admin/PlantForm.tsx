@@ -6,6 +6,7 @@ import { createPlant, updatePlant, type PlantInput } from "@/lib/actions/content
 import type { Plant } from "@/lib/data/plants";
 import { buttonClass } from "@/components/ui/Button";
 import { Field, TextInput, TextArea } from "@/components/admin/formFields";
+import { FileUploadField } from "@/components/admin/FileUploadField";
 
 export function PlantForm({ plant }: { plant?: Plant }) {
   const editing = !!plant;
@@ -21,6 +22,7 @@ export function PlantForm({ plant }: { plant?: Plant }) {
     mikroskopik: plant?.mikroskopik ?? "",
     model3dUrl: plant?.model3dUrl ?? "",
     arTargetUrl: plant?.arTargetUrl ?? "",
+    arIntro: plant?.arIntro ?? "",
   });
   const [kandunganText, setKandunganText] = useState(
     (plant?.kandungan ?? []).join(", "),
@@ -120,21 +122,34 @@ export function PlantForm({ plant }: { plant?: Plant }) {
       </Field>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="URL model 3D (.glb)" hint="Opsional">
-          <TextInput
-            value={f.model3dUrl}
-            onChange={(e) => set({ model3dUrl: e.target.value })}
-            placeholder="/models/sambiloto.glb"
-          />
-        </Field>
-        <Field label="URL target AR (.mind)" hint="Opsional">
-          <TextInput
-            value={f.arTargetUrl}
-            onChange={(e) => set({ arTargetUrl: e.target.value })}
-            placeholder="/ar/sambiloto.mind"
-          />
-        </Field>
+        <FileUploadField
+          label="Model 3D (.glb)"
+          hint="Opsional — untuk mode 3D & AR"
+          accept=".glb"
+          folder="models"
+          value={f.model3dUrl ?? ""}
+          onChange={(url) => set({ model3dUrl: url })}
+        />
+        <FileUploadField
+          label="Target AR (.mind)"
+          hint="Opsional — mengaktifkan pindai kamera"
+          accept=".mind"
+          folder="ar-targets"
+          value={f.arTargetUrl ?? ""}
+          onChange={(url) => set({ arTargetUrl: url })}
+        />
       </div>
+
+      <Field
+        label="Intro AR"
+        hint="Paragraf pembuka di overlay AR saat model diketuk. Kosongkan untuk memakai Khasiat."
+      >
+        <TextArea
+          value={f.arIntro ?? ""}
+          onChange={(e) => set({ arIntro: e.target.value })}
+          placeholder="Herba pahit dari famili Acanthaceae; simplisianya mengandung andrografolid…"
+        />
+      </Field>
 
       {err && (
         <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">

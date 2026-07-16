@@ -108,3 +108,36 @@ insert into public.questions (quiz_id, urutan, pertanyaan, opsi, kunci, pembahas
     '["Menambah kadar air","Mempercepat pengeringan","Menghilangkan warna","Menambah berat"]'::jsonb, 1,
     'Perajangan memperluas permukaan sehingga mempercepat proses pengeringan.')
 on conflict do nothing;
+
+-- Intro AR (paragraf overlay) — contoh untuk Sambiloto -----------
+update public.plants set ar_intro =
+  'Herba berasa sangat pahit dari famili Acanthaceae. Simplisianya (Andrographidis Herba) mengandung andrografolid dan dikenal sebagai imunomodulator, antipiretik, serta antiinflamasi. Ketuk label bagian pada model untuk penjelasannya.'
+  where id = 'sambiloto';
+
+-- Titik highlight (anotasi) AR — contoh untuk Sambiloto ----------
+-- Idempoten: bersihkan lalu isi ulang agar aman dijalankan berulang.
+delete from public.content_annotations
+  where subject_type = 'plant' and subject_id = 'sambiloto';
+insert into public.content_annotations
+  (subject_type, subject_id, urutan, part_key, label,
+   pos_x, pos_y, pos_z, label_x, label_y, label_z, body)
+values
+  ('plant', 'sambiloto', 1, 'daun', 'Daun',
+    0.18, 0.28, 0.1, 0.22, 0.28, 0,
+    ARRAY[
+      'Kandungan andrografolid tertinggi — bagian paling berkhasiat.',
+      'Berperan sebagai imunomodulator dan penurun demam (antipiretik).',
+      'Rasa sangat pahit, ciri khas sambiloto.'
+    ]),
+  ('plant', 'sambiloto', 2, 'batang', 'Batang',
+    0, 0.05, 0.1, 0, 0.5, 0,
+    ARRAY[
+      'Berbentuk persegi, ciri khas famili Acanthaceae.',
+      'Turut mengandung senyawa aktif dengan kadar lebih rendah dari daun.'
+    ]),
+  ('plant', 'sambiloto', 3, 'bunga', 'Bunga',
+    -0.16, 0.32, 0.1, -0.22, 0.24, 0,
+    ARRAY[
+      'Bunga kecil berwarna putih keunguan.',
+      'Menandai fase generatif (pembungaan) tanaman.'
+    ]);

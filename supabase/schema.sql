@@ -36,8 +36,11 @@ create table if not exists public.plants (
   makroskopik text,
   mikroskopik text,
   model_3d_url text,
-  ar_target_url text
+  ar_target_url text,
+  ar_intro text
 );
+-- kolom intro AR (untuk instalasi lama)
+alter table public.plants add column if not exists ar_intro text;
 
 create table if not exists public.lab_tools (
   id text primary key,
@@ -45,8 +48,13 @@ create table if not exists public.lab_tools (
   fungsi text,
   cara_pakai text,
   keselamatan text,
-  model_3d_url text
+  model_3d_url text,
+  ar_target_url text,
+  ar_intro text
 );
+-- kolom target AR + intro AR (untuk instalasi lama)
+alter table public.lab_tools add column if not exists ar_target_url text;
+alter table public.lab_tools add column if not exists ar_intro text;
 
 create table if not exists public.library_items (
   id text primary key,
@@ -57,6 +65,26 @@ create table if not exists public.library_items (
   konten text[] not null default '{}',
   offline boolean not null default false
 );
+
+-- Titik highlight (anotasi) pada model 3D tanaman/alat
+create table if not exists public.content_annotations (
+  id uuid primary key default gen_random_uuid(),
+  subject_type text not null check (subject_type in ('plant', 'tool')),
+  subject_id text not null,
+  urutan int not null default 0,
+  part_key text not null,
+  label text not null,
+  pos_x double precision not null default 0,
+  pos_y double precision not null default 0,
+  pos_z double precision not null default 0,
+  label_x double precision not null default 0,
+  label_y double precision not null default 0,
+  label_z double precision not null default 0,
+  body text[] not null default '{}',
+  created_at timestamptz not null default now()
+);
+create index if not exists content_annotations_subject_idx
+  on public.content_annotations (subject_type, subject_id, urutan);
 
 create table if not exists public.quizzes (
   id text primary key,
@@ -209,6 +237,7 @@ alter table public.profiles       enable row level security;
 alter table public.plants         enable row level security;
 alter table public.lab_tools      enable row level security;
 alter table public.library_items  enable row level security;
+alter table public.content_annotations enable row level security;
 alter table public.quizzes        enable row level security;
 alter table public.questions      enable row level security;
 alter table public.classes        enable row level security;
@@ -226,6 +255,8 @@ drop policy if exists library_read on public.library_items;
 drop policy if exists plants_admin on public.plants;
 drop policy if exists tools_admin on public.lab_tools;
 drop policy if exists library_admin on public.library_items;
+drop policy if exists annotations_read on public.content_annotations;
+drop policy if exists annotations_admin on public.content_annotations;
 drop policy if exists quizzes_read on public.quizzes;
 drop policy if exists quizzes_write on public.quizzes;
 drop policy if exists questions_read on public.questions;
@@ -261,6 +292,10 @@ create policy library_read on public.library_items for select to authenticated u
 create policy plants_admin on public.plants for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
 create policy tools_admin on public.lab_tools for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
 create policy library_admin on public.library_items for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
+
+-- anotasi: baca terautentikasi; tulis = admin
+create policy annotations_read on public.content_annotations for select to authenticated using (true);
+create policy annotations_admin on public.content_annotations for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
 
 -- quizzes/questions: baca terautentikasi; tulis = pembuat (guru) atau admin
 create policy quizzes_read on public.quizzes for select to authenticated using (true);
@@ -321,3 +356,28 @@ create policy attempts_select on public.quiz_attempts for select using (
   student_id = auth.uid() or public.teaches_student(student_id) or public.my_role() = 'admin'
 );
 create policy attempts_insert on public.quiz_attempts for insert with check (student_id = auth.uid());
+
+-- ============================================================
+-- Storage — bucket publik 'assets' untuk unggah .glb / .mind
+-- Baca publik; tulis dibatasi admin.
+-- ============================================================
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('assets', 'assets', true, 52428800)
+on conflict (id) do update set public = true, file_size_limit = 52428800;
+
+drop policy if exists assets_public_read on storage.objects;
+drop policy if exists assets_admin_insert on storage.objects;
+drop policy if exists assets_admin_update on storage.objects;
+drop policy if exists assets_admin_delete on storage.objects;
+
+create policy assets_public_read on storage.objects
+  for select using (bucket_id = 'assets');
+create policy assets_admin_insert on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'assets' and public.my_role() = 'admin');
+create policy assets_admin_update on storage.objects
+  for update to authenticated
+  using (bucket_id = 'assets' and public.my_role() = 'admin');
+create policy assets_admin_delete on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'assets' and public.my_role() = 'admin');

@@ -4,7 +4,8 @@ import { tools as seedTools, type LabTool } from "@/lib/data/tools";
 
 export type { LabTool };
 
-const COLS = "id, nama, fungsi, cara_pakai, keselamatan, model_3d_url";
+const COLS =
+  "id, nama, fungsi, cara_pakai, keselamatan, model_3d_url, ar_target_url, ar_intro";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function toTool(r: any): LabTool {
@@ -15,6 +16,8 @@ function toTool(r: any): LabTool {
     caraPakai: r.cara_pakai ?? "",
     keselamatan: r.keselamatan ?? "",
     model3dUrl: r.model_3d_url ?? undefined,
+    arTargetUrl: r.ar_target_url ?? undefined,
+    arIntro: r.ar_intro ?? undefined,
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

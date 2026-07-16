@@ -37,6 +37,7 @@ export default async function AdminAlat() {
                 <div className="truncate text-xs text-muted">{t.fungsi}</div>
               </div>
               {t.model3dUrl && <Badge tone="primary">3D</Badge>}
+              {t.arTargetUrl && <Badge tone="accent">AR</Badge>}
               <Link
                 href={`/admin/alat/${t.id}`}
                 className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-primary hover:bg-primary/10"

@@ -18,6 +18,7 @@ export type PlantInput = {
   mikroskopik: string;
   model3dUrl?: string;
   arTargetUrl?: string;
+  arIntro?: string;
 };
 
 export type ToolInput = {
@@ -26,6 +27,8 @@ export type ToolInput = {
   caraPakai: string;
   keselamatan: string;
   model3dUrl?: string;
+  arTargetUrl?: string;
+  arIntro?: string;
 };
 
 export type LibraryInput = {
@@ -112,6 +115,7 @@ function plantRow(i: PlantInput) {
     mikroskopik: clean(i.mikroskopik),
     model_3d_url: clean(i.model3dUrl),
     ar_target_url: clean(i.arTargetUrl),
+    ar_intro: clean(i.arIntro),
   };
 }
 
@@ -176,6 +180,8 @@ function toolRow(i: ToolInput) {
     cara_pakai: clean(i.caraPakai),
     keselamatan: clean(i.keselamatan),
     model_3d_url: clean(i.model3dUrl),
+    ar_target_url: clean(i.arTargetUrl),
+    ar_intro: clean(i.arIntro),
   };
 }
 

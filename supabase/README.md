@@ -8,7 +8,14 @@ sampai Anda siap.
 ## Isi folder
 
 - `schema.sql` — tabel, trigger profil, fungsi bantu, dan **Row-Level Security**.
-- `seed.sql` — konten awal (tanaman, alat, library, kuis).
+- `seed.sql` — konten awal (tanaman, alat, library, kuis, anotasi AR).
+- `migrations/` — riwayat perubahan skema. Migrasi
+  `20260713120000_admin_ar_upload.sql` menambah: kolom `ar_target_url` pada
+  `lab_tools`, tabel `content_annotations`, dan **bucket Storage publik `assets`**
+  (untuk unggah `.glb`/`.mind`; tulis dibatasi admin).
+
+Terapkan perubahan: `npx supabase db push` (atau jalankan file SQL di Studio).
+Bucket `assets` juga dibuat oleh `schema.sql`.
 
 ## Cara menjalankan
 

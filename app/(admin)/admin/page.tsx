@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { RoleSelect } from "@/components/admin/RoleSelect";
 import { DeleteUserButton } from "@/components/admin/DeleteUserButton";
+import { CreateUserForm } from "@/components/admin/CreateUserForm";
 import { Users, GraduationCap, ShieldCheck, User } from "lucide-react";
 
 function Stat({
@@ -54,6 +55,8 @@ export default async function AdminPage() {
         <Stat icon={<User className="h-5 w-5" />} label="Guru" value={s.guru} />
         <Stat icon={<ShieldCheck className="h-5 w-5" />} label="Admin" value={s.admin} />
       </div>
+
+      <CreateUserForm />
 
       <Card className="overflow-hidden p-0">
         <div className="overflow-x-auto">

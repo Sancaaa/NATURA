@@ -5,6 +5,10 @@ export type LabTool = {
   caraPakai: string;
   keselamatan: string;
   model3dUrl?: string;
+  /** Target MindAR (.mind) untuk mode AR kamera. */
+  arTargetUrl?: string;
+  /** Paragraf intro yang tampil di overlay AR saat model pertama diketuk. */
+  arIntro?: string;
 };
 
 export const tools: LabTool[] = [

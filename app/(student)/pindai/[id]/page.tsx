@@ -75,6 +75,14 @@ export default async function Detail({
 
   const title = plant ? plant.namaLokal : tool!.nama;
   const modelSrc = plant?.model3dUrl ?? tool?.model3dUrl;
+  const arTarget = plant?.arTargetUrl ?? tool?.arTargetUrl;
+
+  // Viewer AR data-driven: kirim jenis+id (untuk anotasi) & aset (model+target).
+  const arHref =
+    arTarget &&
+    `/ar/viewer.html?type=${plant ? "plant" : "tool"}&id=${encodeURIComponent(id)}` +
+      (modelSrc ? `&model=${encodeURIComponent(modelSrc)}` : "") +
+      `&target=${encodeURIComponent(arTarget)}`;
 
   return (
     <div>
@@ -84,9 +92,9 @@ export default async function Detail({
           <ModelViewerLazy src={modelSrc} className="h-full w-full" />
         </div>
 
-        {plant?.arTargetUrl && (
+        {arHref && (
           <a
-            href="/ar/viewer.html"
+            href={arHref}
             className={`${buttonClass("primary", "md")} w-full`}
           >
             <Camera className="h-4 w-4" /> Buka Mode AR (Kamera)

@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <title>NATURA AR — Sambiloto</title>
+    <title>NATURA AR</title>
     <!-- Versi yang terbukti bekerja: A-Frame 1.5.0 + MindAR 1.2.5 -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -47,6 +47,20 @@
         font: 500 12px system-ui, sans-serif;
         padding: 6px 12px;
         border-radius: 999px;
+      }
+      #msg {
+        position: fixed;
+        inset: 0;
+        z-index: 10001;
+        display: none;
+        place-items: center;
+        background: #0d130f;
+        color: #fff;
+        text-align: center;
+        padding: 24px;
+      }
+      #msg[data-show="1"] {
+        display: grid;
       }
       #overlay {
         position: fixed;
@@ -111,8 +125,10 @@
     </style>
   </head>
   <body>
-    <a href="/pindai/sambiloto" class="back">← Keluar AR</a>
+    <a id="back" href="/pindai" class="back">← Keluar AR</a>
     <div id="hint"><span>Ketuk layar untuk membuka · seret = putar · cubit = zoom · 2 jari = geser</span></div>
+
+    <div id="msg"><div><p id="msg-text"></p></div></div>
 
     <div id="overlay" hidden>
       <button id="overlay-back" type="button" hidden>← Kembali ke penjelasan umum</button>
@@ -121,22 +137,28 @@
       <div id="overlay-body"></div>
     </div>
 
-    <!-- uiScanning: no → tanpa animasi scanning (clean) -->
+    <!--
+      PENTING (lihat memori proyek): scene AR ditulis STATIS di HTML dan dimuat
+      lewat navigasi halaman penuh. JANGAN membangun <a-scene> secara dinamis
+      via JS / iframe / A-Frame 1.6.0 → menyebabkan kamera hitam.
+      Yang data-driven hanya *nilai*: imageTargetSrc & src model di-set lebih
+      awal (script sinkron di bawah, sebelum A-Frame boot), dan titik anotasi
+      ditambahkan sebagai child entity setelah data diambil.
+    -->
     <a-scene
-      mindar-image="imageTargetSrc: /ar/samiloto.mind; uiScanning: no;"
+      id="scene"
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <a-asset-item id="avatarModel" src="/models/samiloto.glb"></a-asset-item>
+        <a-asset-item id="arModel"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- ================= KARTU 1: SAMBILOTO ================= -->
-      <a-entity mindar-image-target="targetIndex: 0">
+      <a-entity id="targetEntity" mindar-image-target="targetIndex: 0">
         <a-entity class="activator">
           <a-circle
             radius="0.12"
@@ -155,63 +177,62 @@
 
         <a-entity class="content" visible="false">
           <a-gltf-model
-            src="#avatarModel"
+            id="arGltf"
             rotation="0 0 0"
             position="0 0 0.1"
             scale="1 1 1"
           ></a-gltf-model>
-
-          <!-- ANOTASI = titik (di bagian) + garis penunjuk + label (dijauhkan).
-               Ketuk label → penjelasan bagian muncul di overlay bawah.
-               Tuning: "position" = letak TITIK di bagian model;
-                       "line end" DAN "label position" = letak LABEL (harus sama). -->
-          <a-entity class="annotations" visible="false">
-            <a-entity
-              class="annotation"
-              data-part="daun"
-              position="0.18 0.28 0.1"
-              line="start: 0 0 0; end: 0.22 0.28 0; color: #D98A3D; opacity: 0.9"
-            >
-              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
-              <a-entity class="label" face-camera position="0.22 0.28 0" scale="0.24 0.24 0.24">
-                <a-plane color="#ffffff" opacity="0.95" width="1.8" height="0.7"></a-plane>
-                <a-text value="Daun" color="#1a2420" align="center" width="1.6" position="0 0 0.01"></a-text>
-              </a-entity>
-            </a-entity>
-
-            <a-entity
-              class="annotation"
-              data-part="batang"
-              position="0 0.05 0.1"
-              line="start: 0 0 0; end: 0 0.5 0; color: #D98A3D; opacity: 0.9"
-            >
-              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
-              <a-entity class="label" face-camera position="0 0.5 0" scale="0.24 0.24 0.24">
-                <a-plane color="#ffffff" opacity="0.95" width="2" height="0.7"></a-plane>
-                <a-text value="Batang" color="#1a2420" align="center" width="1.8" position="0 0 0.01"></a-text>
-              </a-entity>
-            </a-entity>
-
-            <a-entity
-              class="annotation"
-              data-part="bunga"
-              position="-0.16 0.32 0.1"
-              line="start: 0 0 0; end: -0.22 0.24 0; color: #D98A3D; opacity: 0.9"
-            >
-              <a-sphere radius="0.02" color="#D98A3D"></a-sphere>
-              <a-entity class="label" face-camera position="-0.22 0.24 0" scale="0.24 0.24 0.24">
-                <a-plane color="#ffffff" opacity="0.95" width="1.9" height="0.7"></a-plane>
-                <a-text value="Bunga" color="#1a2420" align="center" width="1.7" position="0 0 0.01"></a-text>
-              </a-entity>
-            </a-entity>
-          </a-entity>
+          <a-entity class="annotations" visible="false"></a-entity>
         </a-entity>
       </a-entity>
     </a-scene>
 
+    <!-- Set nilai dinamis SINKRON, sebelum A-Frame menginit sistem mindar. -->
+    <script>
+      (function () {
+        var qs = new URLSearchParams(location.search);
+        var target = qs.get("target") || "";
+        var model = qs.get("model") || "";
+        var id = qs.get("id") || "";
+
+        var backEl = document.getElementById("back");
+        if (id) backEl.setAttribute("href", "/pindai/" + id);
+
+        if (target) {
+          document
+            .getElementById("scene")
+            .setAttribute(
+              "mindar-image",
+              "imageTargetSrc: " + target + "; uiScanning: no;",
+            );
+        }
+        if (model) {
+          document.getElementById("arModel").setAttribute("src", model);
+          document.getElementById("arGltf").setAttribute("src", "#arModel");
+        } else {
+          var g = document.getElementById("arGltf");
+          if (g && g.parentNode) g.parentNode.removeChild(g);
+        }
+      })();
+    </script>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        "use strict";
         var THREE = AFRAME.THREE;
+
+        var qs = new URLSearchParams(location.search);
+        var type = qs.get("type") === "tool" ? "tool" : "plant";
+        var id = qs.get("id") || "";
+        var target = qs.get("target") || "";
+
+        var msgEl = document.getElementById("msg");
+        var msgText = document.getElementById("msg-text");
+        if (!target) {
+          msgText.textContent =
+            "Target AR (.mind) belum tersedia untuk konten ini. Kembali dan gunakan mode 3D.";
+          msgEl.setAttribute("data-show", "1");
+        }
 
         // Label anotasi selalu menghadap kamera.
         AFRAME.registerComponent("face-camera", {
@@ -234,39 +255,8 @@
           },
         });
 
-        // ---- Data penjelasan ----
-        var general = {
-          badge: "Andrographis paniculata",
-          title: "Sambiloto",
-          body:
-            "Herba berasa sangat pahit dari famili Acanthaceae. Simplisianya (Andrographidis Herba) mengandung andrografolid dan dikenal sebagai imunomodulator, antipiretik, serta antiinflamasi. Ketuk label bagian pada model untuk penjelasannya.",
-        };
-        var parts = {
-          daun: {
-            title: "Daun",
-            body: [
-              "Kandungan andrografolid tertinggi — bagian paling berkhasiat.",
-              "Berperan sebagai imunomodulator dan penurun demam (antipiretik).",
-              "Rasa sangat pahit, ciri khas sambiloto.",
-            ],
-          },
-          batang: {
-            title: "Batang",
-            body: [
-              "Berbentuk persegi, ciri khas famili Acanthaceae.",
-              "Turut mengandung senyawa aktif dengan kadar lebih rendah dari daun.",
-            ],
-          },
-          bunga: {
-            title: "Bunga",
-            body: [
-              "Bunga kecil berwarna putih keunguan.",
-              "Menandai fase generatif (pembungaan) tanaman.",
-            ],
-          },
-        };
-
-        var scene = document.querySelector("a-scene");
+        var scene = document.getElementById("scene");
+        var annotationsWrap = scene.querySelector(".annotations");
         var hintEl = document.getElementById("hint");
         var overlayEl = document.getElementById("overlay");
         var overlayBack = document.getElementById("overlay-back");
@@ -274,43 +264,119 @@
         var overlayTitle = document.getElementById("overlay-title");
         var overlayBody = document.getElementById("overlay-body");
 
+        // ---- Data (info umum + anotasi) ----
+        var general = { badge: "", title: "NATURA", body: "" };
+        var parts = {}; // partKey -> { title, body[] }
+
+        function v3(a) {
+          a = a || [];
+          return (a[0] || 0) + " " + (a[1] || 0) + " " + (a[2] || 0);
+        }
+
+        function buildAnnotations(list) {
+          list.forEach(function (a) {
+            var key = a.partKey || "";
+            parts[key] = { title: a.label || key, body: a.body || [] };
+
+            var ann = document.createElement("a-entity");
+            ann.setAttribute("class", "annotation");
+            ann.dataset.part = key;
+            ann.setAttribute("position", v3(a.pos));
+            ann.setAttribute(
+              "line",
+              "start: 0 0 0; end: " +
+                v3(a.labelPos) +
+                "; color: #D98A3D; opacity: 0.9",
+            );
+
+            var sphere = document.createElement("a-sphere");
+            sphere.setAttribute("radius", "0.02");
+            sphere.setAttribute("color", "#D98A3D");
+            ann.appendChild(sphere);
+
+            var labelLen = (a.label || "").length;
+            var planeW = Math.max(1.2, labelLen * 0.28 + 0.6);
+            var label = document.createElement("a-entity");
+            label.setAttribute("class", "label");
+            label.setAttribute("face-camera", "");
+            label.setAttribute("position", v3(a.labelPos));
+            label.setAttribute("scale", "0.24 0.24 0.24");
+            label.innerHTML =
+              '<a-plane color="#ffffff" opacity="0.95" width="' +
+              planeW +
+              '" height="0.7"></a-plane>' +
+              '<a-text value="' +
+              (a.label || "") +
+              '" color="#1a2420" align="center" width="' +
+              (planeW - 0.2) +
+              '" position="0 0 0.01"></a-text>';
+            ann.appendChild(label);
+
+            annotationsWrap.appendChild(ann);
+          });
+        }
+
+        // Ambil data; scene tetap jalan walau fetch gagal (info minimal).
+        if (id) {
+          fetch("/api/ar/" + type + "/" + encodeURIComponent(id))
+            .then(function (r) {
+              return r.ok ? r.json() : null;
+            })
+            .then(function (data) {
+              if (!data) return;
+              if (data.general) {
+                general.badge = data.general.badge || "";
+                general.title = data.general.title || "NATURA";
+                general.body = data.general.body || "";
+              }
+              if (Array.isArray(data.annotations))
+                buildAnnotations(data.annotations);
+            })
+            .catch(function () {});
+        }
+
+        // ---- Overlay & interaksi ----
         var activeObj = null;
         var foundTargets = new Set();
 
         function setActive(contentEl) {
           activeObj = contentEl ? contentEl.object3D : null;
         }
-
         function showOverlayGeneral() {
           overlayBadge.textContent = general.badge;
           overlayTitle.textContent = general.title;
-          overlayBody.innerHTML = "<p>" + general.body + "</p>";
+          overlayBody.innerHTML = "<p>" + (general.body || "") + "</p>";
           overlayBack.hidden = true;
         }
         function showOverlayPart(key) {
           var p = parts[key];
           if (!p) return;
-          overlayBadge.textContent = "Bagian tanaman";
+          overlayBadge.textContent =
+            type === "tool" ? "Bagian alat" : "Bagian tanaman";
           overlayTitle.textContent = p.title;
           overlayBody.innerHTML =
             "<ul>" +
-            p.body.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
+            p.body
+              .map(function (x) {
+                return "<li>" + x + "</li>";
+              })
+              .join("") +
             "</ul>";
           overlayBack.hidden = false;
         }
         overlayBack.addEventListener("click", showOverlayGeneral);
 
-        function activate(targetEl) {
-          if (!targetEl) return;
-          var content = targetEl.querySelector(".content");
-          var activator = targetEl.querySelector(".activator");
-          if (activator) activator.setAttribute("visible", "false");
-          if (content) {
-            content.setAttribute("visible", "true");
-            targetEl.dataset.activated = "1";
-            setActive(content);
+        function activate(t) {
+          if (!t) return;
+          var c = t.querySelector(".content");
+          var act = t.querySelector(".activator");
+          if (act) act.setAttribute("visible", "false");
+          if (c) {
+            c.setAttribute("visible", "true");
+            t.dataset.activated = "1";
+            setActive(c);
           }
-          targetEl.querySelectorAll(".annotations").forEach(function (a) {
+          t.querySelectorAll(".annotations").forEach(function (a) {
             a.setAttribute("visible", "true");
           });
           showOverlayGeneral();
@@ -318,7 +384,6 @@
           if (hintEl) hintEl.style.display = "none";
         }
 
-        // Raycast manual untuk mendeteksi label yang diketuk.
         var raycaster = new THREE.Raycaster();
         var ndc = new THREE.Vector2();
         function pickLabel(clientX, clientY) {
@@ -363,19 +428,22 @@
         }
 
         scene.addEventListener("loaded", function () {
-          document.querySelectorAll("[mindar-image-target]").forEach(function (t) {
-            t.addEventListener("targetFound", function () {
-              foundTargets.add(t);
-              if (t.dataset.activated) setActive(t.querySelector(".content"));
+          document
+            .querySelectorAll("[mindar-image-target]")
+            .forEach(function (t) {
+              t.addEventListener("targetFound", function () {
+                foundTargets.add(t);
+                if (t.dataset.activated) setActive(t.querySelector(".content"));
+              });
+              t.addEventListener("targetLost", function () {
+                foundTargets.delete(t);
+              });
             });
-            t.addEventListener("targetLost", function () {
-              foundTargets.delete(t);
-            });
-          });
           setupGestures(scene.canvas);
         });
 
         function setupGestures(canvas) {
+          if (!canvas) return;
           var last1 = null,
             lastDist = null,
             lastMid = null,

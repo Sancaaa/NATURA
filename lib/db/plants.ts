@@ -5,7 +5,7 @@ import { plants as seedPlants, type Plant } from "@/lib/data/plants";
 export type { Plant };
 
 const COLS =
-  "id, nama_lokal, nama_latin, familia, bagian_digunakan, nama_simplisia, kandungan, khasiat, makroskopik, mikroskopik, model_3d_url, ar_target_url";
+  "id, nama_lokal, nama_latin, familia, bagian_digunakan, nama_simplisia, kandungan, khasiat, makroskopik, mikroskopik, model_3d_url, ar_target_url, ar_intro";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function toPlant(r: any): Plant {
@@ -22,6 +22,7 @@ function toPlant(r: any): Plant {
     mikroskopik: r.mikroskopik ?? "",
     model3dUrl: r.model_3d_url ?? undefined,
     arTargetUrl: r.ar_target_url ?? undefined,
+    arIntro: r.ar_intro ?? undefined,
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

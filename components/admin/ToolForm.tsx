@@ -6,6 +6,7 @@ import { createTool, updateTool, type ToolInput } from "@/lib/actions/content";
 import type { LabTool } from "@/lib/data/tools";
 import { buttonClass } from "@/components/ui/Button";
 import { Field, TextInput, TextArea } from "@/components/admin/formFields";
+import { FileUploadField } from "@/components/admin/FileUploadField";
 
 export function ToolForm({ tool }: { tool?: LabTool }) {
   const editing = !!tool;
@@ -15,6 +16,8 @@ export function ToolForm({ tool }: { tool?: LabTool }) {
     caraPakai: tool?.caraPakai ?? "",
     keselamatan: tool?.keselamatan ?? "",
     model3dUrl: tool?.model3dUrl ?? "",
+    arTargetUrl: tool?.arTargetUrl ?? "",
+    arIntro: tool?.arIntro ?? "",
   });
   const [err, setErr] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -64,11 +67,33 @@ export function ToolForm({ tool }: { tool?: LabTool }) {
           onChange={(e) => set({ keselamatan: e.target.value })}
         />
       </Field>
-      <Field label="URL model 3D (.glb)" hint="Opsional">
-        <TextInput
-          value={f.model3dUrl}
-          onChange={(e) => set({ model3dUrl: e.target.value })}
-          placeholder="/models/mikroskop.glb"
+      <div className="grid gap-4 md:grid-cols-2">
+        <FileUploadField
+          label="Model 3D (.glb)"
+          hint="Opsional — untuk mode 3D & AR"
+          accept=".glb"
+          folder="models"
+          value={f.model3dUrl ?? ""}
+          onChange={(url) => set({ model3dUrl: url })}
+        />
+        <FileUploadField
+          label="Target AR (.mind)"
+          hint="Opsional — mengaktifkan pindai kamera"
+          accept=".mind"
+          folder="ar-targets"
+          value={f.arTargetUrl ?? ""}
+          onChange={(url) => set({ arTargetUrl: url })}
+        />
+      </div>
+
+      <Field
+        label="Intro AR"
+        hint="Paragraf pembuka di overlay AR saat model diketuk. Kosongkan untuk memakai Fungsi."
+      >
+        <TextArea
+          value={f.arIntro ?? ""}
+          onChange={(e) => set({ arIntro: e.target.value })}
+          placeholder="Alat untuk mengamati fragmen pengenal simplisia secara mikroskopik…"
         />
       </Field>
 

@@ -1,7 +1,11 @@
 # Model 3D (GLB)
 
-Taruh model 3D format **.glb** di folder ini, lalu rujuk lewat `model3dUrl`
-pada data (`lib/data/plants.ts` / `lib/data/tools.ts`), mis. `/models/kunyit.glb`.
+**Cara termudah:** unggah `.glb` lewat panel admin (Tanaman/Alat → form) — berkas
+masuk ke Supabase Storage (bucket publik `assets/models/`) dan URL-nya otomatis
+tersimpan di DB.
+
+Alternatif statis: taruh `.glb` di folder ini lalu rujuk lewat `model3dUrl`
+(mis. `/models/kunyit.glb`).
 
 - Format: glTF Binary (`.glb`), sebaiknya dikompresi **Draco**.
 - Ukuran disarankan < 2–5 MB per aset agar ringan di HP.
