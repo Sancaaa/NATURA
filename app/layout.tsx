@@ -32,10 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={jakarta.variable}>
-      <body>
-        {children}
-        <span className="mockup-ribbon">PURWARUPA · MOCKUP</span>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

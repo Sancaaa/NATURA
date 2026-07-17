@@ -57,18 +57,3 @@ body {
   scrollbar-width: none;
 }
 
-/* Penanda purwarupa agar tidak dikira produk jadi */
-.mockup-ribbon {
-  position: fixed;
-  right: 8px;
-  bottom: 8px;
-  z-index: 60;
-  pointer-events: none;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #fff;
-  background: rgba(23, 27, 46, 0.72);
-  padding: 4px 8px;
-  border-radius: 999px;
-}

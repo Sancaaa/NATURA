@@ -26,19 +26,28 @@ export function Logo({
           <stop offset="1" stopColor="#1029bb" />
         </linearGradient>
       </defs>
-      <rect width="48" height="48" rx="14" fill="url(#natura-logo-g)" />
-      {/* Daun */}
+      <rect width="48" height="48" rx="13" fill="url(#natura-logo-g)" />
+      {/* Daun putih mengisi sebagian besar kotak */}
       <path
-        d="M13 35C13 21 21 13 35 13C35 27 27 35 13 35Z"
+        d="M11 37C11 20.5 20.5 11 37 11C37 27.5 27.5 37 11 37Z"
         fill="#ffffff"
       />
-      {/* Huruf N mengikuti tulang daun */}
+      {/* Huruf N tebal, seolah dicetak pada daun */}
       <path
-        d="M18.5 31V19L29.5 29V17"
-        stroke="#1537f9"
-        strokeWidth="3.4"
+        d="M17 32V17L31 31V16"
+        stroke="url(#natura-logo-g)"
+        strokeWidth="4.4"
         strokeLinecap="round"
         strokeLinejoin="round"
+        fill="none"
+      />
+      {/* Tulang daun tipis sebagai aksen */}
+      <path
+        d="M15 35C22 30 30 22 35 15"
+        stroke="#1537f9"
+        strokeOpacity="0.18"
+        strokeWidth="1.4"
+        strokeLinecap="round"
         fill="none"
       />
     </svg>
