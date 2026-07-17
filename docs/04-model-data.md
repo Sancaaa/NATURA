@@ -13,9 +13,13 @@ Basis data: **Postgres (Supabase)** dengan **Row-Level Security (RLS)**. `pgvect
 
 ### Konten Master (Farmakognosi)
 
-- **plants** (tanaman/simplisia nabati) — `id`, `nama_lokal`, `nama_latin`, `familia`, `bagian_digunakan`, `nama_simplisia`, `kandungan` (jsonb), `khasiat`, `ciri_makroskopik`, `ciri_mikroskopik`, `model_3d_url`, `thumbnail_url`.
-- **lab_tools** — `id`, `nama`, `fungsi`, `cara_pakai`, `catatan_keselamatan`, `model_3d_url`, `thumbnail_url`.
-- **ar_cards** — `id`, `target_type` (`plant` | `tool` | `step`), `ref_id` (mengacu ke plant/tool/step), `image_target_url` (aset `.mind`/gambar), `label`.
+> Bagian ini mencerminkan skema **as-built** (`supabase/schema.sql` + `supabase/migrations/`). Beberapa entitas lain di dokumen ini masih rancangan/fase lanjut.
+
+- **plants** (tanaman/simplisia nabati) — `id`, `nama_lokal`, `nama_latin`, `familia`, `bagian_digunakan`, `nama_simplisia`, `kandungan` (`text[]`), `khasiat`, `makroskopik`, `mikroskopik`, `model_3d_url`, `ar_target_url` (aset `.mind`), `ar_intro` (paragraf overlay AR).
+- **lab_tools** — `id`, `nama`, `fungsi`, `cara_pakai`, `keselamatan`, `model_3d_url`, `ar_target_url`, `ar_intro`. *(Alat kini juga bisa dipindai.)*
+- **library_items** — `id`, `judul`, `tipe` (`Modul`|`Artikel`|`Buku`), `penulis`, `ringkasan`, `konten` (`text[]`), `offline` (bool).
+- **content_annotations** — titik highlight pada model 3D: `id`, `subject_type` (`plant`|`tool`), `subject_id`, `urutan`, `part_key`, `label`, `pos_{x,y,z}` (titik), `label_{x,y,z}` (offset label), `body` (`text[]`). Dirender oleh `viewer.html`, dikelola di panel admin (`/admin/{tanaman,alat}/[id]/titik`).
+- **Storage** — bucket publik `assets` (folder `models/`, `ar-targets/`) untuk unggahan `.glb`/`.mind`; baca publik, tulis dibatasi admin (kebijakan `storage.objects`). Menggantikan `ar_cards`/`thumbnail_url` pada rancangan awal.
 
 ### Simulasi Lab
 

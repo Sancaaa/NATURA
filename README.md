@@ -15,7 +15,7 @@ Aplikasi web-based (PWA) untuk pembelajaran **Farmakognosi** siswa SMK Farmasi, 
 |---|---|
 | Bentuk aplikasi | Progressive Web App (installable, offline-capable), bukan native |
 | Teknologi AR | Image-tracking WebAR (MindAR + Three.js) — kartu = *image target*, jalan di browser Android **dan** iOS |
-| Backend & data | Supabase **self-hosted** (Postgres + Auth + Storage + Realtime + RLS, `pgvector`) di infrastruktur sendiri |
+| Backend & data | Supabase (Postgres + Auth + Storage + Realtime + RLS, `pgvector`) — **Cloud** atau **self-host** |
 | Tutor & kuis AI | **Google Gemini Flash** (API cloud) + RAG (pgvector, embedding jalan di CPU) |
 | Framework | Next.js (App Router) + TypeScript, satu codebase untuk siswa & guru |
 | Hosting | **Self-host tanpa GPU**: app di VPS (Caddy + TLS otomatis), database & storage di on-premise, terhubung lewat VPN privat |
@@ -32,26 +32,35 @@ Aplikasi web-based (PWA) untuk pembelajaran **Farmakognosi** siswa SMK Farmasi, 
 
 ## Status
 
-**Fase 0 (mockup fungsional) sudah di-scaffold** — Next.js + design system, data contoh, layar siswa & guru, viewer 3D, dan halaman AR (MindAR). Sudah lolos `next build`. Lingkup & fase lanjut ada di [docs/05-roadmap.md](docs/05-roadmap.md).
+**Fase 1+ berjalan** (bukan lagi sekadar mockup). Sudah tersedia:
 
-## Menjalankan Mockup (Fase 0)
+- **Konten di database** — tanaman, alat, dan library dibaca dari Postgres (Supabase), dengan *fallback* ke data contoh (`lib/data/`) saat Supabase nonaktif ("mode demo").
+- **Autentikasi berperan** — siswa / guru / admin, dijaga RLS.
+- **Panel admin** (`/admin`) — kelola pengguna (buat akun, ubah peran, hapus), **CRUD konten** (tanaman/alat/library), **unggah `.glb`/`.mind`** ke Supabase Storage, dan **editor titik highlight AR** (3D klik-untuk-tempat).
+- **AR data-driven** — tanaman **dan alat** bisa dipindai; `public/ar/viewer.html` memuat model + target + anotasi per konten dari `/api/ar/[type]/[id]`.
+- **Kuis** manual **dan generatif** (Gemini Flash) + **kelas & penugasan** guru.
+
+Sudah lolos `next build`. Fase lanjut (RAG, simulasi lab multi-kartu) ada di [docs/05-roadmap.md](docs/05-roadmap.md).
+
+## Menjalankan
 
 ```bash
 npm install
 npm run dev        # buka http://localhost:3000
 ```
 
-- Halaman awal `/` → pilih peran **Siswa** (`/beranda`) atau **Guru** (`/dashboard`).
-- Semua data masih **contoh** (di `lib/data/`) — belum ada database/login.
-- **Tutor AI**: tanpa key memakai jawaban contoh. Untuk jawaban nyata (Gemini Flash), salin `.env.example` → `.env.local` lalu isi `GEMINI_API_KEY`.
-- **Mode AR (kamera)**: butuh aset — `public/ar/targets.mind` (target kartu) & `public/models/plant.glb` (model). Petunjuk di `public/ar/README.md`. Tombol **Lihat 3D** sudah berjalan tanpa aset.
+- Halaman awal `/` → login (atau **mode demo** tanpa login bila env Supabase kosong).
+- **Mode demo**: tanpa Supabase, data memakai contoh di `lib/data/` — berguna untuk pratinjau cepat tanpa backend.
+- **Tutor AI**: tanpa key memakai jawaban contoh. Untuk jawaban nyata (Gemini Flash), isi `GEMINI_API_KEY` di `.env.local`.
+- **Mode AR (kamera)**: aset `.glb`/`.mind` diunggah lewat panel admin (Tanaman/Alat) ke Storage, atau ditaruh statis di `public/`. Tombol **Lihat 3D** berjalan tanpa aset. Kamera butuh *secure context* (localhost/HTTPS).
 
-Struktur singkat: `app/(student)/` layar siswa · `app/(teacher)/` layar guru · `components/` UI + viewer 3D/AR · `lib/data/` data contoh · `app/api/tutor/` endpoint tutor.
+Struktur singkat: `app/(student)/` layar siswa · `app/(teacher)/` layar guru · `app/(admin)/` panel admin · `components/` UI + viewer 3D/AR + form admin · `lib/db/` baca DB (fallback contoh) · `lib/actions/` server action (CRUD) · `lib/data/` data contoh/fallback · `app/api/` endpoint tutor & AR.
 
-## Fase 1 — Mengaktifkan Backend (opsional)
+## Mengaktifkan Backend (Supabase)
 
-Autentikasi + database (Supabase self-host) sudah disiapkan. Selama env
-Supabase kosong, aplikasi tetap jalan **mode demo** (di atas). Untuk mengaktifkan
-login berperan (siswa/guru) & data persisten, ikuti [supabase/README.md](supabase/README.md):
-jalankan Supabase self-host, terapkan `supabase/schema.sql` + `supabase/seed.sql`,
-lalu isi `NEXT_PUBLIC_SUPABASE_URL` & `NEXT_PUBLIC_SUPABASE_ANON_KEY` di `.env.local`.
+Autentikasi + database. Selama env Supabase kosong, aplikasi tetap jalan **mode demo**.
+Untuk data persisten & login berperan, ikuti [supabase/README.md](supabase/README.md):
+
+1. Siapkan proyek Supabase (**Cloud** atau self-host).
+2. Terapkan `supabase/schema.sql` + `supabase/seed.sql`, lalu migrasi di `supabase/migrations/` (via SQL Editor atau `supabase db push`).
+3. Isi `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY` (untuk buat/hapus akun) di `.env.local`.

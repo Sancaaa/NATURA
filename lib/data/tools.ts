@@ -41,5 +41,3 @@ export const tools: LabTool[] = [
       "Letakkan di meja bebas getaran, tutup kaca saat menimbang, jangan menimbang bahan panas.",
   },
 ];
-
-export const getTool = (id: string) => tools.find((t) => t.id === id);

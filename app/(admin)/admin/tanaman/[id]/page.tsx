@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, MapPin } from "lucide-react";
 import { getPlantDb } from "@/lib/db/plants";
 import { PlantForm } from "@/components/admin/PlantForm";
+import { buttonClass } from "@/components/ui/Button";
 
 export default async function TanamanEdit({
   params,
@@ -22,7 +23,15 @@ export default async function TanamanEdit({
         >
           <ChevronLeft className="h-4 w-4" /> Kembali
         </Link>
-        <h1 className="text-2xl font-extrabold">Edit Tanaman</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-extrabold">Edit Tanaman</h1>
+          <Link
+            href={`/admin/tanaman/${id}/titik`}
+            className={`${buttonClass("outline", "sm")} ml-auto`}
+          >
+            <MapPin className="h-4 w-4" /> Kelola Titik AR
+          </Link>
+        </div>
         <p className="text-sm text-muted">
           ID konten: <code className="text-xs">{plant.id}</code>
         </p>

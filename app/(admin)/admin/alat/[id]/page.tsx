@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, MapPin } from "lucide-react";
 import { getToolDb } from "@/lib/db/tools";
 import { ToolForm } from "@/components/admin/ToolForm";
+import { buttonClass } from "@/components/ui/Button";
 
 export default async function AlatEdit({
   params,
@@ -22,7 +23,15 @@ export default async function AlatEdit({
         >
           <ChevronLeft className="h-4 w-4" /> Kembali
         </Link>
-        <h1 className="text-2xl font-extrabold">Edit Alat</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-extrabold">Edit Alat</h1>
+          <Link
+            href={`/admin/alat/${id}/titik`}
+            className={`${buttonClass("outline", "sm")} ml-auto`}
+          >
+            <MapPin className="h-4 w-4" /> Kelola Titik AR
+          </Link>
+        </div>
         <p className="text-sm text-muted">
           ID konten: <code className="text-xs">{tool.id}</code>
         </p>

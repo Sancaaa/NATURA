@@ -2,6 +2,14 @@
 
 Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** — cukup mulus & lengkap secara visual untuk **direkam jadi video dokumentasi** — baru kemudian backend nyata, AI, dan simulasi. Durasi indikatif, bergantung ukuran tim.
 
+## Status terkini
+
+- ✅ **Fase 0 (mockup)** — selesai; masih tersedia sebagai "mode demo" (fallback `lib/data/`).
+- ✅ **Fase 1 (backend + MVP)** — berjalan: Supabase (Cloud/self-host), auth berperan + RLS, konten master **di DB**, kuis manual, kelas + kode gabung + penugasan + skor.
+- 🟡 **Fase 2 (AI)** — sebagian: **kuis generatif Gemini** (draf → review guru → publish) sudah ada; **RAG/tutor grounded** belum.
+- ➕ **Panel admin lengkap** (di luar urutan fase awal): kelola pengguna, CRUD konten, unggah `.glb`/`.mind` ke Storage, **AR data-driven** (tanaman & alat), dan **editor titik highlight** 3D.
+- ⏳ **Fase 3 (simulasi lab multi-kartu)** dan **Fase 4 (polish & skala)** — belum.
+
 ## Fase 0 — Mockup Fungsional (untuk Video Dokumentasi) ⭐ prioritas awal
 
 **Tujuan**: aplikasi terlihat & terasa "jadi" dan bisa diklik ujung-ke-ujung untuk direkam — **tanpa** harus membangun backend penuh dulu. Fokus ke tampilan, alur mulus, dan **satu momen AR yang benar-benar berfungsi** sebagai sorotan video.

@@ -55,6 +55,3 @@ export const library: LibraryItem[] = [
     ],
   },
 ];
-
-export const getLibraryItem = (id: string) =>
-  library.find((i) => i.id === id);

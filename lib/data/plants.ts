@@ -94,5 +94,3 @@ export const plants: Plant[] = [
       "Fragmen pengenal: sel minyak, epidermis dengan stomata, dan berkas pembuluh.",
   },
 ];
-
-export const getPlant = (id: string) => plants.find((p) => p.id === id);
