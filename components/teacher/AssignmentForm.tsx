@@ -1,9 +1,11 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createAssignment, type ActionState } from "@/lib/actions/classroom";
 import { Button } from "@/components/ui/Button";
+import { AttachmentsField } from "@/components/shared/AttachmentsField";
 import type { AssignableQuiz } from "@/lib/db/quizzes";
+import type { Attachment } from "@/lib/attachments";
 
 export function AssignmentForm({
   classId,
@@ -16,6 +18,14 @@ export function AssignmentForm({
     createAssignment,
     {},
   );
+  const [lampiran, setLampiran] = useState<Attachment[]>([]);
+
+  // Bersihkan lampiran setelah tugas tersimpan agar tidak terbawa ke tugas
+  // berikutnya (form action tidak me-reset state komponen).
+  useEffect(() => {
+    if (state.ok) setLampiran([]);
+  }, [state.ok]);
+
   return (
     <form action={action} className="space-y-3">
       <input type="hidden" name="class_id" value={classId} />
@@ -41,6 +51,33 @@ export function AssignmentForm({
           className="h-11 rounded-xl border border-line px-3 text-sm outline-none focus:border-primary"
         />
       </div>
+
+      <div className="grid gap-3 sm:grid-cols-[1fr_140px]">
+        <textarea
+          name="deskripsi"
+          placeholder="Deskripsi tugas untuk siswa (opsional)"
+          className="min-h-20 rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-primary"
+        />
+        <label className="block space-y-1">
+          <span className="text-sm font-semibold">Bobot</span>
+          <input
+            type="number"
+            name="bobot"
+            min={0}
+            max={1000}
+            defaultValue={100}
+            className="h-11 w-full rounded-xl border border-line bg-white px-3 text-sm outline-none focus:border-primary"
+          />
+        </label>
+      </div>
+
+      <AttachmentsField
+        name="lampiran"
+        value={lampiran}
+        onChange={setLampiran}
+        hint="Berkas atau tautan pendukung yang bisa dibuka siswa."
+      />
+
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
       {state.ok && <p className="text-sm text-success">{state.ok}</p>}
       <Button type="submit" disabled={pending}>

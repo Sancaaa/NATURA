@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getTeacherDashboard } from "@/lib/db/classroom";
+import { getTeacherDashboard, getTeacherTopicScores } from "@/lib/db/classroom";
 import { Card } from "@/components/ui/Card";
 import { BarChart } from "@/components/charts/BarChart";
 import {
@@ -33,14 +33,11 @@ function Stat({
 }
 
 export default async function Dashboard() {
-  const d = await getTeacherDashboard();
-  const chartData = [
-    { label: "Simplisia", value: 88 },
-    { label: "Morfologi", value: 74 },
-    { label: "Pembuatan", value: 66 },
-    { label: "Ekstraksi", value: 71 },
-    { label: "Alat Lab", value: 82 },
-  ];
+  // Skor per topik dihitung dari submissions asli (dulu angka hardcoded).
+  const [d, chartData] = await Promise.all([
+    getTeacherDashboard(),
+    getTeacherTopicScores(),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -77,7 +74,14 @@ export default async function Dashboard() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <h2 className="mb-4 font-bold">Rata-rata skor per topik</h2>
-          <BarChart data={chartData} />
+          {chartData.length === 0 ? (
+            <p className="text-sm text-muted">
+              Belum ada tugas yang dikumpulkan — grafik muncul setelah siswa
+              mengerjakan tugas.
+            </p>
+          ) : (
+            <BarChart data={chartData} />
+          )}
         </Card>
         <Card>
           <h2 className="mb-3 font-bold">Siswa perlu perhatian</h2>

@@ -8,18 +8,28 @@ import {
   type LibraryInput,
 } from "@/lib/actions/content";
 import type { LibraryItem } from "@/lib/data/library";
+import type { Attachment } from "@/lib/attachments";
 import { buttonClass } from "@/components/ui/Button";
+import { AttachmentsField } from "@/components/shared/AttachmentsField";
 import { Field, TextInput, TextArea, inputCls } from "@/components/admin/formFields";
 
-export function LibraryForm({ item }: { item?: LibraryItem }) {
+export function LibraryForm({
+  item,
+  returnTo = "/admin/pustaka",
+}: {
+  item?: LibraryItem;
+  /** Ke mana kembali setelah simpan/batal — beda untuk admin vs guru. */
+  returnTo?: string;
+}) {
   const editing = !!item;
-  const [f, setF] = useState<Omit<LibraryInput, "konten">>({
+  const [f, setF] = useState<Omit<LibraryInput, "konten" | "lampiran">>({
     judul: item?.judul ?? "",
     tipe: item?.tipe ?? "Modul",
     penulis: item?.penulis ?? "",
     ringkasan: item?.ringkasan ?? "",
     offline: item?.offline ?? false,
   });
+  const [lampiran, setLampiran] = useState<Attachment[]>(item?.lampiran ?? []);
   // Satu paragraf per baris.
   const [kontenText, setKontenText] = useState(
     (item?.konten ?? []).join("\n\n"),
@@ -28,13 +38,14 @@ export function LibraryForm({ item }: { item?: LibraryItem }) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
 
-  const set = (patch: Partial<Omit<LibraryInput, "konten">>) =>
+  const set = (patch: Partial<Omit<LibraryInput, "konten" | "lampiran">>) =>
     setF((p) => ({ ...p, ...patch }));
 
   const submit = () => {
     setErr(null);
     const input: LibraryInput = {
       ...f,
+      lampiran,
       konten: kontenText
         .split(/\n{2,}/)
         .map((s) => s.trim())
@@ -48,7 +59,7 @@ export function LibraryForm({ item }: { item?: LibraryItem }) {
         setErr(res.error);
         return;
       }
-      router.push("/admin/pustaka");
+      router.push(returnTo);
       router.refresh();
     });
   };
@@ -111,6 +122,8 @@ export function LibraryForm({ item }: { item?: LibraryItem }) {
         />
       </Field>
 
+      <AttachmentsField value={lampiran} onChange={setLampiran} />
+
       {err && (
         <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">
           {err}
@@ -128,7 +141,7 @@ export function LibraryForm({ item }: { item?: LibraryItem }) {
         </button>
         <button
           type="button"
-          onClick={() => router.push("/admin/pustaka")}
+          onClick={() => router.push(returnTo)}
           className={buttonClass("outline", "md")}
         >
           Batal

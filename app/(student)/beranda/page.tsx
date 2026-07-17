@@ -28,7 +28,7 @@ export default async function Beranda() {
 
       <div className="space-y-6 p-4">
         <Link
-          href="/pindai"
+          href="/natulab/ar"
           className="block rounded-2xl bg-primary p-5 text-white shadow-sm"
         >
           <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ export default async function Beranda() {
             {plants.slice(0, 8).map((p) => (
               <Link
                 key={p.id}
-                href={`/pindai/${p.id}`}
+                href={`/natulab/tanaman/${p.id}`}
                 className="w-36 shrink-0"
               >
                 <Card className="p-3">
@@ -95,7 +95,7 @@ export default async function Beranda() {
               {tugas.slice(0, 4).map((t) => (
                 <Link
                   key={t.assignmentId}
-                  href={`/kuis/${t.quizId}?assignment=${t.assignmentId}`}
+                  href={`/natulearn/tugas/${t.assignmentId}`}
                   className="block"
                 >
                   <Card className="flex items-center gap-3">
@@ -121,13 +121,13 @@ export default async function Beranda() {
           )}
         </section>
 
-        <Link href="/tutor" className="block">
+        <Link href="/natubot" className="block">
           <Card className="flex items-center gap-3 border-dashed">
             <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
               <Sparkles className="h-5 w-5" />
             </span>
             <div className="flex-1">
-              <div className="text-sm font-semibold">Tanya Tutor AI</div>
+              <div className="text-sm font-semibold">Tanya NatuBot</div>
               <div className="text-xs text-muted">
                 Bingung materi? Tanya di sini.
               </div>

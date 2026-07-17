@@ -1,3 +1,5 @@
+import type { Attachment } from "@/lib/attachments";
+
 export type LibraryItem = {
   id: string;
   judul: string;
@@ -7,6 +9,10 @@ export type LibraryItem = {
   /** Konten sederhana (paragraf) untuk mode baca mockup. */
   konten: string[];
   offline: boolean;
+  /** Berkas/tautan pendukung. */
+  lampiran: Attachment[];
+  /** Pemilik modul (guru pembuat). null = modul lama/bawaan admin. */
+  createdBy: string | null;
 };
 
 export const library: LibraryItem[] = [
@@ -18,6 +24,8 @@ export const library: LibraryItem[] = [
     ringkasan:
       "Definisi, penggolongan, dan tata nama simplisia nabati, hewani, dan mineral.",
     offline: true,
+    lampiran: [],
+    createdBy: null,
     konten: [
       "Simplisia adalah bahan alam yang digunakan sebagai obat dan belum mengalami pengolahan apa pun kecuali dinyatakan lain, umumnya berupa bahan yang dikeringkan.",
       "Berdasarkan asalnya, simplisia dibagi menjadi tiga: simplisia nabati (dari tumbuhan), simplisia hewani (dari hewan), dan simplisia mineral (dari bahan pelikan).",
@@ -33,6 +41,8 @@ export const library: LibraryItem[] = [
     ringkasan:
       "Alur dari pengumpulan bahan hingga penyimpanan simplisia kering.",
     offline: true,
+    lampiran: [],
+    createdBy: null,
     konten: [
       "Tahapan pembuatan simplisia: pengumpulan bahan, sortasi basah, pencucian, perajangan, pengeringan, sortasi kering, lalu pengepakan dan penyimpanan.",
       "Sortasi basah memisahkan kotoran dan bahan asing sebelum pencucian. Pencucian menggunakan air bersih dan tidak terlalu lama agar zat aktif tidak larut.",
@@ -47,6 +57,8 @@ export const library: LibraryItem[] = [
     penulis: "Tim Farmakognosi",
     ringkasan: "Perbandingan maserasi, perkolasi, sokletasi, infusa, dan dekokta.",
     offline: false,
+    lampiran: [],
+    createdBy: null,
     konten: [
       "Ekstraksi adalah proses penarikan zat aktif dari simplisia menggunakan pelarut yang sesuai.",
       "Maserasi: perendaman simplisia dalam pelarut pada suhu ruang, cocok untuk zat yang tidak tahan panas. Perkolasi: pelarut dialirkan melewati simplisia secara kontinu.",

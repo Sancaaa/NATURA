@@ -1,10 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { library as seedLibrary, type LibraryItem } from "@/lib/data/library";
+import { parseAttachments } from "@/lib/attachments";
 
 export type { LibraryItem };
 
-const COLS = "id, judul, tipe, penulis, ringkasan, konten, offline";
+const COLS =
+  "id, judul, tipe, penulis, ringkasan, konten, offline, lampiran, created_by";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function toItem(r: any): LibraryItem {
@@ -16,6 +18,8 @@ function toItem(r: any): LibraryItem {
     ringkasan: r.ringkasan ?? "",
     konten: (r.konten as string[]) ?? [],
     offline: !!r.offline,
+    lampiran: parseAttachments(r.lampiran),
+    createdBy: r.created_by ?? null,
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

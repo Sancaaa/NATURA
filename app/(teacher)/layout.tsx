@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Leaf } from "lucide-react";
 import Sidebar from "@/components/teacher/Sidebar";
 import { requireRole } from "@/lib/auth";
+import { signOutAction } from "@/lib/actions/auth";
 
 export default async function TeacherLayout({
   children,
@@ -18,9 +18,11 @@ export default async function TeacherLayout({
             <Leaf className="h-4 w-4" />
           </span>
           <span className="font-bold">NATURA — Guru</span>
-          <Link href="/keluar" className="ml-auto text-xs text-muted">
-            Keluar
-          </Link>
+          <form action={signOutAction} className="ml-auto">
+            <button type="submit" className="text-xs text-muted">
+              Keluar
+            </button>
+          </form>
         </header>
         <main className="mx-auto max-w-5xl p-6">{children}</main>
       </div>

@@ -16,7 +16,7 @@ import type { ScenarioDefinition } from "@/lib/praktikum/types";
 // ============================================================
 export function PraktikumRunner({
   scenario,
-  back = "/praktikum",
+  back = "/natulab/praktikum",
 }: {
   scenario: ScenarioDefinition;
   back?: string;

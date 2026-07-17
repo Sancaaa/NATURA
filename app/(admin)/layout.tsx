@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { requireRole } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
+import { signOutAction } from "@/lib/actions/auth";
 
 export default async function AdminLayout({
   children,
@@ -16,9 +16,11 @@ export default async function AdminLayout({
           <ShieldCheck className="h-4 w-4" />
         </span>
         <span className="font-bold">NATURA — Admin</span>
-        <Link href="/keluar" className="ml-auto text-xs text-muted">
-          Keluar
-        </Link>
+        <form action={signOutAction} className="ml-auto">
+          <button type="submit" className="text-xs text-muted">
+            Keluar
+          </button>
+        </form>
       </header>
       <AdminNav />
       <main className="mx-auto max-w-4xl p-6">{children}</main>

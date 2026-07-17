@@ -3,8 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { parseAttachments } from "@/lib/attachments";
 
 export type ActionState = { error?: string; ok?: string };
+
+/** Lampiran datang sebagai JSON dari form — jangan percaya mentah-mentah. */
+function readLampiran(raw: FormDataEntryValue | null) {
+  if (typeof raw !== "string" || !raw.trim()) return [];
+  try {
+    return parseAttachments(JSON.parse(raw));
+  } catch {
+    return [];
+  }
+}
 
 const DEMO: ActionState = {
   error: "Aktifkan Supabase (isi .env.local) untuk menyimpan data.",
@@ -59,7 +70,8 @@ export async function joinClass(
   if (error) return { error: error.message };
   if (!cid) return { error: "Kode kelas tidak ditemukan." };
 
-  revalidatePath("/kuis");
+  revalidatePath("/natulearn");
+  revalidatePath("/natulearn/tugas");
   revalidatePath("/beranda");
   return { ok: "Berhasil gabung kelas!" };
 }
@@ -72,6 +84,11 @@ export async function createAssignment(
   const classId = String(formData.get("class_id") ?? "");
   const quizId = String(formData.get("quiz_id") ?? "");
   const deadline = String(formData.get("deadline") ?? "").trim();
+  const deskripsi = String(formData.get("deskripsi") ?? "").trim();
+  const lampiran = readLampiran(formData.get("lampiran"));
+  const bobotRaw = Number(formData.get("bobot"));
+  const bobot =
+    Number.isFinite(bobotRaw) && bobotRaw >= 0 ? Math.round(bobotRaw) : 100;
   if (!classId || !quizId) return { error: "Pilih kuis terlebih dahulu." };
 
   const supabase = await createClient();
@@ -86,12 +103,17 @@ export async function createAssignment(
     class_id: classId,
     quiz_id: quizId,
     judul,
+    deskripsi: deskripsi || null,
+    bobot,
+    lampiran,
     deadline: deadline || null,
   });
   if (error) return { error: error.message };
 
   revalidatePath(`/kelas/${classId}`);
   revalidatePath("/dashboard");
+  revalidatePath("/natulearn/tugas");
+  revalidatePath("/beranda");
   return { ok: "Tugas ditugaskan." };
 }
 
@@ -117,7 +139,8 @@ export async function deleteAssignment(
 
   revalidatePath(`/kelas/${classId}`);
   revalidatePath("/dashboard");
-  revalidatePath("/kuis");
+  revalidatePath("/natulearn/tugas");
+  revalidatePath("/beranda");
   return { ok: true };
 }
 
@@ -148,7 +171,9 @@ export async function saveQuizResult(input: {
       { onConflict: "assignment_id,student_id" },
     );
     if (error) return { saved: false };
-    revalidatePath("/kuis");
+    revalidatePath("/natulearn/tugas");
+    revalidatePath(`/natulearn/tugas/${input.assignmentId}`);
+    revalidatePath("/beranda");
     revalidatePath("/dashboard");
     return { saved: true };
   }

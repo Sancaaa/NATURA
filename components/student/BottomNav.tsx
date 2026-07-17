@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ScanLine, BookOpen, ListChecks, User } from "lucide-react";
+import { Home, FlaskConical, GraduationCap, Sparkles, User } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 const items = [
   { href: "/beranda", label: "Beranda", icon: Home },
-  { href: "/pindai", label: "Pindai", icon: ScanLine },
-  { href: "/library", label: "Library", icon: BookOpen },
-  { href: "/kuis", label: "Kuis", icon: ListChecks },
+  { href: "/natulab", label: "NatuLab", icon: FlaskConical },
+  { href: "/natulearn", label: "NatuLearn", icon: GraduationCap },
+  { href: "/natubot", label: "NatuBot", icon: Sparkles },
   { href: "/profil", label: "Profil", icon: User },
 ];
 

@@ -63,8 +63,16 @@ create table if not exists public.library_items (
   penulis text,
   ringkasan text,
   konten text[] not null default '{}',
-  offline boolean not null default false
+  offline boolean not null default false,
+  lampiran jsonb not null default '[]',
+  created_by uuid references public.profiles (id) on delete set null
 );
+-- lampiran + kepemilikan modul (untuk instalasi lama)
+alter table public.library_items add column if not exists lampiran jsonb not null default '[]';
+alter table public.library_items
+  add column if not exists created_by uuid references public.profiles (id) on delete set null;
+create index if not exists library_items_created_by_idx
+  on public.library_items (created_by);
 
 -- Titik highlight (anotasi) pada model 3D tanaman/alat
 create table if not exists public.content_annotations (
@@ -129,9 +137,16 @@ create table if not exists public.assignments (
   class_id uuid not null references public.classes (id) on delete cascade,
   quiz_id text not null references public.quizzes (id),
   judul text not null,
+  deskripsi text,
+  bobot int not null default 100,
+  lampiran jsonb not null default '[]',
   deadline timestamptz,
   created_at timestamptz not null default now()
 );
+-- bobot/deskripsi/lampiran tugas (untuk instalasi lama)
+alter table public.assignments add column if not exists bobot int not null default 100;
+alter table public.assignments add column if not exists deskripsi text;
+alter table public.assignments add column if not exists lampiran jsonb not null default '[]';
 
 create table if not exists public.submissions (
   id uuid primary key default gen_random_uuid(),
@@ -255,6 +270,7 @@ drop policy if exists library_read on public.library_items;
 drop policy if exists plants_admin on public.plants;
 drop policy if exists tools_admin on public.lab_tools;
 drop policy if exists library_admin on public.library_items;
+drop policy if exists library_write on public.library_items;
 drop policy if exists annotations_read on public.content_annotations;
 drop policy if exists annotations_admin on public.content_annotations;
 drop policy if exists quizzes_read on public.quizzes;
@@ -291,7 +307,10 @@ create policy tools_read on public.lab_tools for select to authenticated using (
 create policy library_read on public.library_items for select to authenticated using (true);
 create policy plants_admin on public.plants for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
 create policy tools_admin on public.lab_tools for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
-create policy library_admin on public.library_items for all using (public.my_role() = 'admin') with check (public.my_role() = 'admin');
+-- modul materi: tulis = pemilik (guru pembuat) atau admin — meniru `quizzes`
+create policy library_write on public.library_items for all
+  using (created_by = auth.uid() or public.my_role() = 'admin')
+  with check (created_by = auth.uid() or public.my_role() = 'admin');
 
 -- anotasi: baca terautentikasi; tulis = admin
 create policy annotations_read on public.content_annotations for select to authenticated using (true);

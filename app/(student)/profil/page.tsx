@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Card } from "@/components/ui/Card";
 import { ProgressRing } from "@/components/charts/ProgressRing";
 import { Badge } from "@/components/ui/Badge";
 import { Award, Flame, Download, LogOut, ChevronRight } from "lucide-react";
 import { getCurrentProfile } from "@/lib/auth";
+import { signOutAction } from "@/lib/actions/auth";
 
 export default async function Profil() {
   const profile = await getCurrentProfile();
@@ -59,13 +59,15 @@ export default async function Profil() {
           </Card>
         </section>
 
-        <Link href="/keluar" className="block">
-          <Card className="flex items-center gap-3">
-            <LogOut className="h-5 w-5 text-muted" />
-            <span className="flex-1 text-sm font-medium">Keluar</span>
-            <ChevronRight className="h-4 w-4 text-muted" />
-          </Card>
-        </Link>
+        <form action={signOutAction} className="block">
+          <button type="submit" className="block w-full text-left">
+            <Card className="flex items-center gap-3">
+              <LogOut className="h-5 w-5 text-muted" />
+              <span className="flex-1 text-sm font-medium">Keluar</span>
+              <ChevronRight className="h-4 w-4 text-muted" />
+            </Card>
+          </button>
+        </form>
       </div>
     </div>
   );

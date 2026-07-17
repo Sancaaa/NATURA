@@ -28,7 +28,7 @@ export function SliderRevealStep({ step, onComplete }: StepProps<Step>) {
       <p className="text-center text-sm text-muted">{step.instruksi}</p>
 
       {/* "Lensa" mikroskop — lingkaran gelap dengan spesimen di dalamnya. */}
-      <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-full bg-[#0d130f] shadow-inner ring-4 ring-black/20">
+      <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-full bg-[#0b0f1a] shadow-inner ring-4 ring-black/20">
         <div
           className="absolute inset-0 transition-[filter] duration-150"
           style={{ filter: `blur(${blurPx.toFixed(2)}px)` }}

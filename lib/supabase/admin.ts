@@ -1,7 +1,7 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { supabaseUrl } from "./config";
 
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+const serviceKey = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
 
 /** True bila service-role key tersedia (diperlukan untuk hapus user). */
 export const isServiceConfigured =

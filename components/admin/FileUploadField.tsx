@@ -35,11 +35,18 @@ export function FileUploadField({
 }: {
   label: string;
   hint?: string;
-  accept: string; // mis. ".glb" atau ".mind"
-  folder: string; // mis. "models" atau "ar-targets"
+  /** Satu ekstensi (".glb") atau daftar (".pdf,.docx,.png"). */
+  accept: string;
+  folder: string; // mis. "models", "ar-targets", atau "lampiran"
   value: string;
   onChange: (url: string) => void;
 }) {
+  const exts = accept
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  // Daftar panjang tak enak dibaca di tombol → sebut "berkas" saja.
+  const acceptLabel = exts.length === 1 ? exts[0] : "berkas";
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -55,9 +62,9 @@ export function FileUploadField({
       setErr("Aktifkan Supabase untuk mengunggah berkas.");
       return;
     }
-    const ext = accept.toLowerCase();
-    if (!file.name.toLowerCase().endsWith(ext)) {
-      setErr(`Berkas harus berekstensi ${ext}.`);
+    const name = file.name.toLowerCase();
+    if (exts.length && !exts.some((ext) => name.endsWith(ext))) {
+      setErr(`Berkas harus berekstensi ${exts.join(" / ")}.`);
       return;
     }
     if (file.size > MAX_BYTES) {
@@ -108,7 +115,7 @@ export function FileUploadField({
             ) : (
               <Upload className="h-4 w-4" />
             )}
-            {busy ? "Mengunggah…" : `Unggah ${accept}`}
+            {busy ? "Mengunggah…" : `Unggah ${acceptLabel}`}
           </button>
           {value && !busy && (
             <span className="inline-flex items-center gap-1 text-xs text-success">
@@ -134,7 +141,7 @@ export function FileUploadField({
         <TextInput
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={`URL ${accept} atau unggah di atas`}
+          placeholder={`URL ${acceptLabel} atau unggah di atas`}
         />
         {err && <p className="text-xs text-danger">{err}</p>}
       </div>

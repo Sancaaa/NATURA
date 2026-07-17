@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2e7d4f;
-  --color-primary-dark: #1b5e3a;
-  --color-accent: #d98a3d;
+  --color-primary: #1537f9;
+  --color-primary-dark: #1029bb; /* hue sama, digelapkan 25% untuk hover/tekan */
+  --color-accent: #d98a3d; /* oranye = komplemen biru; sengaja dipertahankan */
   --color-surface: #ffffff;
-  --color-ink: #1a2420;
-  --color-muted: #5b6b63;
-  --color-line: #e6e8e3;
-  --color-success: #2e7d4f;
+  --color-ink: #171b2e;
+  --color-muted: #5f6684;
+  --color-line: #e4e6f0;
+  /* success punya hijau sendiri (dulu nilainya sama persis dengan primary).
+     #15803d dipilih agar putih di atasnya tetap 5.0:1 — setara sebelumnya. */
+  --color-success: #15803d;
   --color-warn: #d98a3d;
   --color-danger: #c0392b;
 
@@ -17,7 +19,7 @@
 }
 
 :root {
-  --bg: #fafaf7;
+  --bg: #f8f9fd;
 }
 
 html,
@@ -39,7 +41,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #fff;
-  background: rgba(26, 36, 32, 0.72);
+  background: rgba(23, 27, 46, 0.72);
   padding: 4px 8px;
   border-radius: 999px;
 }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { parseAttachments, type Attachment } from "@/lib/attachments";
 
 export type ActionResult = { ok?: boolean; error?: string; id?: string };
 
@@ -38,6 +39,7 @@ export type LibraryInput = {
   ringkasan: string;
   konten: string[];
   offline: boolean;
+  lampiran: Attachment[];
 };
 
 /** Ubah teks bebas menjadi slug id yang aman & stabil. */
@@ -68,6 +70,29 @@ async function requireAdmin(): Promise<{ id: string } | { error: string }> {
   return { id: user.id };
 }
 
+/**
+ * Modul materi boleh dikelola guru maupun admin. Batas kepemilikan
+ * (guru hanya boleh mengubah modulnya sendiri) ditegakkan RLS
+ * `library_write` — di sini kita hanya menyaring peran.
+ */
+async function requireTeacherOrAdmin(): Promise<
+  { id: string; role: string } | { error: string }
+> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Sesi berakhir." };
+  const { data: me } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+  if (!me || (me.role !== "admin" && me.role !== "teacher"))
+    return { error: "Hanya guru atau admin." };
+  return { id: user.id, role: me.role };
+}
+
 /** Jamin id unik pada tabel: tambahkan sufiks -2, -3, … bila bentrok. */
 async function uniqueId(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,8 +114,10 @@ async function uniqueId(
 }
 
 function revalidateContent() {
-  revalidatePath("/pindai");
-  revalidatePath("/library");
+  revalidatePath("/natulab/tanaman");
+  revalidatePath("/natulab/alat");
+  revalidatePath("/natulab/ar");
+  revalidatePath("/natulearn/modul");
   revalidatePath("/beranda");
 }
 
@@ -155,7 +182,7 @@ export async function updatePlant(
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/tanaman");
-  revalidatePath(`/pindai/${id}`);
+  revalidatePath(`/natulab/tanaman/${id}`);
   return { ok: true, id };
 }
 
@@ -219,7 +246,7 @@ export async function updateTool(
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/alat");
-  revalidatePath(`/pindai/${id}`);
+  revalidatePath(`/natulab/alat/${id}`);
   return { ok: true, id };
 }
 
@@ -252,6 +279,7 @@ function libraryRow(i: LibraryInput) {
     ringkasan: clean(i.ringkasan),
     konten: (i.konten ?? []).map((p) => p.trim()).filter(Boolean),
     offline: !!i.offline,
+    lampiran: parseAttachments(i.lampiran),
   };
 }
 
@@ -261,17 +289,20 @@ export async function createLibraryItem(
   if (!isSupabaseConfigured) return { error: "Aktifkan Supabase untuk menyimpan." };
   const bad = validLibrary(input);
   if (bad) return { error: bad };
-  const admin = await requireAdmin();
-  if ("error" in admin) return { error: admin.error };
+  const me = await requireTeacherOrAdmin();
+  if ("error" in me) return { error: me.error };
 
   const supabase = await createClient();
   const id = await uniqueId(supabase, "library_items", slugify(input.judul));
+  // created_by wajib diisi: policy library_write mensyaratkan pemilik = auth.uid()
+  // (atau admin), jadi insert tanpa ini akan ditolak RLS untuk guru.
   const { error } = await supabase
     .from("library_items")
-    .insert({ id, ...libraryRow(input) });
+    .insert({ id, ...libraryRow(input), created_by: me.id });
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/pustaka");
+  revalidatePath("/modul");
   return { ok: true, id };
 }
 
@@ -282,29 +313,42 @@ export async function updateLibraryItem(
   if (!isSupabaseConfigured) return { error: "Aktifkan Supabase untuk menyimpan." };
   const bad = validLibrary(input);
   if (bad) return { error: bad };
-  const admin = await requireAdmin();
-  if ("error" in admin) return { error: admin.error };
+  const me = await requireTeacherOrAdmin();
+  if ("error" in me) return { error: me.error };
 
   const supabase = await createClient();
-  const { error } = await supabase
+  // RLS menolak diam-diam bila guru mengubah modul milik orang lain
+  // (0 baris terpengaruh, tanpa error) → minta baris balik untuk mendeteksinya.
+  const { data, error } = await supabase
     .from("library_items")
     .update(libraryRow(input))
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
   if (error) return { error: error.message };
+  if (!data || !data.length)
+    return { error: "Kamu hanya bisa mengubah modul yang kamu buat sendiri." };
   revalidateContent();
   revalidatePath("/admin/pustaka");
-  revalidatePath(`/library/${id}`);
+  revalidatePath("/modul");
+  revalidatePath(`/natulearn/modul/${id}`);
   return { ok: true, id };
 }
 
 export async function deleteLibraryItem(id: string): Promise<ActionResult> {
   if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
-  const admin = await requireAdmin();
-  if ("error" in admin) return { error: admin.error };
+  const me = await requireTeacherOrAdmin();
+  if ("error" in me) return { error: me.error };
   const supabase = await createClient();
-  const { error } = await supabase.from("library_items").delete().eq("id", id);
+  const { data, error } = await supabase
+    .from("library_items")
+    .delete()
+    .eq("id", id)
+    .select("id");
   if (error) return { error: error.message };
+  if (!data || !data.length)
+    return { error: "Kamu hanya bisa menghapus modul yang kamu buat sendiri." };
   revalidateContent();
   revalidatePath("/admin/pustaka");
+  revalidatePath("/modul");
   return { ok: true };
 }

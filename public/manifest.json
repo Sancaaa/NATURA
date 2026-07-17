@@ -4,7 +4,7 @@
   "description": "Augmented reality untuk pembelajaran Farmakognosi SMK Farmasi.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fafaf7",
-  "theme_color": "#2e7d4f",
+  "background_color": "#f8f9fd",
+  "theme_color": "#1537f9",
   "icons": []
 }

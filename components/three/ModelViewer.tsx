@@ -27,7 +27,7 @@ export default function ModelViewer({
     const height = container.clientHeight || 360;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#eef2ec");
+    scene.background = new THREE.Color("#eef1fb");
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.4, 4);
@@ -66,6 +66,8 @@ export default function ModelViewer({
       soil.position.y = 0.68;
       group.add(soil);
 
+      // Batang & daun tetap hijau: ini realisme model tanaman, bukan warna
+      // brand — jangan ikut diubah saat palet UI berganti.
       const stem = new THREE.Mesh(
         new THREE.CylinderGeometry(0.05, 0.07, 1.1, 12),
         new THREE.MeshStandardMaterial({ color: "#2e7d4f" }),

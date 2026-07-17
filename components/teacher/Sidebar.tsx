@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOutAction } from "@/lib/actions/auth";
 import {
   LayoutDashboard,
   Users,
+  GraduationCap,
+  BookOpen,
+  ClipboardList,
   FilePlus2,
   FileStack,
   LogOut,
@@ -15,6 +19,9 @@ import { cn } from "@/lib/cn";
 const items = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/kelas", label: "Kelas", icon: Users },
+  { href: "/siswa", label: "Siswa", icon: GraduationCap },
+  { href: "/modul", label: "Modul Materi", icon: BookOpen },
+  { href: "/tugas", label: "Tugas", icon: ClipboardList },
   { href: "/buat-kuis", label: "Buat Kuis", icon: FilePlus2 },
   { href: "/bank-soal", label: "Bank Soal", icon: FileStack },
 ];
@@ -50,13 +57,15 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      <Link
-        href="/keluar"
-        className="mt-2 flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted hover:bg-black/5"
-      >
-        <LogOut className="h-5 w-5" />
-        Keluar
-      </Link>
+      <form action={signOutAction} className="mt-2">
+        <button
+          type="submit"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted hover:bg-black/5"
+        >
+          <LogOut className="h-5 w-5" />
+          Keluar
+        </button>
+      </form>
     </aside>
   );
 }

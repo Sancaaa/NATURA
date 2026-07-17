@@ -40,13 +40,14 @@ export default async function KelasDetail({
           <div className="space-y-2">
             {kelas.assignments.map((a) => (
               <Card key={a.id} className="flex items-center gap-3">
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <div className="text-sm font-semibold">{a.judul}</div>
-                  <div className="text-xs text-muted">
+                  <div className="truncate text-xs text-muted">
                     {a.topik}
-                    {a.deadline ? ` · deadline ${formatDeadline(a.deadline)}` : ""}
+                    {a.deadline ? ` · tenggat ${formatDeadline(a.deadline)}` : ""}
                   </div>
                 </div>
+                <Badge tone="muted">Bobot {a.bobot}</Badge>
                 <Badge tone="primary">
                   {a.jumlahSubmit}/{a.totalSiswa} submit
                 </Badge>

@@ -19,7 +19,7 @@ export const Stage = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElem
         style={{
           aspectRatio: "4 / 3",
           background:
-            "radial-gradient(120% 100% at 50% 0%, #f4f6f2 0%, #e7ebe4 55%, #dbe0d7 100%)",
+            "radial-gradient(120% 100% at 50% 0%, #f3f5fb 0%, #e6e9f4 55%, #dadeee 100%)",
         }}
         {...props}
       >

@@ -54,7 +54,7 @@
         z-index: 10001;
         display: none;
         place-items: center;
-        background: #0d130f;
+        background: #0b0f1a;
         color: #fff;
         text-align: center;
         padding: 24px;
@@ -81,7 +81,7 @@
       #overlay-back {
         background: transparent;
         border: none;
-        color: #2e7d4f;
+        color: #1537f9;
         font: 600 13px system-ui, sans-serif;
         padding: 0;
         margin-bottom: 8px;
@@ -92,8 +92,8 @@
       }
       #overlay .badge {
         display: inline-block;
-        background: rgba(46, 125, 79, 0.1);
-        color: #2e7d4f;
+        background: rgba(21, 55, 249, 0.1);
+        color: #1537f9;
         font-size: 11px;
         font-weight: 700;
         padding: 2px 9px;
@@ -104,13 +104,13 @@
       #overlay h3 {
         margin: 8px 0 6px;
         font-size: 18px;
-        color: #1a2420;
+        color: #171b2e;
       }
       #overlay p {
         margin: 0;
         font-size: 13px;
         line-height: 1.55;
-        color: #374037;
+        color: #3a3f55;
       }
       #overlay ul {
         margin: 0;
@@ -125,7 +125,7 @@
     </style>
   </head>
   <body>
-    <a id="back" href="/pindai" class="back">← Keluar AR</a>
+    <a id="back" href="/natulab/ar" class="back">← Keluar AR</a>
     <div id="hint"><span>Ketuk layar untuk membuka · seret = putar · cubit = zoom · 2 jari = geser</span></div>
 
     <div id="msg"><div><p id="msg-text"></p></div></div>
@@ -162,7 +162,7 @@
         <a-entity class="activator">
           <a-circle
             radius="0.12"
-            color="#2e7d4f"
+            color="#1537f9"
             opacity="0.85"
             animation="property: scale; to: 1.15 1.15 1.15; dir: alternate; loop: true; dur: 800; easing: easeInOutSine"
           ></a-circle>
@@ -194,9 +194,10 @@
         var target = qs.get("target") || "";
         var model = qs.get("model") || "";
         var id = qs.get("id") || "";
+        var type = qs.get("type") === "tool" ? "alat" : "tanaman";
 
         var backEl = document.getElementById("back");
-        if (id) backEl.setAttribute("href", "/pindai/" + id);
+        if (id) backEl.setAttribute("href", "/natulab/" + type + "/" + id);
 
         if (target) {
           document
@@ -307,7 +308,7 @@
               '" height="0.7"></a-plane>' +
               '<a-text value="' +
               (a.label || "") +
-              '" color="#1a2420" align="center" width="' +
+              '" color="#171b2e" align="center" width="' +
               (planeW - 0.2) +
               '" position="0 0 0.01"></a-text>';
             ann.appendChild(label);

@@ -14,11 +14,11 @@ const suggestions = [
   "Beda maserasi dan perkolasi?",
 ];
 
-export default function Tutor() {
+export default function NatuBot() {
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
-      text: "Halo! Aku tutor Farmakognosi NATURA. Mau tanya apa tentang simplisia, tanaman obat, atau prosedur lab?",
+      text: "Halo! Aku NatuBot, tutor Farmakognosi-mu. Mau tanya apa tentang simplisia, tanaman obat, atau prosedur lab?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -53,7 +53,7 @@ export default function Tutor() {
 
   return (
     <div className="pb-4">
-      <PageHeader title="Tutor AI" back="/beranda" />
+      <PageHeader title="NatuBot" />
 
       <div className="space-y-3 p-4">
         {messages.map((m, i) => (

@@ -15,23 +15,29 @@ Dua pengalaman berbeda dalam satu produk:
 
 ## Design Tokens
 
-> Nilai berikut adalah **titik awal** yang bisa disetel. Tema botani ("Natura") memakai hijau alami + *earth tone*, tetapi area data (dashboard) tetap netral agar terbaca.
+> Nilai berikut adalah **titik awal** yang bisa disetel. Brand memakai biru sebagai warna utama dengan aksen *earth tone* (oranye) sebagai komplemen; area data (dashboard) tetap netral agar terbaca.
+>
+> Sumber kebenaran token ada di [`app/globals.css`](../app/globals.css) (blok `@theme`) — tabel ini hanya cerminannya.
 
 **Warna (light):**
 
 | Token | Contoh | Pemakaian |
 |---|---|---|
-| `primary` | hijau daun `#2E7D4F` | aksi utama, brand |
-| `primary-dark` | `#1B5E3A` | hover/tekan |
-| `accent` | amber/terracotta `#D98A3D` | sorotan, badge |
-| `bg` | `#FAFAF7` (cream lembut) | latar aplikasi siswa |
+| `primary` | biru `#1537F9` | aksi utama, brand |
+| `primary-dark` | `#1029BB` | hover/tekan (hue sama, −25% terang) |
+| `accent` | amber/terracotta `#D98A3D` | sorotan, badge, anotasi AR |
+| `bg` | `#F8F9FD` | latar aplikasi siswa |
 | `surface` | `#FFFFFF` | kartu, panel |
-| `text` | `#1A2420` | teks utama |
-| `muted` | `#5B6B63` | teks sekunder |
-| `success/warn/danger` | hijau/kuning/merah standar | status kuis, feedback |
+| `text` (`ink`) | `#171B2E` | teks utama |
+| `muted` | `#5F6684` | teks sekunder |
+| `success` | hijau `#15803D` | status berhasil — sengaja **bukan** biru agar beda dari aksi utama |
+| `warn/danger` | `#D98A3D` / `#C0392B` | peringatan, galat |
 
+- Netral (`ink`/`muted`/`line`/`bg`) di-*tint* kebiruan agar menyatu dengan primary.
+- Aksen tetap oranye: komplemen biru, dan tetap terbaca di atas umpan kamera AR.
+- Hijau hanya tersisa untuk hal yang bermakna: `success`, model 3D tanaman (realisme), dan spesimen mikroskop.
 - Sediakan **mode gelap** (penting untuk pemakaian AR di ruang redup) — override via `prefers-color-scheme` + toggle manual.
-- Dashboard guru: kurangi warna hijau pekat pada tabel; pakai netral + aksen warna hanya untuk status.
+- Dashboard guru: pakai netral + aksen warna hanya untuk status.
 
 **Tipografi:** sans-serif yang enak dibaca di layar & mendukung Bahasa Indonesia — mis. **Plus Jakarta Sans** atau **Inter**. Skala modular (mis. 12/14/16/20/24/32). Boleh serif display untuk judul brand saja.
 

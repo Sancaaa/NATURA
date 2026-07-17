@@ -11,9 +11,11 @@ import type { QuizForTaking } from "@/lib/db/quizzes";
 export function QuizRunner({
   quiz,
   assignmentId,
+  back = "/natulearn",
 }: {
   quiz: QuizForTaking;
   assignmentId?: string;
+  back?: string;
 }) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -41,7 +43,7 @@ export function QuizRunner({
 
   return (
     <div>
-      <PageHeader title={quiz.judul} back="/kuis" />
+      <PageHeader title={quiz.judul} back={back} />
       <div className="space-y-5 p-4">
         {submitted && (
           <div className="rounded-2xl bg-primary p-5 text-center text-white">

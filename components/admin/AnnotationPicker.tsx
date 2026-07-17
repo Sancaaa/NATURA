@@ -56,7 +56,7 @@ export default function AnnotationPicker({
     const height = container.clientHeight || 360;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#eef2ec");
+    scene.background = new THREE.Color("#eef1fb");
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100);
     camera.position.set(0, 0.4, 1.2);
@@ -101,7 +101,7 @@ export default function AnnotationPicker({
     function buildProcedural() {
       const body = new THREE.Mesh(
         new THREE.CylinderGeometry(0.12, 0.14, 0.5, 20),
-        new THREE.MeshStandardMaterial({ color: "#8aa899", roughness: 0.8 }),
+        new THREE.MeshStandardMaterial({ color: "#99a3c0", roughness: 0.8 }),
       );
       body.position.y = 0.25;
       modelGroup.add(body);
@@ -255,7 +255,7 @@ export default function AnnotationPicker({
 
     points.forEach((pt, i) => {
       const isSel = i === selected;
-      const color = isSel ? "#2e7d4f" : "#D98A3D";
+      const color = isSel ? "#1537F9" : "#D98A3D";
       const pos = new THREE.Vector3(...pt.pos);
       const labelEnd = pos.clone().add(new THREE.Vector3(...pt.labelPos));
 
