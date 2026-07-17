@@ -6,34 +6,39 @@ import {
   Users,
   TrendingUp,
   BookMarked,
-  AlertTriangle,
+  School,
   ChevronRight,
+  type LucideIcon,
 } from "lucide-react";
 
-function Stat({
-  icon,
+function StatCard({
+  icon: Icon,
   label,
   value,
+  sub,
 }: {
-  icon: React.ReactNode;
+  icon: LucideIcon;
   label: string;
   value: React.ReactNode;
+  sub?: string;
 }) {
   return (
-    <Card className="flex items-center gap-3">
-      <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
-        {icon}
-      </span>
+    <Card className="flex items-start justify-between gap-2">
       <div>
-        <div className="text-xl font-bold">{value}</div>
-        <div className="text-xs text-muted">{label}</div>
+        <div className="text-xs font-medium text-muted">{label}</div>
+        <div className="mt-1 text-3xl font-extrabold text-primary">{value}</div>
+        {sub && (
+          <div className="mt-1 text-xs font-medium text-success">{sub}</div>
+        )}
       </div>
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+        <Icon className="h-5 w-5" />
+      </span>
     </Card>
   );
 }
 
 export default async function Dashboard() {
-  // Skor per topik dihitung dari submissions asli (dulu angka hardcoded).
   const [d, chartData] = await Promise.all([
     getTeacherDashboard(),
     getTeacherTopicScores(),
@@ -42,71 +47,79 @@ export default async function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold">Dashboard</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+          Dashboard Analitik Guru
+        </h1>
         <p className="text-sm text-muted">
-          Ringkasan aktivitas & progres siswa
+          Ikhtisar performa akademik & aktivitas lab siswamu.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat
-          icon={<Users className="h-5 w-5" />}
-          label="Total siswa"
-          value={d.totalSiswa}
-        />
-        <Stat
-          icon={<TrendingUp className="h-5 w-5" />}
-          label="Rata-rata skor"
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatCard icon={Users} label="Total Siswa" value={d.totalSiswa} />
+        <StatCard
+          icon={TrendingUp}
+          label="Rata-rata Nilai"
           value={d.rataSkor}
         />
-        <Stat
-          icon={<BookMarked className="h-5 w-5" />}
-          label="Jumlah tugas"
+        <StatCard icon={School} label="Jumlah Kelas" value={d.jumlahKelas} />
+        <StatCard
+          icon={BookMarked}
+          label="Jumlah Tugas"
           value={d.jumlahTugas}
-        />
-        <Stat
-          icon={<AlertTriangle className="h-5 w-5" />}
-          label="Perlu perhatian"
-          value={d.perhatian.length}
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <h2 className="mb-4 font-bold">Rata-rata skor per topik</h2>
+      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+        <Card className="p-5">
+          <h2 className="mb-1 text-lg font-bold">Rata-rata Skor per Topik</h2>
+          <p className="mb-4 text-sm text-muted">
+            Dihitung dari tugas yang telah dikumpulkan siswa.
+          </p>
           {chartData.length === 0 ? (
-            <p className="text-sm text-muted">
-              Belum ada tugas yang dikumpulkan — grafik muncul setelah siswa
-              mengerjakan tugas.
-            </p>
+            <div className="grid h-40 place-items-center rounded-2xl bg-black/[0.02] text-sm text-muted">
+              Grafik muncul setelah siswa mengerjakan tugas.
+            </div>
           ) : (
             <BarChart data={chartData} />
           )}
         </Card>
-        <Card>
-          <h2 className="mb-3 font-bold">Siswa perlu perhatian</h2>
+
+        <Card className="p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-bold">Performa Siswa</h2>
+            <Link
+              href="/siswa"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              Lihat Semua
+            </Link>
+          </div>
           {d.perhatian.length === 0 ? (
             <p className="text-sm text-muted">
-              Tidak ada — semua siswa dalam kondisi baik.
+              Semua siswa dalam kondisi baik. 🎉
             </p>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {d.perhatian.map((st) => (
                 <Link
                   key={st.id}
                   href={`/siswa/${st.id}`}
-                  className="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-black/5"
+                  className="flex items-center gap-3 rounded-2xl p-2 transition hover:bg-black/[0.03]"
                 >
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-danger/10 text-sm font-bold text-danger">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-danger/10 text-sm font-bold text-danger">
                     {st.nama.charAt(0)}
                   </span>
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold">{st.nama}</div>
-                    <div className="text-xs text-muted">
-                      skor {st.skor ?? "belum ada"}
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-bold">{st.nama}</div>
+                    <div className="text-xs font-medium text-danger">
+                      Butuh Perhatian
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted" />
+                  <span className="rounded-lg bg-danger/10 px-2 py-1 text-xs font-bold text-danger">
+                    {st.skor ?? "—"}
+                  </span>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-muted" />
                 </Link>
               ))}
             </div>

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Leaf } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
+import { Logo } from "@/components/ui/Logo";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 
@@ -24,8 +24,8 @@ function RoleBtn({
       onClick={onClick}
       className={
         active
-          ? "h-11 rounded-xl border-2 border-primary bg-primary/10 text-sm font-semibold text-primary"
-          : "h-11 rounded-xl border border-line text-sm font-medium text-muted"
+          ? "h-12 rounded-2xl border-2 border-primary bg-primary/10 text-sm font-semibold text-primary"
+          : "h-12 rounded-2xl border border-line bg-surface text-sm font-medium text-muted hover:bg-black/[0.03]"
       }
     >
       {children}
@@ -74,15 +74,14 @@ export default function Daftar() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <span className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-2xl bg-primary text-white">
-          <Leaf className="h-8 w-8" />
-        </span>
-        <h1 className="text-2xl font-extrabold">Daftar NATURA</h1>
-      </div>
+    <div>
+      <Logo size={52} className="mb-6" />
+      <h1 className="text-3xl font-extrabold tracking-tight">Buat akun</h1>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        Daftar untuk mulai belajar Farmakognosi bersama NATURA.
+      </p>
 
-      <form onSubmit={onSubmit} className="space-y-3">
+      <form onSubmit={onSubmit} className="mt-7 space-y-4">
         <TextField label="Nama" value={nama} onChange={setNama} required />
         <TextField
           label="Email"
@@ -99,7 +98,9 @@ export default function Daftar() {
           required
         />
         <div>
-          <span className="mb-1 block text-sm font-medium">Peran</span>
+          <span className="mb-1.5 block text-sm font-medium text-muted">
+            Peran
+          </span>
           <div className="grid grid-cols-2 gap-2">
             <RoleBtn
               active={role === "student"}
@@ -117,12 +118,12 @@ export default function Daftar() {
         </div>
         {error && <p className="text-sm text-danger">{error}</p>}
         {notice && <p className="text-sm text-success">{notice}</p>}
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
           {loading ? "Memproses…" : "Daftar"}
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted">
+      <p className="mt-6 text-center text-sm text-muted">
         Sudah punya akun?{" "}
         <Link href="/masuk" className="font-semibold text-primary">
           Masuk

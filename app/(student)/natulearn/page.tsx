@@ -1,68 +1,67 @@
-import Link from "next/link";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { getStudentAssignments } from "@/lib/db/classroom";
-import { CalendarCheck, BookOpen, ClipboardList, ChevronRight } from "lucide-react";
+import { getLibrary } from "@/lib/db/library";
+import { getDailyQuiz } from "@/lib/db/daily";
+import { AppHeader } from "@/components/student/AppHeader";
+import { HeroBanner } from "@/components/ui/HeroBanner";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Card } from "@/components/ui/Card";
+import { ModulCard, TugasCard } from "@/components/student/LearnCards";
+import { FileQuestion } from "lucide-react";
 
 export default async function NatuLearn() {
-  const tugas = await getStudentAssignments();
-  const belum = tugas.filter((t) => t.status !== "selesai").length;
-
-  const menu = [
-    {
-      href: "/natulearn/kuis-harian",
-      label: "Kuis Harian",
-      desc: "Satu kuis baru tiap hari",
-      icon: CalendarCheck,
-      tone: "bg-primary/10 text-primary",
-      badge: null as string | null,
-    },
-    {
-      href: "/natulearn/modul",
-      label: "Modul Materi",
-      desc: "Bacaan & berkas pendukung",
-      icon: BookOpen,
-      tone: "bg-primary/10 text-primary",
-      badge: null,
-    },
-    {
-      href: "/natulearn/tugas",
-      label: "Tugas dari Guru",
-      desc: "Bobot, tenggat, dan status",
-      icon: ClipboardList,
-      tone: "bg-accent/15 text-accent",
-      badge: belum > 0 ? `${belum} belum` : null,
-    },
-  ];
+  const [quiz, materi, tugas] = await Promise.all([
+    getDailyQuiz(),
+    getLibrary(),
+    getStudentAssignments(),
+  ]);
 
   return (
     <div>
-      <PageHeader title="NatuLearn" />
-      <div className="space-y-3 p-4">
-        <p className="text-sm text-muted">
-          Belajar terarah: latihan harian, materi, dan tugas dari gurumu.
-        </p>
-        {menu.map((m) => {
-          const Icon = m.icon;
-          return (
-            <Link key={m.href} href={m.href} className="block">
-              <Card className="flex items-center gap-3">
-                <span
-                  className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${m.tone}`}
-                >
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="flex-1">
-                  <span className="block text-sm font-semibold">{m.label}</span>
-                  <span className="block text-xs text-muted">{m.desc}</span>
-                </span>
-                {m.badge && <Badge tone="accent">{m.badge}</Badge>}
-                <ChevronRight className="h-5 w-5 shrink-0 text-muted" />
-              </Card>
-            </Link>
-          );
-        })}
+      <AppHeader title="NatuLearn" />
+
+      <div className="space-y-8 p-4">
+        <HeroBanner
+          icon={FileQuestion}
+          eyebrow="Kuis Harian"
+          title={quiz ? quiz.judul : "Belum ada kuis"}
+          description={
+            quiz
+              ? `${quiz.jumlahSoal} Soal Pilihan Ganda`
+              : "Kuis harian akan muncul di sini."
+          }
+          ctaLabel={quiz ? "Mulai Kuis" : undefined}
+          ctaHref={quiz ? `/natulearn/kuis/${quiz.id}?from=harian` : undefined}
+        />
+
+        <section>
+          <SectionHeader title="Materi" href="/natulearn/modul" />
+          {materi.length === 0 ? (
+            <Card className="border-dashed text-sm text-muted">
+              Belum ada materi.
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {materi.slice(0, 2).map((m) => (
+                <ModulCard key={m.id} item={m} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <SectionHeader title="Tugas" href="/natulearn/tugas" />
+          {tugas.length === 0 ? (
+            <Card className="border-dashed text-sm text-muted">
+              Belum ada tugas. Gabung kelas untuk menerima tugas dari guru.
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {tugas.slice(0, 3).map((t) => (
+                <TugasCard key={t.assignmentId} tugas={t} />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );

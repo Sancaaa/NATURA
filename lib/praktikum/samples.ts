@@ -26,7 +26,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         tipe: "model-3d",
         instruksi:
           "Kenali alatnya dulu. Seret untuk memutar model 3D dan amati bagian-bagian mikroskop.",
-        modelUrl: "", // kosong → placeholder ModelViewer; ganti URL .glb di produksi
+        modelUrl: "/models/mikroskop.glb", // GLB nyata di public/models
         feedbackBenar: "",
       },
       {

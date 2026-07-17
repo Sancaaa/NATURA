@@ -15,7 +15,7 @@ export function Model3DPanel({
 }) {
   return (
     <>
-      <div className="h-72 overflow-hidden rounded-2xl border border-line">
+      <div className="h-72 overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-brand-soft to-surface shadow-card">
         <ModelViewerLazy src={modelSrc} className="h-full w-full" />
       </div>
       {arHref && (

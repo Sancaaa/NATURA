@@ -12,8 +12,8 @@ import {
   FilePlus2,
   FileStack,
   LogOut,
-  Leaf,
 } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 
 const items = [
@@ -29,12 +29,15 @@ const items = [
 export default function Sidebar() {
   const path = usePathname();
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r border-line bg-surface p-4 md:flex">
-      <div className="mb-6 flex items-center gap-2 px-2">
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-white">
-          <Leaf className="h-5 w-5" />
-        </span>
-        <span className="text-lg font-bold">NATURA</span>
+    <aside className="hidden w-64 shrink-0 flex-col border-r border-line bg-surface p-4 md:flex">
+      <div className="mb-6 flex items-center gap-2.5 px-2 pt-1">
+        <Logo size={36} />
+        <div className="leading-tight">
+          <div className="font-extrabold">NatuTeach</div>
+          <div className="text-[11px] font-medium text-muted">
+            LMS Administrator
+          </div>
+        </div>
       </div>
       <nav className="flex flex-1 flex-col gap-1">
         {items.map((it) => {
@@ -45,10 +48,10 @@ export default function Sidebar() {
               key={it.href}
               href={it.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
                 active
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted hover:bg-black/5",
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-muted hover:bg-black/5 hover:text-ink",
               )}
             >
               <Icon className="h-5 w-5" />
@@ -60,7 +63,7 @@ export default function Sidebar() {
       <form action={signOutAction} className="mt-2">
         <button
           type="submit"
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted hover:bg-black/5"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-danger/10 hover:text-danger"
         >
           <LogOut className="h-5 w-5" />
           Keluar

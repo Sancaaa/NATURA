@@ -1,84 +1,102 @@
 import Link from "next/link";
 import { getPlants } from "@/lib/db/plants";
 import { getStudentAssignments } from "@/lib/db/classroom";
+import { getCurrentProfile } from "@/lib/auth";
+import { Logo } from "@/components/ui/Logo";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { formatDeadline } from "@/lib/format";
-import {
-  ScanLine,
-  Sparkles,
-  ChevronRight,
-  Clock,
-  CheckCircle2,
-  UserPlus,
-} from "lucide-react";
+import { HeroBanner } from "@/components/ui/HeroBanner";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { TugasCard } from "@/components/student/LearnCards";
+import { ScanLine, FlaskConical, BookOpen, Bot, UserPlus, ChevronRight } from "lucide-react";
+
+const shortcuts = [
+  { href: "/natulab", label: "NatuLab", icon: FlaskConical, tone: "bg-primary/10 text-primary" },
+  { href: "/natulearn", label: "NatuLearn", icon: BookOpen, tone: "bg-accent/15 text-accent" },
+  { href: "/natubot", label: "NatuBot", icon: Bot, tone: "bg-primary/10 text-primary" },
+];
 
 export default async function Beranda() {
-  const [tugas, plants] = await Promise.all([
+  const [tugas, plants, profile] = await Promise.all([
     getStudentAssignments(),
     getPlants(),
+    getCurrentProfile(),
   ]);
+  const nama = (profile?.nama || "Siswa").split(" ")[0];
 
   return (
     <div>
-      <header className="px-4 pt-6">
-        <p className="text-sm text-muted">Halo,</p>
-        <h1 className="text-2xl font-extrabold">Aisyah 👋</h1>
+      <header className="flex items-center justify-between px-4 pt-5">
+        <div>
+          <p className="text-sm text-muted">Halo,</p>
+          <h1 className="text-2xl font-extrabold">{nama} 👋</h1>
+        </div>
+        <Logo size={40} />
       </header>
 
-      <div className="space-y-6 p-4">
-        <Link
-          href="/natulab/ar"
-          className="block rounded-2xl bg-primary p-5 text-white shadow-sm"
-        >
-          <div className="flex items-center gap-4">
-            <span className="grid h-12 w-12 place-items-center rounded-xl bg-white/15">
-              <ScanLine className="h-6 w-6" />
-            </span>
-            <div className="flex-1">
-              <div className="text-lg font-bold">Pindai Kartu AR</div>
-              <div className="text-sm text-white/85">
-                Arahkan kamera ke kartu NATURA
-              </div>
-            </div>
-            <ChevronRight className="h-5 w-5" />
-          </div>
-        </Link>
+      <div className="space-y-8 p-4">
+        <HeroBanner
+          icon={ScanLine}
+          title="Pindai Kartu AR"
+          description="Arahkan kamera ke kartu NATURA untuk memunculkan visualisasi 3D."
+          ctaLabel="Mulai Pindai"
+          ctaHref="/natulab/ar"
+        />
 
         <section>
-          <h2 className="mb-2 font-bold">Lanjutkan belajar</h2>
-          <div className="flex gap-3 overflow-x-auto pb-1">
-            {plants.slice(0, 8).map((p) => (
-              <Link
-                key={p.id}
-                href={`/natulab/tanaman/${p.id}`}
-                className="w-36 shrink-0"
-              >
-                <Card className="p-3">
-                  <div className="mb-2 grid h-20 place-items-center rounded-xl bg-primary/10 text-3xl">
-                    🌿
-                  </div>
-                  <div className="text-sm font-semibold">{p.namaLokal}</div>
-                  <div className="truncate text-xs italic text-muted">
-                    {p.namaLatin}
-                  </div>
-                </Card>
-              </Link>
-            ))}
+          <div className="grid grid-cols-3 gap-3">
+            {shortcuts.map((s) => {
+              const Icon = s.icon;
+              return (
+                <Link key={s.href} href={s.href} className="group">
+                  <Card className="flex flex-col items-center gap-2 py-4 transition group-hover:shadow-card-hover">
+                    <span
+                      className={`grid h-11 w-11 place-items-center rounded-2xl ${s.tone}`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-xs font-semibold">{s.label}</span>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
+        {plants.length > 0 && (
+          <section>
+            <SectionHeader title="Lanjutkan belajar" href="/natulab/tanaman" />
+            <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+              {plants.slice(0, 8).map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/natulab/tanaman/${p.id}`}
+                  className="w-36 shrink-0"
+                >
+                  <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-card">
+                    <div className="grid h-24 place-items-center bg-gradient-to-br from-primary/15 to-accent/10 text-4xl">
+                      🌿
+                    </div>
+                    <div className="p-3">
+                      <div className="truncate text-sm font-bold">
+                        {p.namaLokal}
+                      </div>
+                      <div className="truncate text-xs italic text-muted">
+                        {p.namaLatin}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section>
-          <div className="mb-2 flex items-center justify-between">
-            <h2 className="font-bold">Tugas dari guru</h2>
-            <Link href="/gabung" className="text-xs font-semibold text-primary">
-              + Gabung kelas
-            </Link>
-          </div>
+          <SectionHeader title="Tugas dari guru" href="/natulearn/tugas" />
           {tugas.length === 0 ? (
             <Link href="/gabung" className="block">
               <Card className="flex items-center gap-3 border-dashed">
-                <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <UserPlus className="h-5 w-5" />
                 </span>
                 <div className="flex-1">
@@ -91,50 +109,13 @@ export default async function Beranda() {
               </Card>
             </Link>
           ) : (
-            <div className="space-y-2">
-              {tugas.slice(0, 4).map((t) => (
-                <Link
-                  key={t.assignmentId}
-                  href={`/natulearn/tugas/${t.assignmentId}`}
-                  className="block"
-                >
-                  <Card className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-lg bg-accent/15 text-accent">
-                      <Clock className="h-5 w-5" />
-                    </span>
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold">{t.judul}</div>
-                      <div className="text-xs text-muted">{t.kelas}</div>
-                    </div>
-                    {t.sudahDikerjakan ? (
-                      <Badge tone="success">
-                        <CheckCircle2 className="mr-1 h-3 w-3" />
-                        {t.skor ?? "selesai"}
-                      </Badge>
-                    ) : t.deadline ? (
-                      <Badge tone="accent">{formatDeadline(t.deadline)}</Badge>
-                    ) : null}
-                  </Card>
-                </Link>
+            <div className="space-y-3">
+              {tugas.slice(0, 3).map((t) => (
+                <TugasCard key={t.assignmentId} tugas={t} />
               ))}
             </div>
           )}
         </section>
-
-        <Link href="/natubot" className="block">
-          <Card className="flex items-center gap-3 border-dashed">
-            <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <div className="flex-1">
-              <div className="text-sm font-semibold">Tanya NatuBot</div>
-              <div className="text-xs text-muted">
-                Bingung materi? Tanya di sini.
-              </div>
-            </div>
-            <ChevronRight className="h-5 w-5 text-muted" />
-          </Card>
-        </Link>
       </div>
     </div>
   );

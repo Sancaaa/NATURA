@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Leaf } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
+import { Logo } from "@/components/ui/Logo";
+import { GoogleMark } from "@/components/ui/GoogleMark";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 
@@ -25,10 +26,7 @@ export default function Masuk() {
     setLoading(true);
     setError(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
       setError(error.message);
@@ -39,16 +37,15 @@ export default function Masuk() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <span className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-2xl bg-primary text-white">
-          <Leaf className="h-8 w-8" />
-        </span>
-        <h1 className="text-2xl font-extrabold">Masuk ke NATURA</h1>
-      </div>
+    <div>
+      <Logo size={52} className="mb-6" />
+      <h1 className="text-3xl font-extrabold tracking-tight">Selamat datang</h1>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        Masukkan email dan password anda untuk melanjutkan.
+      </p>
 
       {!isSupabaseConfigured && (
-        <div className="rounded-xl border border-accent/40 bg-accent/10 p-3 text-sm">
+        <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-3 text-sm">
           Mode demo aktif (Supabase belum dikonfigurasi).{" "}
           <Link href="/" className="font-semibold text-primary underline">
             Kembali ke pemilihan peran
@@ -57,28 +54,59 @@ export default function Masuk() {
         </div>
       )}
 
-      <form onSubmit={onSubmit} className="space-y-3">
+      <form onSubmit={onSubmit} className="mt-7 space-y-4">
         <TextField
           label="Email"
           type="email"
           value={email}
           onChange={setEmail}
+          placeholder="nama@email.com"
           required
         />
-        <TextField
-          label="Kata sandi"
-          type="password"
-          value={password}
-          onChange={setPassword}
-          required
-        />
+        <div>
+          <TextField
+            label="Kata Sandi"
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="••••••••"
+            required
+          />
+          <div className="mt-1.5 text-right">
+            <Link
+              href="/masuk"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              Lupa Sandi?
+            </Link>
+          </div>
+        </div>
+
         {error && <p className="text-sm text-danger">{error}</p>}
-        <Button type="submit" className="w-full" disabled={loading}>
+
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
           {loading ? "Memproses…" : "Masuk"}
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted">
+      <div className="my-6 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-line" />
+        Atau masuk dengan
+        <span className="h-px flex-1 bg-line" />
+      </div>
+
+      <button
+        type="button"
+        onClick={() =>
+          setError("Masuk dengan Google belum tersedia pada versi purwarupa.")
+        }
+        className="flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl border border-line bg-surface text-sm font-semibold transition hover:bg-black/[0.03]"
+      >
+        <GoogleMark className="h-5 w-5" />
+        Google
+      </button>
+
+      <p className="mt-6 text-center text-sm text-muted">
         Belum punya akun?{" "}
         <Link href="/daftar" className="font-semibold text-primary">
           Daftar

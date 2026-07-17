@@ -95,12 +95,32 @@ export default function ModelViewer({
       }
     };
 
+    // Pusatkan & bingkai model yang dimuat agar tidak muncul raksasa/mungil
+    // atau di luar layar — GLB dari sumber apa pun punya skala berbeda-beda.
+    const frameModel = (obj: THREE.Object3D) => {
+      const box = new THREE.Box3().setFromObject(obj);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      obj.position.sub(center); // taruh pusat model di origin → berputar di tempat
+      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      controls.target.set(0, 0, 0);
+      controls.minDistance = maxDim * 0.6;
+      controls.maxDistance = maxDim * 6;
+      camera.near = maxDim / 100;
+      camera.far = maxDim * 100;
+      camera.position.set(0, maxDim * 0.25, maxDim * 1.9);
+      camera.updateProjectionMatrix();
+      controls.update();
+    };
+
     let disposed = false;
     if (src) {
       new GLTFLoader().load(
         src,
         (gltf) => {
-          if (!disposed) group.add(gltf.scene);
+          if (disposed) return;
+          group.add(gltf.scene);
+          frameModel(gltf.scene);
         },
         undefined,
         () => {
