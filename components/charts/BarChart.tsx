@@ -5,25 +5,23 @@ export function BarChart({
 }) {
   const max = Math.max(...data.map((d) => d.value), 1);
   return (
-    <div>
-      <div className="flex h-40 items-end gap-3">
-        {data.map((d, i) => (
-          <div key={i} className="flex flex-1 flex-col items-center justify-end">
-            <span className="mb-1 text-xs font-semibold text-ink">{d.value}</span>
+    <div className="flex h-44 items-end gap-3">
+      {data.map((d, i) => (
+        <div key={i} className="flex h-full flex-1 flex-col items-center gap-1.5">
+          <span className="text-xs font-bold text-ink">{d.value}</span>
+          {/* Track mengisi sisa ruang vertikal; bar tumbuh dari bawah.
+              Tinggi persen bar kini dihitung terhadap tinggi track yang pasti. */}
+          <div className="flex w-full flex-1 items-end">
             <div
-              className="w-full rounded-t-md bg-primary"
-              style={{ height: `${(d.value / max) * 100}%` }}
+              className="w-full rounded-t-lg bg-gradient-to-t from-primary to-[#3550ff] transition-[height]"
+              style={{ height: `${(d.value / max) * 100}%`, minHeight: "4px" }}
             />
           </div>
-        ))}
-      </div>
-      <div className="mt-2 flex gap-3">
-        {data.map((d, i) => (
-          <span key={i} className="flex-1 text-center text-[11px] text-muted">
+          <span className="w-full truncate text-center text-[11px] text-muted">
             {d.label}
           </span>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
