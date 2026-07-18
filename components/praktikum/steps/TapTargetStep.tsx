@@ -38,6 +38,7 @@ export function TapTargetStep({ step, onComplete }: StepProps<Step>) {
 
       <Stage
         ref={ref}
+        scene={step.scene}
         onClick={handleClick}
         className={cn(!hit && "cursor-pointer")}
       >

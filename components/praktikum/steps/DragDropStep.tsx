@@ -74,7 +74,7 @@ export function DragDropStep({ step, onComplete }: StepProps<Step>) {
     <div className="flex flex-col items-center gap-4">
       <p className="text-center text-sm text-muted">{step.instruksi}</p>
 
-      <Stage ref={ref}>
+      <Stage ref={ref} scene={step.scene}>
         {/* Zona tujuan */}
         <div
           className={cn(
@@ -98,15 +98,23 @@ export function DragDropStep({ step, onComplete }: StepProps<Step>) {
           onPointerMove={pointerMove}
           onPointerUp={pointerUp}
           className={cn(
-            "absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-md",
-            done ? "border-success bg-success text-white" : "border-line bg-surface text-ink",
+            "absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center shadow-md",
+            !step.draggableImage && "gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold",
+            !step.draggableImage && (done ? "border-success bg-success text-white" : "border-line bg-surface text-ink"),
             dragging ? "scale-105 cursor-grabbing" : "cursor-grab",
             !dragging && "transition-all",
           )}
           style={{ left: `${pos.x}%`, top: `${pos.y}%`, touchAction: "none" }}
         >
-          {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Move className="h-3.5 w-3.5" />}
-          {step.draggable}
+          {step.draggableImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={step.draggableImage} alt={step.draggable} className="h-16 object-contain pointer-events-none drop-shadow-md" />
+          ) : (
+            <>
+              {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Move className="h-3.5 w-3.5" />}
+              {step.draggable}
+            </>
+          )}
         </div>
       </Stage>
 

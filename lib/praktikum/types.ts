@@ -69,6 +69,7 @@ export interface DragDropStep extends BaseStep {
   tipe: "drag-drop";
   scene?: string;
   draggable: string;
+  draggableImage?: string;
   zone: { x: number; y: number; w: number; h: number }; // persen 0-100
 }
 

@@ -35,7 +35,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         tipe: "tap-target",
         instruksi:
           "Teteskan 1 tetes aquadest ke kaca preparat: ketuk ujung pipet pada titik yang berdenyut.",
-        scene: "",
+        scene: "/images/meja_lab.png",
         hotspot: { x: 50, y: 38, r: 9 },
         feedbackBenar: "Setetes aquadest jatuh di kaca preparat.",
       },
@@ -44,7 +44,9 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         tipe: "drag-drop",
         instruksi:
           "Ambil sedikit serbuk pati dengan spatula, lalu seret dan letakkan tepat di atas tetesan air.",
+        scene: "/images/meja_lab.png",
         draggable: "Spatula + serbuk",
+        draggableImage: "/images/spatula.png",
         zone: { x: 40, y: 30, w: 20, h: 18 },
         feedbackBenar: "Serbuk menempel di tetesan air.",
       },
