@@ -1,0 +1,1 @@
+{"nodes": [{"id": "refui_natulab", "label": "NatuLab UI Reference", "file_type": "image", "source_file": "refUI/NatuLab.png"}], "edges": [{"source": "refui_natulab", "target": "public_ar_viewer", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.85, "source_file": "refUI/NatuLab.png"}], "hyperedges": []}

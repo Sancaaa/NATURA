@@ -1,0 +1,1 @@
+{"nodes": [{"id": "public_models_readme", "label": "3D Models Documentation", "file_type": "document", "source_file": "public/models/README.md"}], "edges": [{"source": "public_models_readme", "target": "supabase_storage_assets", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/models/README.md"}], "hyperedges": []}
