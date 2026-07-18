@@ -18,6 +18,7 @@ export function ToolForm({ tool }: { tool?: LabTool }) {
     model3dUrl: tool?.model3dUrl ?? "",
     arTargetUrl: tool?.arTargetUrl ?? "",
     arIntro: tool?.arIntro ?? "",
+    gambarUrl: tool?.gambarUrl ?? "",
   });
   const [err, setErr] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -67,6 +68,26 @@ export function ToolForm({ tool }: { tool?: LabTool }) {
           onChange={(e) => set({ keselamatan: e.target.value })}
         />
       </Field>
+
+      <div>
+        {f.gambarUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={f.gambarUrl}
+            alt="Preview alat"
+            className="mb-2 h-32 w-full max-w-xs rounded-2xl border border-line object-cover"
+          />
+        )}
+        <FileUploadField
+          label="Gambar preview"
+          hint="Foto untuk kartu jelajah (JPG/PNG/WebP). Kosongkan untuk memakai emoji."
+          accept=".png,.jpg,.jpeg,.webp"
+          folder="images"
+          value={f.gambarUrl ?? ""}
+          onChange={(url) => set({ gambarUrl: url })}
+        />
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <FileUploadField
           label="Model 3D (.glb)"

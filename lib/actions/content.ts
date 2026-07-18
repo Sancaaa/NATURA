@@ -20,6 +20,7 @@ export type PlantInput = {
   model3dUrl?: string;
   arTargetUrl?: string;
   arIntro?: string;
+  gambarUrl?: string;
 };
 
 export type ToolInput = {
@@ -30,6 +31,7 @@ export type ToolInput = {
   model3dUrl?: string;
   arTargetUrl?: string;
   arIntro?: string;
+  gambarUrl?: string;
 };
 
 export type LibraryInput = {
@@ -143,8 +145,32 @@ function plantRow(i: PlantInput) {
     model_3d_url: clean(i.model3dUrl),
     ar_target_url: clean(i.arTargetUrl),
     ar_intro: clean(i.arIntro),
+    gambar_url: clean(i.gambarUrl),
   };
 }
+
+// Tulis dengan retry: bila kolom gambar_url belum ada (migration belum jalan),
+// ulang tanpa kolom itu agar admin tetap bisa menyimpan konten lainnya.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+async function insertRow(supabase: any, table: string, row: any) {
+  let { error } = await supabase.from(table).insert(row);
+  if (error && String(error.message).includes("gambar_url")) {
+    const rest = { ...row };
+    delete rest.gambar_url;
+    ({ error } = await supabase.from(table).insert(rest));
+  }
+  return error;
+}
+async function updateRow(supabase: any, table: string, row: any, id: string) {
+  let { error } = await supabase.from(table).update(row).eq("id", id);
+  if (error && String(error.message).includes("gambar_url")) {
+    const rest = { ...row };
+    delete rest.gambar_url;
+    ({ error } = await supabase.from(table).update(rest).eq("id", id));
+  }
+  return error;
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export async function createPlant(input: PlantInput): Promise<ActionResult> {
   if (!isSupabaseConfigured) return { error: "Aktifkan Supabase untuk menyimpan." };
@@ -155,9 +181,7 @@ export async function createPlant(input: PlantInput): Promise<ActionResult> {
 
   const supabase = await createClient();
   const id = await uniqueId(supabase, "plants", slugify(input.namaLokal));
-  const { error } = await supabase
-    .from("plants")
-    .insert({ id, ...plantRow(input) });
+  const error = await insertRow(supabase, "plants", { id, ...plantRow(input) });
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/tanaman");
@@ -175,10 +199,7 @@ export async function updatePlant(
   if ("error" in admin) return { error: admin.error };
 
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("plants")
-    .update(plantRow(input))
-    .eq("id", id);
+  const error = await updateRow(supabase, "plants", plantRow(input), id);
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/tanaman");
@@ -209,6 +230,7 @@ function toolRow(i: ToolInput) {
     model_3d_url: clean(i.model3dUrl),
     ar_target_url: clean(i.arTargetUrl),
     ar_intro: clean(i.arIntro),
+    gambar_url: clean(i.gambarUrl),
   };
 }
 
@@ -220,9 +242,7 @@ export async function createTool(input: ToolInput): Promise<ActionResult> {
 
   const supabase = await createClient();
   const id = await uniqueId(supabase, "lab_tools", slugify(input.nama));
-  const { error } = await supabase
-    .from("lab_tools")
-    .insert({ id, ...toolRow(input) });
+  const error = await insertRow(supabase, "lab_tools", { id, ...toolRow(input) });
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/alat");
@@ -239,10 +259,7 @@ export async function updateTool(
   if ("error" in admin) return { error: admin.error };
 
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("lab_tools")
-    .update(toolRow(input))
-    .eq("id", id);
+  const error = await updateRow(supabase, "lab_tools", toolRow(input), id);
   if (error) return { error: error.message };
   revalidateContent();
   revalidatePath("/admin/alat");

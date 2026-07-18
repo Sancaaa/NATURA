@@ -74,9 +74,18 @@ export default async function Beranda() {
                   className="w-36 shrink-0"
                 >
                   <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-card">
-                    <div className="grid h-24 place-items-center bg-gradient-to-br from-primary/15 to-accent/10 text-4xl">
-                      🌿
-                    </div>
+                    {p.gambarUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.gambarUrl}
+                        alt={p.namaLokal}
+                        className="h-24 w-full object-cover"
+                      />
+                    ) : (
+                      <div className="grid h-24 place-items-center bg-gradient-to-br from-primary/15 to-accent/10 text-4xl">
+                        🌿
+                      </div>
+                    )}
                     <div className="p-3">
                       <div className="truncate text-sm font-bold">
                         {p.namaLokal}

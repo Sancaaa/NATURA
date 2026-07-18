@@ -9,6 +9,8 @@ export type LabTool = {
   arTargetUrl?: string;
   /** Paragraf intro yang tampil di overlay AR saat model pertama diketuk. */
   arIntro?: string;
+  /** Foto preview untuk kartu jelajah (fallback emoji bila kosong). */
+  gambarUrl?: string;
 };
 
 export const tools: LabTool[] = [

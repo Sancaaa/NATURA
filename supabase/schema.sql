@@ -37,10 +37,12 @@ create table if not exists public.plants (
   mikroskopik text,
   model_3d_url text,
   ar_target_url text,
-  ar_intro text
+  ar_intro text,
+  gambar_url text
 );
--- kolom intro AR (untuk instalasi lama)
+-- kolom intro AR + gambar preview (untuk instalasi lama)
 alter table public.plants add column if not exists ar_intro text;
+alter table public.plants add column if not exists gambar_url text;
 
 create table if not exists public.lab_tools (
   id text primary key,
@@ -50,11 +52,13 @@ create table if not exists public.lab_tools (
   keselamatan text,
   model_3d_url text,
   ar_target_url text,
-  ar_intro text
+  ar_intro text,
+  gambar_url text
 );
--- kolom target AR + intro AR (untuk instalasi lama)
+-- kolom target AR + intro AR + gambar preview (untuk instalasi lama)
 alter table public.lab_tools add column if not exists ar_target_url text;
 alter table public.lab_tools add column if not exists ar_intro text;
+alter table public.lab_tools add column if not exists gambar_url text;
 
 create table if not exists public.library_items (
   id text primary key,

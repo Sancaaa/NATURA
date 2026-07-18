@@ -23,6 +23,7 @@ export function PlantForm({ plant }: { plant?: Plant }) {
     model3dUrl: plant?.model3dUrl ?? "",
     arTargetUrl: plant?.arTargetUrl ?? "",
     arIntro: plant?.arIntro ?? "",
+    gambarUrl: plant?.gambarUrl ?? "",
   });
   const [kandunganText, setKandunganText] = useState(
     (plant?.kandungan ?? []).join(", "),
@@ -120,6 +121,25 @@ export function PlantForm({ plant }: { plant?: Plant }) {
           onChange={(e) => set({ mikroskopik: e.target.value })}
         />
       </Field>
+
+      <div>
+        {f.gambarUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={f.gambarUrl}
+            alt="Preview tanaman"
+            className="mb-2 h-32 w-full max-w-xs rounded-2xl border border-line object-cover"
+          />
+        )}
+        <FileUploadField
+          label="Gambar preview"
+          hint="Foto untuk kartu jelajah (JPG/PNG/WebP). Kosongkan untuk memakai emoji."
+          accept=".png,.jpg,.jpeg,.webp"
+          folder="images"
+          value={f.gambarUrl ?? ""}
+          onChange={(url) => set({ gambarUrl: url })}
+        />
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <FileUploadField

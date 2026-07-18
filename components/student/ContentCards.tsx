@@ -19,8 +19,19 @@ export function PlantCard({ plant }: { plant: Plant }) {
   return (
     <Link href={`/natulab/tanaman/${plant.id}`} className="group block">
       <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-card transition group-hover:shadow-card-hover">
-        <div className="relative grid aspect-[5/4] place-items-center bg-gradient-to-br from-primary/15 via-primary/5 to-accent/10 text-5xl">
-          <span className="transition group-hover:scale-110">🌿</span>
+        <div className="relative aspect-[5/4] overflow-hidden bg-gradient-to-br from-primary/15 via-primary/5 to-accent/10">
+          {plant.gambarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={plant.gambarUrl}
+              alt={plant.namaLokal}
+              className="h-full w-full object-cover transition group-hover:scale-105"
+            />
+          ) : (
+            <div className="grid h-full place-items-center text-5xl">
+              <span className="transition group-hover:scale-110">🌿</span>
+            </div>
+          )}
           <span className="absolute right-2.5 top-2.5 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
             {plantTag(plant)}
           </span>
@@ -41,9 +52,18 @@ export function ToolCard({ tool }: { tool: LabTool }) {
   return (
     <Link href={`/natulab/alat/${tool.id}`} className="group block">
       <Card className="flex items-center gap-4 transition group-hover:shadow-card-hover">
-        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-accent/10 text-3xl">
-          ⚗️
-        </div>
+        {tool.gambarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={tool.gambarUrl}
+            alt={tool.nama}
+            className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+          />
+        ) : (
+          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-accent/10 text-3xl">
+            ⚗️
+          </div>
+        )}
         <div className="min-w-0 flex-1">
           <div className="font-bold">{tool.nama}</div>
           <p className="line-clamp-2 text-xs leading-relaxed text-muted">
