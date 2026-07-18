@@ -1,15 +1,15 @@
-# Backend Supabase (Self-Host) — Fase 1
+# Backend Supabase (Self-Host) - Fase 1
 
 Autentikasi + database untuk NATURA. Semua berjalan di infrastruktur sendiri
 (on-premise/VPS), **tanpa GPU**. Bila env Supabase kosong, aplikasi tetap jalan
-dalam **mode demo** (data contoh, tanpa login) — jadi backend ini opsional
+dalam **mode demo** (data contoh, tanpa login) - jadi backend ini opsional
 sampai Anda siap.
 
 ## Isi folder
 
-- `schema.sql` — tabel, trigger profil, fungsi bantu, dan **Row-Level Security**.
-- `seed.sql` — konten awal (tanaman, alat, library, kuis, anotasi AR).
-- `migrations/` — riwayat perubahan skema. Migrasi
+- `schema.sql` - tabel, trigger profil, fungsi bantu, dan **Row-Level Security**.
+- `seed.sql` - konten awal (tanaman, alat, library, kuis, anotasi AR).
+- `migrations/` - riwayat perubahan skema. Migrasi
   `20260713120000_admin_ar_upload.sql` menambah: kolom `ar_target_url` pada
   `lab_tools`, tabel `content_annotations`, dan **bucket Storage publik `assets`**
   (untuk unggah `.glb`/`.mind`; tulis dibatasi admin).
@@ -19,7 +19,7 @@ Bucket `assets` juga dibuat oleh `schema.sql`.
 
 ## Cara menjalankan
 
-### Opsi A — Cepat untuk pengembangan (Supabase CLI)
+### Opsi A - Cepat untuk pengembangan (Supabase CLI)
 
 Butuh Docker.
 
@@ -30,7 +30,7 @@ npx supabase start         # menjalankan Postgres+Auth+Studio via Docker
 
 Catat output `API URL`, `anon key`, dan `service_role key`.
 
-### Opsi B — Self-host produksi (on-premise/VPS)
+### Opsi B - Self-host produksi (on-premise/VPS)
 
 Ikuti Supabase self-hosting resmi (Docker Compose):
 
@@ -43,7 +43,7 @@ docker compose up -d
 
 Studio ada di `http://<host>:8000`. Di produksi, letakkan di belakang
 reverse proxy (Caddy/TLS) dan akses DB dari app via VPN privat
-(WireGuard/Tailscale) — lihat `docs/02-tech-stack.md`.
+(WireGuard/Tailscale) - lihat `docs/02-tech-stack.md`.
 
 ## Terapkan skema & data
 

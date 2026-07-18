@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Brandmark NATURA — daun putih dengan huruf "N" di atas kotak biru
+ * Brandmark NATURA - daun putih dengan huruf "N" di atas kotak biru
  * membulat. Menggantikan ikon Leaf generik agar sesuai referensi UI.
  */
 export function Logo({

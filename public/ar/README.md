@@ -4,7 +4,7 @@ Mode AR (kamera) memakai **MindAR** dengan *image target*. Kartu AR harus
 dikompilasi menjadi berkas `.mind`.
 
 **Unggah:** setelah dikompilasi, unggah `.mind` lewat panel admin (Tanaman/Alat →
-form) — tersimpan ke Supabase Storage (`assets/ar-targets/`) dan tautannya
+form) - tersimpan ke Supabase Storage (`assets/ar-targets/`) dan tautannya
 dipakai otomatis oleh `viewer.html`. Alat kini juga bisa punya target AR.
 
 ## Cara membuat `targets.mind`
@@ -19,8 +19,8 @@ dipakai otomatis oleh `viewer.html`. Alat kini juga bisa punya target AR.
 
 ## Aset yang dibutuhkan
 
-- `public/ar/targets.mind` — target gambar kartu.
-- `public/models/plant.glb` — model 3D yang muncul di atas kartu.
+- `public/ar/targets.mind` - target gambar kartu.
+- `public/models/plant.glb` - model 3D yang muncul di atas kartu.
 
 Sebelum kedua berkas ada, mode AR tetap membuka kamera & UI pemindaian,
 tetapi model belum muncul. Gunakan tombol **Lihat 3D** untuk demo tanpa aset.

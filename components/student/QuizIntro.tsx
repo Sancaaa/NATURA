@@ -10,7 +10,7 @@ const instruksi = [
   "Selesaikan seluruh kuis hingga akhir untuk mendapatkan poin pengalaman (XP) dan lencana.",
 ];
 
-/** Layar pembuka kuis (Detail Kuis) — ditampilkan sebelum soal dimulai. */
+/** Layar pembuka kuis (Detail Kuis) - ditampilkan sebelum soal dimulai. */
 export function QuizIntro({
   quiz,
   startHref,

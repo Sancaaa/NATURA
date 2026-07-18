@@ -8,7 +8,7 @@ const TONE = {
   belum: { tone: "accent", label: "Belum dikerjakan", Icon: Clock },
 } as const;
 
-/** Badge status tugas — satu sumber tampilan untuk daftar & detail. */
+/** Badge status tugas - satu sumber tampilan untuk daftar & detail. */
 export function StatusTugasBadge({ status }: { status: TugasStatus }) {
   const s = TONE[status];
   const Icon = s.Icon;

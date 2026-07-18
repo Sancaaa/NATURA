@@ -28,7 +28,7 @@ export async function GET(
     general = {
       badge: p.namaLatin,
       title: p.namaLokal,
-      body: p.arIntro || p.khasiat || `${p.namaLokal} — ${p.namaLatin}.`,
+      body: p.arIntro || p.khasiat || `${p.namaLokal} - ${p.namaLatin}.`,
     };
     model = p.model3dUrl;
     target = p.arTargetUrl;

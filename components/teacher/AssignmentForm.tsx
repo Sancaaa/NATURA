@@ -37,7 +37,7 @@ export function AssignmentForm({
           className="h-11 rounded-xl border border-line bg-white px-3 text-sm outline-none focus:border-primary"
         >
           <option value="" disabled>
-            {quizzes.length ? "Pilih kuis…" : "Belum ada kuis — buat dulu"}
+            {quizzes.length ? "Pilih kuis…" : "Belum ada kuis - buat dulu"}
           </option>
           {quizzes.map((q) => (
             <option key={q.id} value={q.id}>

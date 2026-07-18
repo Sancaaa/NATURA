@@ -75,7 +75,7 @@ async function requireAdmin(): Promise<{ id: string } | { error: string }> {
 /**
  * Modul materi boleh dikelola guru maupun admin. Batas kepemilikan
  * (guru hanya boleh mengubah modulnya sendiri) ditegakkan RLS
- * `library_write` — di sini kita hanya menyaring peran.
+ * `library_write` - di sini kita hanya menyaring peran.
  */
 async function requireTeacherOrAdmin(): Promise<
   { id: string; role: string } | { error: string }

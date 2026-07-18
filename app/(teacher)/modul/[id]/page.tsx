@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react";
 
 /**
  * Sunting modul bila guru pemiliknya (atau admin); selain itu pratinjau
- * read-only. Batas sebenarnya tetap ditegakkan RLS `library_write` —
+ * read-only. Batas sebenarnya tetap ditegakkan RLS `library_write` -
  * pengecekan di sini hanya agar UI tidak menawarkan yang akan ditolak.
  */
 export default async function ModulEdit({
@@ -42,7 +42,7 @@ export default async function ModulEdit({
         </h1>
         {!bisaUbah && (
           <p className="text-sm text-muted">
-            Dibuat guru lain atau admin — hanya bisa dilihat.
+            Dibuat guru lain atau admin - hanya bisa dilihat.
           </p>
         )}
       </div>

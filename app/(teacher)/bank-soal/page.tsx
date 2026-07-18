@@ -15,7 +15,7 @@ export default async function BankSoal() {
         <div className="flex-1">
           <h1 className="text-2xl font-extrabold">Bank Soal</h1>
           <p className="text-sm text-muted">
-            Kuis buatan Anda — edit atau hapus di sini.
+            Kuis buatan Anda - edit atau hapus di sini.
           </p>
         </div>
         <Link href="/buat-kuis" className={buttonClass("primary", "md")}>

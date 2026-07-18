@@ -7,7 +7,7 @@ import { ScanLine, ListChecks, BookOpen, MessageCircle } from "lucide-react";
 function DemoActivity() {
   const timeline = [
     { icon: ScanLine, text: "Menjelajah AR: Sambiloto", time: "Hari ini, 09:12" },
-    { icon: ListChecks, text: "Kuis Dasar Simplisia — skor 90", time: "Hari ini, 08:40" },
+    { icon: ListChecks, text: "Kuis Dasar Simplisia - skor 90", time: "Hari ini, 08:40" },
     { icon: BookOpen, text: "Membaca modul Pengantar Simplisia", time: "Kemarin" },
   ];
   const chat = [
@@ -20,7 +20,7 @@ function DemoActivity() {
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-accent">
-        Data contoh — aktivitas di bawah ini bukan data siswa sesungguhnya.
+        Data contoh - aktivitas di bawah ini bukan data siswa sesungguhnya.
       </div>
       <div className="grid gap-4 md:grid-cols-2">
       <Card>
@@ -104,7 +104,7 @@ export default async function SiswaDetail({
                 >
                   <div className="flex-1 text-sm">{s.judul}</div>
                   <Badge tone={(s.skor ?? 0) >= 70 ? "success" : "danger"}>
-                    {s.skor ?? "—"}
+                    {s.skor ?? "-"}
                   </Badge>
                 </div>
               ))}

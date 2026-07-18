@@ -20,7 +20,7 @@ export const seedAnnotations: Record<string, Annotation[]> = {
       pos: [0.18, 0.28, 0.1],
       labelPos: [0.22, 0.28, 0],
       body: [
-        "Kandungan andrografolid tertinggi — bagian paling berkhasiat.",
+        "Kandungan andrografolid tertinggi - bagian paling berkhasiat.",
         "Berperan sebagai imunomodulator dan penurun demam (antipiretik).",
         "Rasa sangat pahit, ciri khas sambiloto.",
       ],

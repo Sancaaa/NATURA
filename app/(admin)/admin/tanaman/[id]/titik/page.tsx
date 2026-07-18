@@ -36,7 +36,7 @@ export default async function TanamanTitik({
         <p className="text-sm text-muted">
           Kelola titik yang muncul di atas model saat kartu dipindai.
           {!plant.model3dUrl &&
-            " Model 3D belum diunggah — memakai model contoh untuk penempatan."}
+            " Model 3D belum diunggah - memakai model contoh untuk penempatan."}
         </p>
       </div>
 

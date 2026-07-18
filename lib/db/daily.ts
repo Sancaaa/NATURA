@@ -17,7 +17,7 @@ function epochDayWIB(now: Date = new Date()): number {
   return Math.floor((now.getTime() + 7 * 3_600_000) / 86_400_000);
 }
 
-/** Tanggal WIB (YYYY-MM-DD) dari sebuah timestamp — untuk hitung streak. */
+/** Tanggal WIB (YYYY-MM-DD) dari sebuah timestamp - untuk hitung streak. */
 function dateKeyWIB(iso: string): string {
   return new Date(new Date(iso).getTime() + 7 * 3_600_000)
     .toISOString()
@@ -25,7 +25,7 @@ function dateKeyWIB(iso: string): string {
 }
 
 /**
- * Kuis hari ini — dipilih deterministik dari daftar kuis terbit, diurut
+ * Kuis hari ini - dipilih deterministik dari daftar kuis terbit, diurut
  * berdasarkan id agar stabil walau ada kuis baru yang created_at-nya beda.
  */
 export async function getDailyQuiz(): Promise<DailyQuiz | null> {

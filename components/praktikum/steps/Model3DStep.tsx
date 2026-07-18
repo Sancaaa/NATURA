@@ -7,9 +7,9 @@ import { Box } from "lucide-react";
 import type { Model3DStep as Step, StepProps } from "@/lib/praktikum/types";
 
 // Primitif [hybrid]: amati objek 3D sebagai SATU langkah. Membungkus
-// ModelViewer.tsx (three.js) yang sudah ada — inilah jembatan 2D↔3D dalam
+// ModelViewer.tsx (three.js) yang sudah ada - inilah jembatan 2D↔3D dalam
 // mesin data-driven yang sama. `arTargetUrl` disediakan untuk varian marker-AR
-// (halaman A-Frame statis terpisah) — belum diwire di sini.
+// (halaman A-Frame statis terpisah) - belum diwire di sini.
 export function Model3DStep({ step, onComplete }: StepProps<Step>) {
   // Guard: pratinjau 3D butuh WebGL. Bila tak tersedia, jangan crash langkah.
   const [webgl] = useState(

@@ -117,7 +117,7 @@ export default async function Dashboard() {
                     </div>
                   </div>
                   <span className="rounded-lg bg-danger/10 px-2 py-1 text-xs font-bold text-danger">
-                    {st.skor ?? "—"}
+                    {st.skor ?? "-"}
                   </span>
                   <ChevronRight className="h-4 w-4 shrink-0 text-muted" />
                 </Link>

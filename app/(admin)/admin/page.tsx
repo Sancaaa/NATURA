@@ -80,8 +80,8 @@ export default async function AdminPage() {
               ) : (
                 users.map((u) => (
                   <tr key={u.id} className="hover:bg-black/[0.02]">
-                    <td className="p-3 font-medium">{u.nama || "—"}</td>
-                    <td className="p-3 text-muted">{u.email || "—"}</td>
+                    <td className="p-3 font-medium">{u.nama || "-"}</td>
+                    <td className="p-3 text-muted">{u.email || "-"}</td>
                     <td className="p-3">
                       <Badge
                         tone={

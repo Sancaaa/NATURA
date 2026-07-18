@@ -215,7 +215,7 @@ export function AnnotationsEditor({
             <textarea
               value={it.body.join("\n")}
               onChange={(e) => patch(i, { body: e.target.value.split("\n") })}
-              placeholder="Penjelasan — satu poin per baris"
+              placeholder="Penjelasan - satu poin per baris"
               className={`${inputCls} min-h-16 px-2 py-1`}
             />
 

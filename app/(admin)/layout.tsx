@@ -15,7 +15,7 @@ export default async function AdminLayout({
         <span className="grid h-7 w-7 place-items-center rounded-md bg-ink text-white">
           <ShieldCheck className="h-4 w-4" />
         </span>
-        <span className="font-bold">NATURA — Admin</span>
+        <span className="font-bold">NATURA - Admin</span>
         <form action={signOutAction} className="ml-auto">
           <button type="submit" className="text-xs text-muted">
             Keluar

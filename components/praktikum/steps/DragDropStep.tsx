@@ -15,8 +15,8 @@ export function DragDropStep({ step, onComplete }: StepProps<Step>) {
   const START = { x: 16, y: 84 }; // posisi awal chip (persen)
   const ref = useRef<HTMLDivElement>(null);
   const grab = useRef({ dx: 0, dy: 0 }); // offset genggaman (px) dari pusat chip
-  const posRef = useRef(START); // posisi terkini — sumber kebenaran uji zona
-  const draggingRef = useRef(false); // status seret — kebal render yang tertinggal
+  const posRef = useRef(START); // posisi terkini - sumber kebenaran uji zona
+  const draggingRef = useRef(false); // status seret - kebal render yang tertinggal
   const [pos, setPos] = useState(START); // cermin untuk render
   const [dragging, setDragging] = useState(false); // hanya untuk gaya visual
   const [done, setDone] = useState(false);
@@ -39,7 +39,7 @@ export function DragDropStep({ step, onComplete }: StepProps<Step>) {
     draggingRef.current = true;
     setDragging(true);
     // capture agar seret tetap terlacak meski jari/kursor keluar dari chip;
-    // defensif — sebagian browser melempar bila pointerId tak aktif.
+    // defensif - sebagian browser melempar bila pointerId tak aktif.
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {}

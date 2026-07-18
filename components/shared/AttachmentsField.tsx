@@ -84,7 +84,7 @@ export function AttachmentsField({
         <input type="hidden" name={name} value={JSON.stringify(value)} />
       )}
 
-      {/* Daftar lampiran yang sudah ada — nama bisa disunting. */}
+      {/* Daftar lampiran yang sudah ada - nama bisa disunting. */}
       {value.length > 0 && (
         <ul className="divide-y divide-line rounded-lg border border-line">
           {value.map((a, i) => (

@@ -1,28 +1,28 @@
-# 05 — Roadmap
+# 05 - Roadmap
 
-Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** — cukup mulus & lengkap secara visual untuk **direkam jadi video dokumentasi** — baru kemudian backend nyata, AI, dan simulasi. Durasi indikatif, bergantung ukuran tim.
+Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** - cukup mulus & lengkap secara visual untuk **direkam jadi video dokumentasi** - baru kemudian backend nyata, AI, dan simulasi. Durasi indikatif, bergantung ukuran tim.
 
 ## Status terkini
 
-- ✅ **Fase 0 (mockup)** — selesai; masih tersedia sebagai "mode demo" (fallback `lib/data/`).
-- ✅ **Fase 1 (backend + MVP)** — berjalan: Supabase (Cloud/self-host), auth berperan + RLS, konten master **di DB**, kuis manual, kelas + kode gabung + penugasan + skor.
-- 🟡 **Fase 2 (AI)** — sebagian: **kuis generatif Gemini** (draf → review guru → publish) sudah ada; **RAG/tutor grounded** belum.
+- ✅ **Fase 0 (mockup)** - selesai; masih tersedia sebagai "mode demo" (fallback `lib/data/`).
+- ✅ **Fase 1 (backend + MVP)** - berjalan: Supabase (Cloud/self-host), auth berperan + RLS, konten master **di DB**, kuis manual, kelas + kode gabung + penugasan + skor.
+- 🟡 **Fase 2 (AI)** - sebagian: **kuis generatif Gemini** (draf → review guru → publish) sudah ada; **RAG/tutor grounded** belum.
 - ➕ **Panel admin lengkap** (di luar urutan fase awal): kelola pengguna, CRUD konten, unggah `.glb`/`.mind` ke Storage, **AR data-driven** (tanaman & alat), dan **editor titik highlight** 3D.
-- ⏳ **Fase 3 (simulasi lab multi-kartu)** dan **Fase 4 (polish & skala)** — belum.
+- ⏳ **Fase 3 (simulasi lab multi-kartu)** dan **Fase 4 (polish & skala)** - belum.
 
-## Fase 0 — Mockup Fungsional (untuk Video Dokumentasi) ⭐ prioritas awal
+## Fase 0 - Mockup Fungsional (untuk Video Dokumentasi) ⭐ prioritas awal
 
-**Tujuan**: aplikasi terlihat & terasa "jadi" dan bisa diklik ujung-ke-ujung untuk direkam — **tanpa** harus membangun backend penuh dulu. Fokus ke tampilan, alur mulus, dan **satu momen AR yang benar-benar berfungsi** sebagai sorotan video.
+**Tujuan**: aplikasi terlihat & terasa "jadi" dan bisa diklik ujung-ke-ujung untuk direkam - **tanpa** harus membangun backend penuh dulu. Fokus ke tampilan, alur mulus, dan **satu momen AR yang benar-benar berfungsi** sebagai sorotan video.
 
 **Lingkup:**
 
 - **Front-end Next.js + design system** (tokens, komponen, nav siswa, layout dashboard guru).
-- **Data dummy** (JSON/seed lokal atau state di aplikasi) — belum perlu database nyata.
+- **Data dummy** (JSON/seed lokal atau state di aplikasi) - belum perlu database nyata.
 - **AR beneran untuk demo**: **1 kartu tanaman** jalan penuh via MindAR + 1 model GLB, plus fallback "Lihat 3D". Ini bintang videonya.
 - **Layar-layar inti bisa diklik** dengan data dummy:
   - Siswa: Beranda → Pindai (AR) → Library (baca 1 modul) → Kuis (statis, bisa dijawab & lihat skor) → Profil.
   - Guru: Dashboard dengan grafik & tabel data dummy, tampilan kelas & detail siswa.
-- **Tutor AI**: colok cepat ke **Gemini Flash** (free tier) untuk chat yang benar-benar menjawab — atau distub dengan jawaban contoh bila ingin lebih cepat.
+- **Tutor AI**: colok cepat ke **Gemini Flash** (free tier) untuk chat yang benar-benar menjawab - atau distub dengan jawaban contoh bila ingin lebih cepat.
 - **Deploy ke VPS** (Caddy + TLS) supaya bisa diakses & direkam dari perangkat nyata (HP untuk AR).
 - Autentikasi cukup **placeholder** (pilih peran siswa/guru), belum perlu auth nyata.
 
@@ -30,7 +30,7 @@ Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** —
 
 **Yang sengaja ditunda ke fase berikut**: database & auth nyata, RLS, RAG, kuis generatif, simulasi multi-kartu, offline penuh.
 
-## Fase 1 — Backend Nyata + MVP
+## Fase 1 - Backend Nyata + MVP
 
 **Tujuan**: mengubah mockup jadi aplikasi sungguhan (data persisten, multi-pengguna).
 
@@ -42,7 +42,7 @@ Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** —
 - **Library**: caching offline (Workbox).
 - **Deliverable**: alur belajar & penugasan lengkap untuk satu kelas percobaan, data tersimpan.
 
-## Fase 2 — Tutor AI + Kuis Generatif + RAG
+## Fase 2 - Tutor AI + Kuis Generatif + RAG
 
 **Tujuan**: lapisan AI yang aman & hemat, dengan RAG tanpa GPU.
 
@@ -52,17 +52,17 @@ Strategi disesuaikan dengan kebutuhan Anda: **mockup fungsional lebih dulu** —
 - **Dashboard**: analitik lebih kaya (tren skor, aktivitas, siswa tertinggal) via Realtime.
 - **Deliverable**: siswa bisa bertanya & berlatih soal generatif; guru memakai draf AI dengan aman.
 
-## Fase 3 — Simulasi Lab Multi-Kartu
+## Fase 3 - Simulasi Lab Multi-Kartu
 
 **Tujuan**: fitur pembeda inti NATURA.
 
 - Deteksi urutan kartu (state machine, multi-target MindAR).
 - Umpan balik per langkah + animasi hasil; simpan `lab_progress`.
 - Minimal 2 simulasi (mis. pembuatan simplisia & ekstraksi maserasi).
-- Gamifikasi (poin/badge/streak) — opsional.
+- Gamifikasi (poin/badge/streak) - opsional.
 - **Deliverable**: siswa menyelesaikan prosedur lab virtual bertahap.
 
-## Fase 4 — Polish & Skala
+## Fase 4 - Polish & Skala
 
 - Perluas konten (tanaman & alat sesuai kurikulum penuh).
 - Offline lebih lengkap; notifikasi push tugas.

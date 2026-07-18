@@ -1,4 +1,4 @@
-# 03 — Desain Sistem & UX
+# 03 - Desain Sistem & UX
 
 Dua pengalaman berbeda dalam satu produk:
 
@@ -17,7 +17,7 @@ Dua pengalaman berbeda dalam satu produk:
 
 > Nilai berikut adalah **titik awal** yang bisa disetel. Brand memakai biru sebagai warna utama dengan aksen *earth tone* (oranye) sebagai komplemen; area data (dashboard) tetap netral agar terbaca.
 >
-> Sumber kebenaran token ada di [`app/globals.css`](../app/globals.css) (blok `@theme`) — tabel ini hanya cerminannya.
+> Sumber kebenaran token ada di [`app/globals.css`](../app/globals.css) (blok `@theme`) - tabel ini hanya cerminannya.
 
 **Warna (light):**
 
@@ -30,16 +30,16 @@ Dua pengalaman berbeda dalam satu produk:
 | `surface` | `#FFFFFF` | kartu, panel |
 | `text` (`ink`) | `#171B2E` | teks utama |
 | `muted` | `#5F6684` | teks sekunder |
-| `success` | hijau `#15803D` | status berhasil — sengaja **bukan** biru agar beda dari aksi utama |
+| `success` | hijau `#15803D` | status berhasil - sengaja **bukan** biru agar beda dari aksi utama |
 | `warn/danger` | `#D98A3D` / `#C0392B` | peringatan, galat |
 
 - Netral (`ink`/`muted`/`line`/`bg`) di-*tint* kebiruan agar menyatu dengan primary.
 - Aksen tetap oranye: komplemen biru, dan tetap terbaca di atas umpan kamera AR.
 - Hijau hanya tersisa untuk hal yang bermakna: `success`, model 3D tanaman (realisme), dan spesimen mikroskop.
-- Sediakan **mode gelap** (penting untuk pemakaian AR di ruang redup) — override via `prefers-color-scheme` + toggle manual.
+- Sediakan **mode gelap** (penting untuk pemakaian AR di ruang redup) - override via `prefers-color-scheme` + toggle manual.
 - Dashboard guru: pakai netral + aksen warna hanya untuk status.
 
-**Tipografi:** sans-serif yang enak dibaca di layar & mendukung Bahasa Indonesia — mis. **Plus Jakarta Sans** atau **Inter**. Skala modular (mis. 12/14/16/20/24/32). Boleh serif display untuk judul brand saja.
+**Tipografi:** sans-serif yang enak dibaca di layar & mendukung Bahasa Indonesia - mis. **Plus Jakarta Sans** atau **Inter**. Skala modular (mis. 12/14/16/20/24/32). Boleh serif display untuk judul brand saja.
 
 **Spacing:** basis 4px (4/8/12/16/24/32/48). **Radius:** 8–16px (kartu lembut). **Shadow:** halus, berlapis.
 
@@ -47,7 +47,7 @@ Dua pengalaman berbeda dalam satu produk:
 
 ## UX Siswa (mobile)
 
-**Navigasi bawah (bottom nav)** — 5 tab, target sentuh besar:
+**Navigasi bawah (bottom nav)** - 5 tab, target sentuh besar:
 
 `Beranda` · `Pindai (AR)` · `Library` · `Kuis` · `Profil`
 
@@ -67,7 +67,7 @@ Alur inti:
 | Minta izin kamera | Layar onboarding menjelaskan kenapa kamera dibutuhkan sebelum prompt sistem |
 | Mencari kartu | Overlay "Arahkan ke kartu NATURA", reticle/animasi pemindaian |
 | Terdeteksi | Model 3D muncul menempel di kartu; panel info naik dari bawah |
-| Tracking hilang | Pesan lembut "Kartu keluar dari layar — arahkan kembali" |
+| Tracking hilang | Pesan lembut "Kartu keluar dari layar - arahkan kembali" |
 | Cahaya kurang / kartu tak dikenali | Tips ("tambah cahaya", "dekatkan kartu") + tombol bantuan |
 | Simulasi multi-kartu | Indikator langkah (mis. 2/5), umpan balik benar/salah, prompt "scan kartu berikutnya" |
 | Fallback tanpa AR | Tombol "Lihat 3D" (viewer tanpa kamera) |

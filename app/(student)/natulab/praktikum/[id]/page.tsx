@@ -4,7 +4,7 @@ import { SAMPLE_SCENARIOS } from "@/lib/praktikum/samples";
 
 // Sumber skenario masih dari SAMPLE_SCENARIOS (data literal). Di produksi,
 // ganti baris `scenario = ...` dengan query ke tabel `scenarios`
-// (mirror lib/db/quizzes.ts) — runner-nya tidak berubah.
+// (mirror lib/db/quizzes.ts) - runner-nya tidak berubah.
 export default async function PraktikumPage({
   params,
 }: {

@@ -8,7 +8,7 @@ export const isServiceConfigured =
   supabaseUrl.length > 0 && serviceKey.length > 0;
 
 /**
- * Klien Supabase dengan **service role** — HANYA server, jangan pernah diimpor
+ * Klien Supabase dengan **service role** - HANYA server, jangan pernah diimpor
  * ke komponen client. Untuk operasi admin (mis. hapus akun auth.users).
  */
 export function createAdminClient() {

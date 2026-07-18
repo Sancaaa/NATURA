@@ -1,6 +1,6 @@
 # Model 3D (GLB)
 
-**Cara termudah:** unggah `.glb` lewat panel admin (Tanaman/Alat → form) — berkas
+**Cara termudah:** unggah `.glb` lewat panel admin (Tanaman/Alat → form) - berkas
 masuk ke Supabase Storage (bucket publik `assets/models/`) dan URL-nya otomatis
 tersimpan di DB.
 

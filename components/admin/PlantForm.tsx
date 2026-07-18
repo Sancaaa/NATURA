@@ -144,7 +144,7 @@ export function PlantForm({ plant }: { plant?: Plant }) {
       <div className="grid gap-4 md:grid-cols-2">
         <FileUploadField
           label="Model 3D (.glb)"
-          hint="Opsional — untuk mode 3D & AR"
+          hint="Opsional - untuk mode 3D & AR"
           accept=".glb"
           folder="models"
           value={f.model3dUrl ?? ""}
@@ -152,7 +152,7 @@ export function PlantForm({ plant }: { plant?: Plant }) {
         />
         <FileUploadField
           label="Target AR (.mind)"
-          hint="Opsional — mengaktifkan pindai kamera"
+          hint="Opsional - mengaktifkan pindai kamera"
           accept=".mind"
           folder="ar-targets"
           value={f.arTargetUrl ?? ""}

@@ -29,7 +29,7 @@ export default async function KelasList() {
                 <div className="flex-1">
                   <div className="font-bold">{c.nama}</div>
                   <div className="text-xs text-muted">
-                    {c.tahunAjaran ?? "—"} · {c.jumlahSiswa} siswa
+                    {c.tahunAjaran ?? "-"} · {c.jumlahSiswa} siswa
                   </div>
                 </div>
                 <Badge tone="muted">Kode {c.joinCode}</Badge>

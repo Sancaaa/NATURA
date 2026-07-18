@@ -1,5 +1,5 @@
 // ============================================================
-// NATURA — Skenario Praktikum (kontrak tipe)
+// NATURA - Skenario Praktikum (kontrak tipe)
 //
 // Prinsip: SKENARIO = DATA, bukan kode. Satu skenario adalah daftar
 // "langkah" (step). Tiap langkah punya `tipe` yang menunjuk ke satu
@@ -8,7 +8,7 @@
 // primitif yang sudah terdaftar.
 //
 // Hybrid sejak awal: primitif 2D (tap/drag/slider) dan primitif 3D/AR
-// (`model-3d`) hidup di union yang sama. Runner tidak peduli 2D vs 3D —
+// (`model-3d`) hidup di union yang sama. Runner tidak peduli 2D vs 3D -
 // ia hanya melihat `tipe` lalu menyerahkannya ke komponen di registry.
 // ============================================================
 
@@ -84,7 +84,7 @@ export interface Model3DStep extends BaseStep {
   arTargetUrl?: string;
 }
 
-/** Union semua langkah — inilah "bahasa" skenario. */
+/** Union semua langkah - inilah "bahasa" skenario. */
 export type ScenarioStep =
   | InfoStep
   | SliderRevealStep

@@ -406,7 +406,7 @@ async function myClasses(
 }
 
 /**
- * Rata-rata skor per topik — analitik nyata untuk dashboard.
+ * Rata-rata skor per topik - analitik nyata untuk dashboard.
  * Sebelumnya chart ini memakai angka hardcoded; kini dihitung dari
  * submissions milik kelas guru, dikelompokkan per topik kuis.
  */

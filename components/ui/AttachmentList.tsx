@@ -1,7 +1,7 @@
 import { FileText, LinkIcon } from "lucide-react";
 import type { Attachment } from "@/lib/attachments";
 
-/** Daftar lampiran (file/link pendukung) — tampilan siswa. */
+/** Daftar lampiran (file/link pendukung) - tampilan siswa. */
 export function AttachmentList({
   items,
   title = "Lampiran",

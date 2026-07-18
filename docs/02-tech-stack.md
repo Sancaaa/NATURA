@@ -1,9 +1,9 @@
-# 02 — Tech Stack & Arsitektur
+# 02 - Tech Stack & Arsitektur
 
 ## Batasan Infrastruktur (menentukan banyak keputusan)
 
 - **Self-host**: tersedia server **on-premise** + **VPS**. Data sedapat mungkin di infrastruktur sendiri (bonus privasi untuk data siswa di bawah umur).
-- **Tanpa GPU**: semua komponen yang berjalan di infrastruktur sendiri harus jalan di **CPU** — Next.js, Postgres, pgvector, embedding kecil, object storage semuanya CPU-friendly.
+- **Tanpa GPU**: semua komponen yang berjalan di infrastruktur sendiri harus jalan di **CPU** - Next.js, Postgres, pgvector, embedding kecil, object storage semuanya CPU-friendly.
 - **LLM adalah satu-satunya ketergantungan cloud**: model bahasa yang bagus tidak realistis di-*self-host* tanpa GPU, jadi kita pakai **Gemini Flash (API cloud)**. Ini justru menyederhanakan: seluruh sistem self-host, hanya panggilan LLM yang keluar.
 
 ## Ringkasan Pilihan
@@ -17,9 +17,9 @@
 | AR | **MindAR (image tracking) + Three.js / react-three-fiber** | Kartu = *image target*; jalan di Android **dan** iOS. |
 | 3D | **glTF/GLB + Draco** via **@react-three/fiber + drei** | Format 3D web standar, ukuran kecil. |
 | Backend & DB | **Supabase self-hosted** (Docker): Postgres, Auth (GoTrue), Storage, Realtime, RLS | Relasional + auth berbasis peran + RLS + `pgvector`, semua di infrastruktur sendiri. |
-| Vector store | **pgvector** (di Postgres) | Pencarian kemiripan jalan di CPU — tak butuh GPU/DB vektor terpisah. |
+| Vector store | **pgvector** (di Postgres) | Pencarian kemiripan jalan di CPU - tak butuh GPU/DB vektor terpisah. |
 | **LLM** | **Google Gemini Flash** | Tutor Q&A & pembuatan kuis. Cepat, murah, ada free tier. |
-| Embeddings | **Model kecil di CPU** (fastembed/ONNX, mis. `multilingual-e5-small`) — atau Gemini Embeddings API | RAG tanpa GPU; model multilingual mendukung Bahasa Indonesia. |
+| Embeddings | **Model kecil di CPU** (fastembed/ONNX, mis. `multilingual-e5-small`) - atau Gemini Embeddings API | RAG tanpa GPU; model multilingual mendukung Bahasa Indonesia. |
 | Object storage | **Supabase Storage** (bawaan) atau **MinIO** (S3-compatible, self-host) | Simpan model 3D, gambar, buku. |
 | Reverse proxy / TLS | **Caddy** (atau Traefik/Nginx) | HTTPS otomatis (Let's Encrypt) di VPS. |
 | VPN antar-node | **WireGuard / Tailscale** | Hubungkan on-premise ↔ VPS secara privat. |
@@ -63,9 +63,9 @@ Pemisahan peran node: **VPS** jadi permukaan publik (diakses siswa/guru dari int
 
 ## AR: Pendekatan & Alasan
 
-**Masalah**: WebXR AR **tidak** didukung Safari iOS — kalau mengandalkannya, pengguna iPhone tak kebagian AR.
+**Masalah**: WebXR AR **tidak** didukung Safari iOS - kalau mengandalkannya, pengguna iPhone tak kebagian AR.
 
-**Solusi**: **image-tracking WebAR** — kamera (`getUserMedia`) + computer vision di browser, jalan di Android **dan** iOS.
+**Solusi**: **image-tracking WebAR** - kamera (`getUserMedia`) + computer vision di browser, jalan di Android **dan** iOS.
 
 | Opsi | Catatan |
 |---|---|
@@ -80,7 +80,7 @@ Pemisahan peran node: **VPS** jadi permukaan publik (diakses siswa/guru dari int
 
 **Fallback**: bila kamera/AR tak tersedia, sediakan mode **"Lihat 3D"** (viewer `@react-three/fiber` tanpa kamera).
 
-> Catatan: semua pemrosesan AR terjadi **di perangkat pengguna** (browser), bukan di server kita — jadi tak menambah beban komputasi infrastruktur tanpa GPU.
+> Catatan: semua pemrosesan AR terjadi **di perangkat pengguna** (browser), bukan di server kita - jadi tak menambah beban komputasi infrastruktur tanpa GPU.
 
 ## LLM: Tutor & Pembuatan Kuis (Gemini Flash)
 
@@ -93,23 +93,23 @@ Pemisahan peran node: **VPS** jadi permukaan publik (diakses siswa/guru dari int
 | Tutor Q&A & pembuatan kuis (default) | **Gemini Flash Latest** (`gemini-flash-latest`) | Cepat, murah, multimodal, mendukung Bahasa Indonesia. |
 | Tugas ringan/volume tinggi (hint, klasifikasi topik, ringkas) | **Gemini Flash Lite Latest** (`gemini-flash-lite-latest`) | Termurah/tercepat. |
 
-> Verifikasi ID model terbaru di dokumentasi Google saat implementasi (penamaan bisa berubah). Ada **free tier** (dengan batas laju) yang berguna untuk tahap mockup & pengembangan. Untuk produksi/skala kelas, gunakan tier berbayar (dan cek kebijakan penggunaan data — tier berbayar umumnya **tidak** memakai data untuk melatih model).
+> Verifikasi ID model terbaru di dokumentasi Google saat implementasi (penamaan bisa berubah). Ada **free tier** (dengan batas laju) yang berguna untuk tahap mockup & pengembangan. Untuk produksi/skala kelas, gunakan tier berbayar (dan cek kebijakan penggunaan data - tier berbayar umumnya **tidak** memakai data untuk melatih model).
 
 ### Teknik penting
 
 - **Structured output**: pakai `responseMimeType: "application/json"` + `responseSchema` agar kuis keluar sebagai JSON valid (soal, opsi, kunci, pembahasan). Hindari parsing teks bebas.
-- **Safety settings**: Gemini punya `safetySettings` per kategori bahaya — **penting** karena pengguna anak di bawah umur. Setel ketat + guardrail di *system instruction* (peran = tutor farmakognosi SMK, Bahasa Indonesia, tolak topik di luar cakupan/tak pantas).
+- **Safety settings**: Gemini punya `safetySettings` per kategori bahaya - **penting** karena pengguna anak di bawah umur. Setel ketat + guardrail di *system instruction* (peran = tutor farmakognosi SMK, Bahasa Indonesia, tolak topik di luar cakupan/tak pantas).
 - **Streaming** (`generateContentStream`) untuk jawaban tutor → UX responsif.
 - **Context caching** Gemini untuk konteks materi yang berulang → hemat biaya.
 - **SDK**: `@google/genai` (SDK unified terbaru untuk Node/TypeScript).
 
-### RAG (grounding tutor & sumber soal) — tanpa GPU
+### RAG (grounding tutor & sumber soal) - tanpa GPU
 
-1. Ingest item library → potong jadi *chunk* → buat **embedding di CPU** (mis. `multilingual-e5-small` via fastembed/ONNX — kecil, cukup untuk Bahasa Indonesia, tak butuh GPU) → simpan di `pgvector`.
+1. Ingest item library → potong jadi *chunk* → buat **embedding di CPU** (mis. `multilingual-e5-small` via fastembed/ONNX - kecil, cukup untuk Bahasa Indonesia, tak butuh GPU) → simpan di `pgvector`.
 2. Saat siswa bertanya: embed pertanyaan → *retrieve* chunk relevan → susun prompt (materi + pertanyaan) → jawaban Gemini menyertakan **sumber**.
 3. Manfaat: jawaban akurat, sesuai materi sekolah, terlacak sumbernya (mengurangi halusinasi).
 
-> Alternatif embedding: **Gemini Embeddings API** (mis. `gemini-embedding-001`) — lebih simpel tapi menambah panggilan cloud. Pilih embedding CPU lokal bila ingin RAG tetap di infrastruktur sendiri.
+> Alternatif embedding: **Gemini Embeddings API** (mis. `gemini-embedding-001`) - lebih simpel tapi menambah panggilan cloud. Pilih embedding CPU lokal bila ingin RAG tetap di infrastruktur sendiri.
 
 ## Deployment & Operasional (self-host)
 
@@ -123,13 +123,13 @@ Pemisahan peran node: **VPS** jadi permukaan publik (diakses siswa/guru dari int
 ## Offline / PWA
 
 - **Di-cache**: app shell, aset AR (GLB, `.mind`), gambar, item library yang diunduh siswa.
-- **Butuh jaringan**: tutor AI, kuis generatif, sinkron progres — tampilkan status offline dengan jelas.
+- **Butuh jaringan**: tutor AI, kuis generatif, sinkron progres - tampilkan status offline dengan jelas.
 - Strategi Workbox: *cache-first* untuk aset statis & 3D, *network-first* untuk data dinamis, *stale-while-revalidate* untuk library.
 
 ## Keamanan & Privasi Data (pengguna anak di bawah umur)
 
 - **Data di infrastruktur sendiri** (on-prem) → kontrol penuh atas data siswa; hanya **teks** yang dikirim ke Gemini keluar dari sistem.
-- **Minimalkan PII yang dikirim ke LLM** — jangan sertakan nama/identitas siswa dalam prompt bila tak perlu.
+- **Minimalkan PII yang dikirim ke LLM** - jangan sertakan nama/identitas siswa dalam prompt bila tak perlu.
 - **Row-Level Security**: siswa hanya akses datanya & kelas yang diikuti; guru hanya kelas yang diampu.
 - Percakapan tutor tersimpan untuk visibilitas guru & audit; batasi aksesnya.
 - Setel `safetySettings` Gemini ketat + guardrail konten; tangani penolakan model dengan anggun.

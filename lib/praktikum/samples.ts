@@ -1,6 +1,6 @@
 import type { ScenarioDefinition } from "./types";
 
-// Skenario contoh — 100% DATA. Perhatikan: tak ada satu pun kode React di sini.
+// Skenario contoh - 100% DATA. Perhatikan: tak ada satu pun kode React di sini.
 // Di produksi, dokumen seperti ini disimpan di kolom `scenarios.definition`
 // (jsonb) dan disusun guru/admin lewat editor visual.
 //
@@ -12,7 +12,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
     id: "mikroskopis-amilum",
     judul: "Identifikasi Mikroskopis Serbuk Pati",
     deskripsi:
-      "Uji kemurnian serbuk amilum di bawah mikroskop virtual — dari preparat hingga fokus.",
+      "Uji kemurnian serbuk amilum di bawah mikroskop virtual - dari preparat hingga fokus.",
     steps: [
       {
         id: "intro",
@@ -56,7 +56,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         max: 100,
         target: [68, 80],
         caption: "Butir pati: elips konsentris dengan hilus di tengah.",
-        feedbackBenar: "Fokus tepat — lanjut",
+        feedbackBenar: "Fokus tepat - lanjut",
       },
       {
         id: "amati-amilum",

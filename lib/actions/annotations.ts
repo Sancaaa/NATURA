@@ -61,7 +61,7 @@ function num(v: unknown): number {
 
 /**
  * Simpan seluruh titik highlight untuk sebuah tanaman/alat (ganti total).
- * Pola ganti-semua (hapus lalu sisip) — sama seperti updateQuiz.
+ * Pola ganti-semua (hapus lalu sisip) - sama seperti updateQuiz.
  */
 export async function saveAnnotations(
   subjectType: SubjectType,

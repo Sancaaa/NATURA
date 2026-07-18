@@ -7,7 +7,7 @@ import { parseAttachments } from "@/lib/attachments";
 
 export type ActionState = { error?: string; ok?: string };
 
-/** Lampiran datang sebagai JSON dari form — jangan percaya mentah-mentah. */
+/** Lampiran datang sebagai JSON dari form - jangan percaya mentah-mentah. */
 function readLampiran(raw: FormDataEntryValue | null) {
   if (typeof raw !== "string" || !raw.trim()) return [];
   try {

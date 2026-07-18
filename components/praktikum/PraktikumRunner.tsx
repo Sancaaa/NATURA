@@ -12,7 +12,7 @@ import type { ScenarioDefinition } from "@/lib/praktikum/types";
 // ENGINE. Satu runner untuk SEMUA skenario (mirip QuizRunner untuk kuis).
 // Ia berjalan melintasi `definition.steps`, menampilkan langkah aktif via
 // STEP_REGISTRY, dan maju saat primitif memanggil onComplete().
-// Runner TIDAK tahu isi tiap primitif — 2D atau 3D sama saja baginya.
+// Runner TIDAK tahu isi tiap primitif - 2D atau 3D sama saja baginya.
 // ============================================================
 export function PraktikumRunner({
   scenario,

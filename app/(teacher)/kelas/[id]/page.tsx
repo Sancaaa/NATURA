@@ -23,7 +23,7 @@ export default async function KelasDetail({
       <div>
         <h1 className="text-2xl font-extrabold">{kelas.nama}</h1>
         <p className="text-sm text-muted">
-          {kelas.tahunAjaran ?? "—"} · Kode gabung <b>{kelas.joinCode}</b>
+          {kelas.tahunAjaran ?? "-"} · Kode gabung <b>{kelas.joinCode}</b>
         </p>
       </div>
 
@@ -92,7 +92,7 @@ export default async function KelasDetail({
                         </Link>
                       </td>
                       <td className="p-3 font-semibold">
-                        {s.skorRataRata ?? "—"}
+                        {s.skorRataRata ?? "-"}
                       </td>
                       <td className="p-3 text-muted">{s.jumlahSelesai}</td>
                     </tr>

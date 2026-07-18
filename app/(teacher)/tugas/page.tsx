@@ -9,7 +9,7 @@ import { Paperclip, Plus } from "lucide-react";
 
 /**
  * Manajemen tugas lintas kelas. Form pembuatan tetap ada di /kelas/[id]
- * karena tugas selalu terikat satu kelas — halaman ini untuk memantau &
+ * karena tugas selalu terikat satu kelas - halaman ini untuk memantau &
  * mengelola semuanya di satu tempat.
  */
 export default async function ManajemenTugas() {

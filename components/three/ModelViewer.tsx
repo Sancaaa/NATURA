@@ -67,7 +67,7 @@ export default function ModelViewer({
       group.add(soil);
 
       // Batang & daun tetap hijau: ini realisme model tanaman, bukan warna
-      // brand — jangan ikut diubah saat palet UI berganti.
+      // brand - jangan ikut diubah saat palet UI berganti.
       const stem = new THREE.Mesh(
         new THREE.CylinderGeometry(0.05, 0.07, 1.1, 12),
         new THREE.MeshStandardMaterial({ color: "#2e7d4f" }),
@@ -96,7 +96,7 @@ export default function ModelViewer({
     };
 
     // Pusatkan & bingkai model yang dimuat agar tidak muncul raksasa/mungil
-    // atau di luar layar — GLB dari sumber apa pun punya skala berbeda-beda.
+    // atau di luar layar - GLB dari sumber apa pun punya skala berbeda-beda.
     const frameModel = (obj: THREE.Object3D) => {
       const box = new THREE.Box3().setFromObject(obj);
       const size = box.getSize(new THREE.Vector3());

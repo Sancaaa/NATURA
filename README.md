@@ -14,8 +14,8 @@ Aplikasi web-based (PWA) untuk pembelajaran **Farmakognosi** siswa SMK Farmasi, 
 | Aspek | Keputusan |
 |---|---|
 | Bentuk aplikasi | Progressive Web App (installable, offline-capable), bukan native |
-| Teknologi AR | Image-tracking WebAR (MindAR + Three.js) — kartu = *image target*, jalan di browser Android **dan** iOS |
-| Backend & data | Supabase (Postgres + Auth + Storage + Realtime + RLS, `pgvector`) — **Cloud** atau **self-host** |
+| Teknologi AR | Image-tracking WebAR (MindAR + Three.js) - kartu = *image target*, jalan di browser Android **dan** iOS |
+| Backend & data | Supabase (Postgres + Auth + Storage + Realtime + RLS, `pgvector`) - **Cloud** atau **self-host** |
 | Tutor & kuis AI | **Google Gemini Flash** (API cloud) + RAG (pgvector, embedding jalan di CPU) |
 | Framework | Next.js (App Router) + TypeScript, satu codebase untuk siswa & guru |
 | Hosting | **Self-host tanpa GPU**: app di VPS (Caddy + TLS otomatis), database & storage di on-premise, terhubung lewat VPN privat |
@@ -24,20 +24,20 @@ Aplikasi web-based (PWA) untuk pembelajaran **Farmakognosi** siswa SMK Farmasi, 
 
 ## Peta Dokumen
 
-1. [Kebutuhan Produk](docs/01-kebutuhan-produk.md) — visi, persona, daftar fitur (yang sudah dirapikan & ditambah), kebutuhan fungsional & non-fungsional.
-2. [Tech Stack & Arsitektur](docs/02-tech-stack.md) — pilihan teknologi, arsitektur sistem, pendekatan AR, integrasi LLM + RAG.
-3. [Desain Sistem & UX](docs/03-desain-sistem.md) — design system, alur UX siswa (mobile) & guru (desktop), state UX untuk AR, aksesibilitas.
-4. [Model Data](docs/04-model-data.md) — entitas utama, skema, dan aturan Row-Level Security.
-5. [Roadmap](docs/05-roadmap.md) — lingkup MVP, fase pengembangan, risiko & mitigasi.
+1. [Kebutuhan Produk](docs/01-kebutuhan-produk.md) - visi, persona, daftar fitur (yang sudah dirapikan & ditambah), kebutuhan fungsional & non-fungsional.
+2. [Tech Stack & Arsitektur](docs/02-tech-stack.md) - pilihan teknologi, arsitektur sistem, pendekatan AR, integrasi LLM + RAG.
+3. [Desain Sistem & UX](docs/03-desain-sistem.md) - design system, alur UX siswa (mobile) & guru (desktop), state UX untuk AR, aksesibilitas.
+4. [Model Data](docs/04-model-data.md) - entitas utama, skema, dan aturan Row-Level Security.
+5. [Roadmap](docs/05-roadmap.md) - lingkup MVP, fase pengembangan, risiko & mitigasi.
 
 ## Status
 
 **Fase 1+ berjalan** (bukan lagi sekadar mockup). Sudah tersedia:
 
-- **Konten di database** — tanaman, alat, dan library dibaca dari Postgres (Supabase), dengan *fallback* ke data contoh (`lib/data/`) saat Supabase nonaktif ("mode demo").
-- **Autentikasi berperan** — siswa / guru / admin, dijaga RLS.
-- **Panel admin** (`/admin`) — kelola pengguna (buat akun, ubah peran, hapus), **CRUD konten** (tanaman/alat/library), **unggah `.glb`/`.mind`** ke Supabase Storage, dan **editor titik highlight AR** (3D klik-untuk-tempat).
-- **AR data-driven** — tanaman **dan alat** bisa dipindai; `public/ar/viewer.html` memuat model + target + anotasi per konten dari `/api/ar/[type]/[id]`.
+- **Konten di database** - tanaman, alat, dan library dibaca dari Postgres (Supabase), dengan *fallback* ke data contoh (`lib/data/`) saat Supabase nonaktif ("mode demo").
+- **Autentikasi berperan** - siswa / guru / admin, dijaga RLS.
+- **Panel admin** (`/admin`) - kelola pengguna (buat akun, ubah peran, hapus), **CRUD konten** (tanaman/alat/library), **unggah `.glb`/`.mind`** ke Supabase Storage, dan **editor titik highlight AR** (3D klik-untuk-tempat).
+- **AR data-driven** - tanaman **dan alat** bisa dipindai; `public/ar/viewer.html` memuat model + target + anotasi per konten dari `/api/ar/[type]/[id]`.
 - **Kuis** manual **dan generatif** (Gemini Flash) + **kelas & penugasan** guru.
 
 Sudah lolos `next build`. Fase lanjut (RAG, simulasi lab multi-kartu) ada di [docs/05-roadmap.md](docs/05-roadmap.md).
@@ -50,7 +50,7 @@ npm run dev        # buka http://localhost:3000
 ```
 
 - Halaman awal `/` → login (atau **mode demo** tanpa login bila env Supabase kosong).
-- **Mode demo**: tanpa Supabase, data memakai contoh di `lib/data/` — berguna untuk pratinjau cepat tanpa backend.
+- **Mode demo**: tanpa Supabase, data memakai contoh di `lib/data/` - berguna untuk pratinjau cepat tanpa backend.
 - **Tutor AI**: tanpa key memakai jawaban contoh. Untuk jawaban nyata (Gemini Flash), isi `GEMINI_API_KEY` di `.env.local`.
 - **Mode AR (kamera)**: aset `.glb`/`.mind` diunggah lewat panel admin (Tanaman/Alat) ke Storage, atau ditaruh statis di `public/`. Tombol **Lihat 3D** berjalan tanpa aset. Kamera butuh *secure context* (localhost/HTTPS).
 

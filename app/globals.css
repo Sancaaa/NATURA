@@ -9,7 +9,7 @@
   --color-muted: #5f6684;
   --color-line: #e4e6f0;
   /* success punya hijau sendiri (dulu nilainya sama persis dengan primary).
-     #15803d dipilih agar putih di atasnya tetap 5.0:1 — setara sebelumnya. */
+     #15803d dipilih agar putih di atasnya tetap 5.0:1 - setara sebelumnya. */
   --color-success: #15803d;
   --color-warn: #d98a3d;
   --color-danger: #c0392b;

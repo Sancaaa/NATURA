@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Eye } from "lucide-react";
 import type { ObserveStep as Step, StepProps } from "@/lib/praktikum/types";
 
-// Primitif: amati hasil (gambar/animasi), lalu lanjut. Tanpa syarat lulus —
+// Primitif: amati hasil (gambar/animasi), lalu lanjut. Tanpa syarat lulus -
 // murni pengamatan. `media` kosong → placeholder (berguna untuk prototype).
 export function ObserveStep({ step, onComplete }: StepProps<Step>) {
   return (

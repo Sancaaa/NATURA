@@ -4,7 +4,7 @@ import { supabaseUrl, supabaseAnonKey, isSupabaseConfigured } from "./config";
 
 /**
  * Menyegarkan sesi Supabase pada tiap request (menulis ulang cookie token bila
- * di-refresh). TIDAK me-redirect — gerbang akses ada di requireRole() pada
+ * di-refresh). TIDAK me-redirect - gerbang akses ada di requireRole() pada
  * layout tiap area. Dengan begitu, error jaringan sesaat ke server Auth tidak
  * langsung melempar pengguna yang sudah login ke /masuk.
  */

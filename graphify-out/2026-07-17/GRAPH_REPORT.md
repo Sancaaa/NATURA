@@ -33,11 +33,11 @@
 - ARScene.tsx
 - next.config.mjs
 - postcss.config.mjs
-- 01 — Kebutuhan Produk (PRD)
+- 01 - Kebutuhan Produk (PRD)
 - Panduan Hosting & Deployment NATURA
-- Backend Supabase (Self-Host) — Fase 1
-- 03 — Desain Sistem & UX
-- 05 — Roadmap
+- Backend Supabase (Self-Host) - Fase 1
+- 03 - Desain Sistem & UX
+- 05 - Roadmap
 - Panduan Git & Alur Kerja (Workflow)
 - NATURA
 - AnnotationPicker.tsx
@@ -125,31 +125,31 @@ Nodes (8): background_color, description, display, icons, name, short_name, star
 
 ### Community 12 - "middleware.ts"
 Cohesion: 0.17
-Nodes (12): 02 — Tech Stack & Arsitektur, AR: Pendekatan & Alasan, Arsitektur Sistem, Batasan Infrastruktur (menentukan banyak keputusan), Deployment & Operasional (self-host), Keamanan & Privasi Data (pengguna anak di bawah umur), LLM: Tutor & Pembuatan Kuis (Gemini Flash), Offline / PWA (+4 more)
+Nodes (12): 02 - Tech Stack & Arsitektur, AR: Pendekatan & Alasan, Arsitektur Sistem, Batasan Infrastruktur (menentukan banyak keputusan), Deployment & Operasional (self-host), Keamanan & Privasi Data (pengguna anak di bawah umur), LLM: Tutor & Pembuatan Kuis (Gemini Flash), Offline / PWA (+4 more)
 
 ### Community 16 - "ARScene.tsx"
 Cohesion: 0.18
-Nodes (11): 04 — Model Data, Aturan RLS (garis besar), Entitas Inti, Identitas & Kelas, Konten Master (Farmakognosi), Kuis & Penugasan, Library & RAG, Progres & Gamifikasi *(opsional, fase lanjut)* (+3 more)
+Nodes (11): 04 - Model Data, Aturan RLS (garis besar), Entitas Inti, Identitas & Kelas, Konten Master (Farmakognosi), Kuis & Penugasan, Library & RAG, Progres & Gamifikasi *(opsional, fase lanjut)* (+3 more)
 
-### Community 20 - "01 — Kebutuhan Produk (PRD)"
+### Community 20 - "01 - Kebutuhan Produk (PRD)"
 Cohesion: 0.20
-Nodes (10): 01 — Kebutuhan Produk (PRD), Daftar Fitur (dirapikan & diperluas dari ide awal), Di Luar Lingkup (untuk sekarang), Kebutuhan Fungsional (ringkas), Kebutuhan Non-Fungsional, Konteks Kurikulum (Farmakognosi SMK Farmasi), Persona, Sisi Guru (desktop) (+2 more)
+Nodes (10): 01 - Kebutuhan Produk (PRD), Daftar Fitur (dirapikan & diperluas dari ide awal), Di Luar Lingkup (untuk sekarang), Kebutuhan Fungsional (ringkas), Kebutuhan Non-Fungsional, Konteks Kurikulum (Farmakognosi SMK Farmasi), Persona, Sisi Guru (desktop) (+2 more)
 
 ### Community 21 - "Panduan Hosting & Deployment NATURA"
 Cohesion: 0.20
 Nodes (9): 1. Kebutuhan Sistem (Prasyarat), 2. Deployment Database (Supabase Self-Hosted), 3. Deployment Aplikasi Web (Next.js), 4. Konfigurasi Domain dan HTTPS (Caddy), A. Persiapan Aplikasi, A. Server Database (On-Premise), B. Menjalankan dengan PM2, B. Server Frontend (VPS Publik) (+1 more)
 
-### Community 22 - "Backend Supabase (Self-Host) — Fase 1"
+### Community 22 - "Backend Supabase (Self-Host) - Fase 1"
 Cohesion: 0.22
-Nodes (8): Backend Supabase (Self-Host) — Fase 1, Cara menjalankan, Catatan, Isi folder, Opsi A — Cepat untuk pengembangan (Supabase CLI), Opsi B — Self-host produksi (on-premise/VPS), Sambungkan ke aplikasi, Terapkan skema & data
+Nodes (8): Backend Supabase (Self-Host) - Fase 1, Cara menjalankan, Catatan, Isi folder, Opsi A - Cepat untuk pengembangan (Supabase CLI), Opsi B - Self-host produksi (on-premise/VPS), Sambungkan ke aplikasi, Terapkan skema & data
 
-### Community 23 - "03 — Desain Sistem & UX"
+### Community 23 - "03 - Desain Sistem & UX"
 Cohesion: 0.25
-Nodes (8): 03 — Desain Sistem & UX, Aksesibilitas, Design Tokens, Pedoman Aset 3D, Prinsip Desain, State UX untuk AR (wajib dirancang eksplisit), UX Guru (desktop), UX Siswa (mobile)
+Nodes (8): 03 - Desain Sistem & UX, Aksesibilitas, Design Tokens, Pedoman Aset 3D, Prinsip Desain, State UX untuk AR (wajib dirancang eksplisit), UX Guru (desktop), UX Siswa (mobile)
 
-### Community 24 - "05 — Roadmap"
+### Community 24 - "05 - Roadmap"
 Cohesion: 0.25
-Nodes (8): 05 — Roadmap, Definisi "Selesai", Fase 0 — Mockup Fungsional (untuk Video Dokumentasi) ⭐ prioritas awal, Fase 1 — Backend Nyata + MVP, Fase 2 — Tutor AI + Kuis Generatif + RAG, Fase 3 — Simulasi Lab Multi-Kartu, Fase 4 — Polish & Skala, Risiko & Mitigasi
+Nodes (8): 05 - Roadmap, Definisi "Selesai", Fase 0 - Mockup Fungsional (untuk Video Dokumentasi) ⭐ prioritas awal, Fase 1 - Backend Nyata + MVP, Fase 2 - Tutor AI + Kuis Generatif + RAG, Fase 3 - Simulasi Lab Multi-Kartu, Fase 4 - Polish & Skala, Risiko & Mitigasi
 
 ### Community 26 - "Panduan Git & Alur Kerja (Workflow)"
 Cohesion: 0.33
@@ -157,7 +157,7 @@ Nodes (5): 1. Strategi Percabangan (Branching Strategy), 2. Aturan Penulisan Com
 
 ### Community 27 - "NATURA"
 Cohesion: 0.33
-Nodes (6): Fase 1 — Mengaktifkan Backend (opsional), Menjalankan Mockup (Fase 0), NATURA, Peta Dokumen, Ringkasan Konsep, Status
+Nodes (6): Fase 1 - Mengaktifkan Backend (opsional), Menjalankan Mockup (Fase 0), NATURA, Peta Dokumen, Ringkasan Konsep, Status
 
 ### Community 29 - "Target AR (.mind)"
 Cohesion: 0.50
@@ -166,7 +166,7 @@ Nodes (3): Aset yang dibutuhkan, Cara membuat `targets.mind`, Target AR (.mind)
 ## Knowledge Gaps
 - **175 isolated node(s):** `roleLabel`, `Msg`, `suggestions`, `metadata`, `viewport` (+170 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** - run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

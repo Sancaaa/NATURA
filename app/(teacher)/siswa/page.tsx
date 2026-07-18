@@ -47,11 +47,11 @@ export default async function DaftarSiswa() {
                       </Link>
                     </td>
                     <td className="p-3 text-muted">
-                      {s.kelas.join(", ") || "—"}
+                      {s.kelas.join(", ") || "-"}
                     </td>
                     <td className="p-3">
                       {s.skorRataRata == null ? (
-                        <span className="text-muted">—</span>
+                        <span className="text-muted">-</span>
                       ) : (
                         <Badge
                           tone={s.skorRataRata >= 70 ? "success" : "danger"}

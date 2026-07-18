@@ -113,10 +113,10 @@
 - None detected.
 
 ## Hyperedges (group relationships)
-- **NATURA Documentation Suite** — docs_01_kebutuhan_produk, docs_02_tech_stack, docs_03_desain_sistem, docs_04_model_data, docs_05_roadmap [EXTRACTED 1.00]
-- **AR Implementation Flow** — ar_codingar, ar_arcard_samiloto_png, public_ar_readme, ar_technology [INFERRED 0.85]
-- **Natura Educational Platform** — refui_natulab, refui_natulearn, refui_natubot, refui_natuteach_home [EXTRACTED 1.00]
-- **AR Visualization Pipeline** — public_ar_viewer, public_models_readme, public_ar_samiloto_card, api_ar_data [EXTRACTED 0.95]
+- **NATURA Documentation Suite** - docs_01_kebutuhan_produk, docs_02_tech_stack, docs_03_desain_sistem, docs_04_model_data, docs_05_roadmap [EXTRACTED 1.00]
+- **AR Implementation Flow** - ar_codingar, ar_arcard_samiloto_png, public_ar_readme, ar_technology [INFERRED 0.85]
+- **Natura Educational Platform** - refui_natulab, refui_natulearn, refui_natubot, refui_natuteach_home [EXTRACTED 1.00]
+- **AR Visualization Pipeline** - public_ar_viewer, public_models_readme, public_ar_samiloto_card, api_ar_data [EXTRACTED 0.95]
 
 ## Communities (80 total, 49 thin omitted)
 
@@ -223,7 +223,7 @@ Nodes (3): jakarta, metadata, viewport
 ## Knowledge Gaps
 - **210 isolated node(s):** `Tone`, `Role`, `Profile`, `Student`, `ClassRoom` (+205 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **49 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **49 thin communities (<3 nodes) omitted from report** - run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

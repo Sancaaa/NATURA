@@ -27,7 +27,7 @@ export function SliderRevealStep({ step, onComplete }: StepProps<Step>) {
     <div className="flex flex-col items-center gap-5">
       <p className="text-center text-sm text-muted">{step.instruksi}</p>
 
-      {/* "Lensa" mikroskop — lingkaran gelap dengan spesimen di dalamnya. */}
+      {/* "Lensa" mikroskop - lingkaran gelap dengan spesimen di dalamnya. */}
       <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-full bg-[#0b0f1a] shadow-inner ring-4 ring-black/20">
         <div
           className="absolute inset-0 transition-[filter] duration-150"
@@ -83,13 +83,13 @@ export function SliderRevealStep({ step, onComplete }: StepProps<Step>) {
         )}
       >
         <CheckCircle2 className="h-4 w-4" />
-        {inFocus ? (step.feedbackBenar ?? "Gambar tajam — lanjut") : "Cari fokus dulu…"}
+        {inFocus ? (step.feedbackBenar ?? "Gambar tajam - lanjut") : "Cari fokus dulu…"}
       </button>
     </div>
   );
 }
 
-// Spesimen sel amilum sederhana (SVG) — supaya prototype jalan tanpa aset.
+// Spesimen sel amilum sederhana (SVG) - supaya prototype jalan tanpa aset.
 // Di produksi, `step.specimen` menunjuk gambar mikroskopis asli.
 function SpecimenPlaceholder() {
   const grains = [

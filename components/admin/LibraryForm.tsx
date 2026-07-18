@@ -18,7 +18,7 @@ export function LibraryForm({
   returnTo = "/admin/pustaka",
 }: {
   item?: LibraryItem;
-  /** Ke mana kembali setelah simpan/batal — beda untuk admin vs guru. */
+  /** Ke mana kembali setelah simpan/batal - beda untuk admin vs guru. */
   returnTo?: string;
 }) {
   const editing = !!item;

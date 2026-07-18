@@ -64,7 +64,7 @@ export function TapTargetStep({ step, onComplete }: StepProps<Step>) {
           <span className="text-success">{step.feedbackBenar ?? "Tepat!"}</span>
         ) : miss ? (
           <span className="text-danger">
-            Belum tepat — ketuk titik yang berdenyut.
+            Belum tepat - ketuk titik yang berdenyut.
           </span>
         ) : null}
       </div>

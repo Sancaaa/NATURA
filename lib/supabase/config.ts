@@ -8,7 +8,7 @@ export const supabaseAnonKey = (
 
 /**
  * True jika kredensial Supabase tersedia. Bila false, aplikasi berjalan
- * dalam "mode demo" memakai data contoh (lib/data) tanpa autentikasi —
+ * dalam "mode demo" memakai data contoh (lib/data) tanpa autentikasi -
  * berguna untuk merekam video Fase 0 tanpa menyiapkan backend.
  */
 export const isSupabaseConfigured =

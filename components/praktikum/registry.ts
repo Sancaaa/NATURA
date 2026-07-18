@@ -8,7 +8,7 @@ import { ObserveStep } from "./steps/ObserveStep";
 import { Model3DStep } from "./steps/Model3DStep";
 
 // ============================================================
-// STEP REGISTRY — inti dari "scalable tanpa custom code per skenario".
+// STEP REGISTRY - inti dari "scalable tanpa custom code per skenario".
 //
 // Menambah SKENARIO baru  → cukup data (samples.ts / DB). Tidak sentuh sini.
 // Menambah JENIS interaksi → tulis 1 komponen + daftarkan 1 baris di sini.

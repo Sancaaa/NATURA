@@ -12,7 +12,7 @@ export type Profile = { id: string; nama: string; role: Role };
  *   panggilan jaringan ke server Auth dan peluang gagal → false logout).
  * - Membaca profil lewat RPC `current_profile` (SECURITY DEFINER) yang kebal
  *   masalah RLS pada tabel profiles, sehingga peran (mis. admin) terbaca benar.
- * - TIDAK lagi jatuh ke "student" secara diam-diam bila gagal — error dicatat
+ * - TIDAK lagi jatuh ke "student" secara diam-diam bila gagal - error dicatat
  *   agar akar masalah terlihat.
  */
 export const getCurrentProfile = cache(async (): Promise<Profile | null> => {

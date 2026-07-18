@@ -10,7 +10,7 @@ export type Attachment = {
 };
 
 /**
- * Baca lampiran dari nilai jsonb secara defensif — data lama/rusak tidak
+ * Baca lampiran dari nilai jsonb secara defensif - data lama/rusak tidak
  * boleh menjatuhkan halaman. Baris tanpa `url` dibuang; `nama` kosong
  * jatuh ke url-nya sendiri agar tetap ada label yang bisa diklik.
  */

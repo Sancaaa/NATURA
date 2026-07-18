@@ -1,14 +1,14 @@
-# 01 — Kebutuhan Produk (PRD)
+# 01 - Kebutuhan Produk (PRD)
 
 ## Visi
 
-NATURA membuat Farmakognosi — mata pelajaran yang selama ini dominan hafalan (simplisia, morfologi, kandungan kimia, prosedur lab) — menjadi **visual, interaktif, dan bisa dieksplorasi mandiri**. Siswa memakai kartu AR untuk "membangkitkan" tanaman dan alat lab dalam 3D, mensimulasikan langkah laboratorium, bertanya ke tutor AI, dan berlatih kuis. Guru memantau dan menugaskan dari dashboard.
+NATURA membuat Farmakognosi - mata pelajaran yang selama ini dominan hafalan (simplisia, morfologi, kandungan kimia, prosedur lab) - menjadi **visual, interaktif, dan bisa dieksplorasi mandiri**. Siswa memakai kartu AR untuk "membangkitkan" tanaman dan alat lab dalam 3D, mensimulasikan langkah laboratorium, bertanya ke tutor AI, dan berlatih kuis. Guru memantau dan menugaskan dari dashboard.
 
 ## Konteks Kurikulum (Farmakognosi SMK Farmasi)
 
 Fitur harus memetakan ke materi nyata, antara lain:
 
-- **Simplisia**: nabati, hewani, mineral — definisi, tata nama, syarat mutu.
+- **Simplisia**: nabati, hewani, mineral - definisi, tata nama, syarat mutu.
 - **Morfologi tumbuhan**: akar, batang, daun, bunga, buah, biji.
 - **Identifikasi**: pemeriksaan makroskopik & mikroskopik simplisia (fragmen pengenal).
 - **Kandungan kimia / metabolit sekunder**: alkaloid, flavonoid, tanin, saponin, glikosida, minyak atsiri.
@@ -30,25 +30,25 @@ Prinsip: **AR untuk yang sulit dibayangkan** (bentuk 3D tanaman, fragmen mikrosk
 
 ### Sisi Siswa (mobile)
 
-1. **AR Visualisasi Tanaman** — scan kartu tanaman → model 3D + panel info (nama lokal/latin, familia, bagian dipakai, nama simplisia, kandungan, khasiat, ciri makroskopik & mikroskopik). Bisa rotate/zoom.
-2. **AR Alat Laboratorium** — scan kartu alat → 3D alat + fungsi + cara pakai + tips keselamatan.
-3. **Simulasi Lab (multi-kartu)** — scan kartu satu per satu sesuai urutan langkah (mis. pembuatan simplisia, atau ekstraksi maserasi). Aplikasi mendeteksi urutan & memberi umpan balik benar/salah tiap langkah, plus animasi hasil. *(Fitur inti pembeda NATURA.)*
-4. **Library** — buku/artikel/modul yang bisa dibaca; **tersimpan untuk baca offline**; bookmark & pencarian.
-5. **Tutor AI (LLM)** — tanya-jawab seputar farmakognosi, jawaban **di-grounding ke library** (RAG) dan menyertakan sumber; level bahasa disesuaikan SMK.
-6. **Kuis / Latihan** — dua mode: (a) **generatif** (AI membuat soal dari topik/materi untuk latihan mandiri), (b) **ditugaskan guru**. Skoring otomatis + pembahasan.
-7. **Progres pribadi** — riwayat belajar, skor, materi yang sudah dieksplor.
-8. **Notifikasi tugas** — pengingat deadline (opsional, butuh push).
-9. **Gamifikasi** *(opsional, fase lanjut)* — poin, badge, streak.
+1. **AR Visualisasi Tanaman** - scan kartu tanaman → model 3D + panel info (nama lokal/latin, familia, bagian dipakai, nama simplisia, kandungan, khasiat, ciri makroskopik & mikroskopik). Bisa rotate/zoom.
+2. **AR Alat Laboratorium** - scan kartu alat → 3D alat + fungsi + cara pakai + tips keselamatan.
+3. **Simulasi Lab (multi-kartu)** - scan kartu satu per satu sesuai urutan langkah (mis. pembuatan simplisia, atau ekstraksi maserasi). Aplikasi mendeteksi urutan & memberi umpan balik benar/salah tiap langkah, plus animasi hasil. *(Fitur inti pembeda NATURA.)*
+4. **Library** - buku/artikel/modul yang bisa dibaca; **tersimpan untuk baca offline**; bookmark & pencarian.
+5. **Tutor AI (LLM)** - tanya-jawab seputar farmakognosi, jawaban **di-grounding ke library** (RAG) dan menyertakan sumber; level bahasa disesuaikan SMK.
+6. **Kuis / Latihan** - dua mode: (a) **generatif** (AI membuat soal dari topik/materi untuk latihan mandiri), (b) **ditugaskan guru**. Skoring otomatis + pembahasan.
+7. **Progres pribadi** - riwayat belajar, skor, materi yang sudah dieksplor.
+8. **Notifikasi tugas** - pengingat deadline (opsional, butuh push).
+9. **Gamifikasi** *(opsional, fase lanjut)* - poin, badge, streak.
 
 ### Sisi Guru (desktop)
 
-1. **Dashboard pemantauan** — ringkasan kelas: progres siswa, rata-rata skor kuis, aktivitas AR/simulasi, siswa yang tertinggal.
-2. **Manajemen kelas** — buat kelas, enroll siswa (kode kelas / undangan).
-3. **Penugasan** — assign kuis/tugas ke kelas dengan deadline.
-4. **Bank soal & pembuatan kuis** — susun kuis manual **atau** generatif (AI menyusun draf soal → guru **review & edit sebelum publish**).
-5. **Detail per siswa** — lihat riwayat, jawaban, dan (untuk keamanan) percakapan tutor AI.
-6. **Ekspor nilai** — unduh rekap (CSV/Excel).
-7. **Manajemen konten** *(guru/admin)* — kelola item library.
+1. **Dashboard pemantauan** - ringkasan kelas: progres siswa, rata-rata skor kuis, aktivitas AR/simulasi, siswa yang tertinggal.
+2. **Manajemen kelas** - buat kelas, enroll siswa (kode kelas / undangan).
+3. **Penugasan** - assign kuis/tugas ke kelas dengan deadline.
+4. **Bank soal & pembuatan kuis** - susun kuis manual **atau** generatif (AI menyusun draf soal → guru **review & edit sebelum publish**).
+5. **Detail per siswa** - lihat riwayat, jawaban, dan (untuk keamanan) percakapan tutor AI.
+6. **Ekspor nilai** - unduh rekap (CSV/Excel).
+7. **Manajemen konten** *(guru/admin)* - kelola item library.
 
 ## Kebutuhan Fungsional (ringkas)
 
@@ -78,4 +78,4 @@ Prinsip: **AR untuk yang sulit dibayangkan** (bentuk 3D tanaman, fragmen mikrosk
 - Aplikasi native iOS/Android (cukup PWA).
 - Marketplace konten pihak ketiga.
 - Video conference / kelas live.
-- AR markerless SLAM penuh (butuh 8th Wall berbayar) — dipertimbangkan bila ada anggaran.
+- AR markerless SLAM penuh (butuh 8th Wall berbayar) - dipertimbangkan bila ada anggaran.

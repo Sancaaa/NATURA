@@ -10,7 +10,7 @@ import { Plus, Paperclip, Pencil } from "lucide-react";
 /**
  * Manajemen modul materi (guru). Guru melihat seluruh katalog yang juga
  * dilihat siswa, tapi hanya bisa menyunting/menghapus modul buatannya
- * sendiri — batas ini ditegakkan RLS `library_write`.
+ * sendiri - batas ini ditegakkan RLS `library_write`.
  */
 export default async function ManajemenModul() {
   const [library, me] = await Promise.all([getLibrary(), getCurrentProfile()]);
@@ -50,7 +50,7 @@ export default async function ManajemenModul() {
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-semibold">{i.judul}</div>
                   <div className="truncate text-xs text-muted">
-                    {i.ringkasan || "—"}
+                    {i.ringkasan || "-"}
                   </div>
                 </div>
                 <Badge tone="primary">{i.tipe}</Badge>
@@ -77,7 +77,7 @@ export default async function ManajemenModul() {
         <section>
           <h2 className="mb-2 font-bold">Modul lain ({lainnya.length})</h2>
           <p className="mb-2 text-xs text-muted">
-            Dibuat guru lain atau admin — hanya bisa dilihat.
+            Dibuat guru lain atau admin - hanya bisa dilihat.
           </p>
           <div className="space-y-2">
             {lainnya.map((i) => (
@@ -85,11 +85,11 @@ export default async function ManajemenModul() {
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-semibold">{i.judul}</div>
                   <div className="truncate text-xs text-muted">
-                    {i.ringkasan || "—"}
+                    {i.ringkasan || "-"}
                   </div>
                 </div>
                 <Badge tone="muted">{i.tipe}</Badge>
-                {/* Rute /natulearn/* digerbang untuk siswa — guru harus tetap
+                {/* Rute /natulearn/* digerbang untuk siswa - guru harus tetap
                     di area guru, jadi pratinjau dibuka di /modul/[id]. */}
                 <Link
                   href={`/modul/${i.id}`}

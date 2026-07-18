@@ -36,7 +36,7 @@ function DemoLanding() {
         </span>
         <h1 className="text-3xl font-extrabold tracking-tight">NATURA</h1>
         <p className="mt-1 text-sm text-muted">
-          Belajar Farmakognosi dengan AR — visual, interaktif, menyenangkan.
+          Belajar Farmakognosi dengan AR - visual, interaktif, menyenangkan.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ function DemoLanding() {
       </div>
 
       <p className="text-center text-xs text-muted">
-        Mode pratinjau — data contoh
+        Mode pratinjau - data contoh
       </p>
     </main>
   );

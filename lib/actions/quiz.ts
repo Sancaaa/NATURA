@@ -50,7 +50,7 @@ async function requireTeacher(): Promise<
   return { userId: user.id, isAdmin: me.role === "admin" };
 }
 
-/** Hasilkan draf soal dengan Gemini (belum disimpan — untuk ditinjau guru). */
+/** Hasilkan draf soal dengan Gemini (belum disimpan - untuk ditinjau guru). */
 export async function generateQuiz(
   topik: string,
   jumlah: number,
@@ -231,7 +231,7 @@ export async function deleteQuiz(
   if (error) {
     if (error.code === "23503")
       return {
-        error: "Kuis sedang ditugaskan ke kelas — hapus tugasnya dulu.",
+        error: "Kuis sedang ditugaskan ke kelas - hapus tugasnya dulu.",
       };
     return { error: error.message };
   }

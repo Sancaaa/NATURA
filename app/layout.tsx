@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-// Font brand — dulu hanya disebut di CSS tapi tak pernah dimuat, sehingga
+// Font brand - dulu hanya disebut di CSS tapi tak pernah dimuat, sehingga
 // UI jatuh ke font sistem. Sekarang dimuat sungguhan dan diikat ke --font-sans.
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -12,7 +12,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "NATURA — Belajar Farmakognosi",
+  title: "NATURA - Belajar Farmakognosi",
   description:
     "Augmented reality untuk pembelajaran Farmakognosi siswa SMK Farmasi.",
   manifest: "/manifest.json",
