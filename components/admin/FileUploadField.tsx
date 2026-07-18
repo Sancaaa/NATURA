@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, X, Check, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { resolveSupabaseAssetUrl } from "@/lib/supabase/storage";
 import { Field, TextInput } from "@/components/admin/formFields";
 
 const MAX_BYTES = 50 * 1024 * 1024; // 50 MiB (samakan dengan bucket)
@@ -84,7 +85,8 @@ export function FileUploadField({
         return;
       }
       const { data } = supabase.storage.from("assets").getPublicUrl(key);
-      onChange(data.publicUrl);
+      const resolvedUrl = await resolveSupabaseAssetUrl(data.publicUrl);
+      onChange(resolvedUrl ?? data.publicUrl);
       setFileName(file.name);
     } catch {
       setErr("Gagal mengunggah. Coba lagi.");

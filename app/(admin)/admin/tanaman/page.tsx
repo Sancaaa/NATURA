@@ -29,9 +29,18 @@ export default async function AdminTanaman() {
         <div className="space-y-2">
           {plants.map((p) => (
             <Card key={p.id} className="flex flex-wrap items-center gap-3">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-2xl">
-                🌿
-              </div>
+              {p.gambarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={p.gambarUrl}
+                  alt={p.namaLokal}
+                  className="h-11 w-11 rounded-xl object-cover"
+                />
+              ) : (
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-2xl">
+                  🌿
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <div className="font-semibold">{p.namaLokal}</div>
                 <div className="truncate text-xs italic text-muted">

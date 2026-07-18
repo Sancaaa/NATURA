@@ -29,9 +29,18 @@ export default async function AdminAlat() {
         <div className="space-y-2">
           {tools.map((t) => (
             <Card key={t.id} className="flex flex-wrap items-center gap-3">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/10 text-2xl">
-                ⚗️
-              </div>
+              {t.gambarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={t.gambarUrl}
+                  alt={t.nama}
+                  className="h-11 w-11 rounded-xl object-cover"
+                />
+              ) : (
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/10 text-2xl">
+                  ⚗️
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <div className="font-semibold">{t.nama}</div>
                 <div className="truncate text-xs text-muted">{t.fungsi}</div>
