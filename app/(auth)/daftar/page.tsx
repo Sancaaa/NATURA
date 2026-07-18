@@ -46,7 +46,7 @@ export default function Daftar() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!isSupabaseConfigured) {
-      setError("Supabase belum dikonfigurasi. Gunakan mode demo dari halaman awal.");
+      setError("Layanan belum tersedia. Kembali ke halaman awal untuk mode pratinjau.");
       return;
     }
     setLoading(true);

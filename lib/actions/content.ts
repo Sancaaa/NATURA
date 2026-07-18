@@ -187,7 +187,7 @@ export async function updatePlant(
 }
 
 export async function deletePlant(id: string): Promise<ActionResult> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
   const admin = await requireAdmin();
   if ("error" in admin) return { error: admin.error };
   const supabase = await createClient();
@@ -251,7 +251,7 @@ export async function updateTool(
 }
 
 export async function deleteTool(id: string): Promise<ActionResult> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
   const admin = await requireAdmin();
   if ("error" in admin) return { error: admin.error };
   const supabase = await createClient();
@@ -335,7 +335,7 @@ export async function updateLibraryItem(
 }
 
 export async function deleteLibraryItem(id: string): Promise<ActionResult> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
   const me = await requireTeacherOrAdmin();
   if ("error" in me) return { error: me.error };
   const supabase = await createClient();

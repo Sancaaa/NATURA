@@ -18,7 +18,11 @@ function DemoActivity() {
     },
   ];
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-accent">
+        Data contoh — aktivitas di bawah ini bukan data siswa sesungguhnya.
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <h2 className="mb-3 font-bold">Aktivitas terakhir</h2>
         <div className="space-y-3">
@@ -56,6 +60,7 @@ function DemoActivity() {
           ))}
         </div>
       </Card>
+      </div>
     </div>
   );
 }

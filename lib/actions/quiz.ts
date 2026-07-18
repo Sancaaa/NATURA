@@ -58,7 +58,7 @@ export async function generateQuiz(
   const key = process.env.GEMINI_API_KEY;
   if (!key)
     return {
-      error: "GEMINI_API_KEY belum diisi di .env.local — kuis AI belum aktif.",
+      error: "Fitur pembuatan soal otomatis belum tersedia. Hubungi administrator.",
     };
 
   const n = Math.max(1, Math.min(10, Math.floor(jumlah) || 3));
@@ -87,7 +87,7 @@ export async function generateQuiz(
         }),
       },
     );
-    if (!res.ok) return { error: `Gemini menolak (HTTP ${res.status}).` };
+    if (!res.ok) return { error: "Gagal membuat soal. Silakan coba lagi beberapa saat lagi." };
     const data = await res.json();
     const parts = data?.candidates?.[0]?.content?.parts as
       | { text?: string }[]
@@ -98,7 +98,7 @@ export async function generateQuiz(
     try {
       parsed = JSON.parse(text);
     } catch {
-      return { error: "Balasan AI bukan JSON valid. Coba lagi." };
+      return { error: "Gagal memproses soal yang dibuat. Silakan coba lagi." };
     }
     const holder = parsed as { questions?: unknown[] };
     const raw = Array.isArray(holder?.questions)
@@ -111,7 +111,7 @@ export async function generateQuiz(
       return { error: "Tidak ada soal yang dihasilkan. Coba topik lain." };
     return { questions };
   } catch {
-    return { error: "Gagal menghubungi Gemini. Cek koneksi/kunci API." };
+    return { error: "Terjadi kesalahan saat membuat soal. Periksa koneksi internet Anda." };
   }
 }
 
@@ -222,7 +222,7 @@ export async function updateQuiz(
 export async function deleteQuiz(
   quizId: string,
 ): Promise<{ ok?: boolean; error?: string }> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
   const who = await requireTeacher();
   if ("error" in who) return { error: who.error };
 

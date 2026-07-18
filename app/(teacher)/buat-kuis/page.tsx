@@ -53,7 +53,7 @@ export default function BuatKuis() {
       <div>
         <h1 className="text-2xl font-extrabold">Buat Kuis</h1>
         <p className="text-sm text-muted">
-          Hasilkan draf soal dengan AI (Gemini), tinjau, lalu publikasikan agar
+          Buat draf soal secara otomatis, tinjau, lalu publikasikan agar
           bisa ditugaskan ke kelas.
         </p>
       </div>
@@ -94,12 +94,11 @@ export default function BuatKuis() {
         </label>
         <Button onClick={generate} disabled={genPending}>
           <Sparkles className="h-4 w-4" />
-          {genPending ? "Menyusun…" : "Generate dengan AI"}
+          {genPending ? "Menyusun…" : "Buat Soal Otomatis"}
         </Button>
         {error && <p className="text-sm text-danger">{error}</p>}
         <p className="text-xs text-muted">
-          Butuh GEMINI_API_KEY di .env.local. Draf ditampilkan untuk ditinjau
-          sebelum publikasi.
+          Draf soal akan ditampilkan untuk ditinjau sebelum dipublikasikan.
         </p>
       </Card>
 

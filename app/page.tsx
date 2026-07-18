@@ -64,7 +64,7 @@ function DemoLanding() {
       </div>
 
       <p className="text-center text-xs text-muted">
-        Mode demo · data contoh (Supabase belum dikonfigurasi)
+        Mode pratinjau — data contoh
       </p>
     </main>
   );

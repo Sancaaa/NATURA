@@ -8,12 +8,12 @@ const SYSTEM =
 function stub(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("simplisia"))
-    return "Simplisia adalah bahan alam berkhasiat obat yang belum diolah kecuali dikeringkan. Ada tiga jenis: nabati (tumbuhan), hewani, dan mineral. (Jawaban contoh — mode mockup. Set GEMINI_API_KEY untuk jawaban nyata.)";
+    return "Simplisia adalah bahan alam berkhasiat obat yang belum diolah kecuali dikeringkan. Ada tiga jenis: nabati (tumbuhan), hewani, dan mineral.";
   if (m.includes("kunyit") || m.includes("kurkumin"))
-    return "Kunyit (Curcuma longa) mengandung kurkuminoid sebagai zat aktif utama plus minyak atsiri, berkhasiat antiinflamasi dan hepatoprotektor. (Mode mockup.)";
+    return "Kunyit (Curcuma longa) mengandung kurkuminoid sebagai zat aktif utama plus minyak atsiri, berkhasiat antiinflamasi dan hepatoprotektor.";
   if (m.includes("maserasi") || m.includes("perkolasi"))
-    return "Maserasi = perendaman simplisia dalam pelarut pada suhu ruang (untuk zat tak tahan panas). Perkolasi = pelarut dialirkan menembus simplisia secara kontinu. (Mode mockup.)";
-  return "Ini jawaban contoh untuk mockup. Tambahkan GEMINI_API_KEY di server agar tutor menjawab sungguhan dengan Gemini Flash.";
+    return "Maserasi = perendaman simplisia dalam pelarut pada suhu ruang (untuk zat tak tahan panas). Perkolasi = pelarut dialirkan menembus simplisia secara kontinu.";
+  return "Maaf, saat ini saya hanya bisa menjawab pertanyaan seputar simplisia, kunyit, maserasi, dan perkolasi. Coba ajukan pertanyaan terkait topik tersebut.";
 }
 
 export async function POST(req: Request) {

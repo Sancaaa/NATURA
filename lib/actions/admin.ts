@@ -34,7 +34,7 @@ export type NewUserInput = {
 export async function createUser(
   input: NewUserInput,
 ): Promise<{ ok?: boolean; error?: string }> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
 
   const nama = (input.nama || "").trim();
   const email = (input.email || "").trim().toLowerCase();
@@ -79,7 +79,7 @@ export async function updateUserRole(
   userId: string,
   role: string,
 ): Promise<{ ok?: boolean; error?: string }> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
   if (!["student", "teacher", "admin"].includes(role))
     return { error: "Peran tidak valid." };
 
@@ -100,7 +100,7 @@ export async function updateUserRole(
 export async function deleteUser(
   userId: string,
 ): Promise<{ ok?: boolean; error?: string }> {
-  if (!isSupabaseConfigured) return { error: "Mode demo — tidak disimpan." };
+  if (!isSupabaseConfigured) return { error: "Perubahan tidak dapat disimpan saat ini." };
 
   const admin = await requireAdmin();
   if ("error" in admin) return { error: admin.error };

@@ -20,7 +20,7 @@ export default function Masuk() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!isSupabaseConfigured) {
-      setError("Supabase belum dikonfigurasi. Gunakan mode demo dari halaman awal.");
+      setError("Layanan belum tersedia. Kembali ke halaman awal untuk mode pratinjau.");
       return;
     }
     setLoading(true);
@@ -46,7 +46,7 @@ export default function Masuk() {
 
       {!isSupabaseConfigured && (
         <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-3 text-sm">
-          Mode demo aktif (Supabase belum dikonfigurasi).{" "}
+          Mode pratinjau aktif.{" "}
           <Link href="/" className="font-semibold text-primary underline">
             Kembali ke pemilihan peran
           </Link>
@@ -98,7 +98,7 @@ export default function Masuk() {
       <button
         type="button"
         onClick={() =>
-          setError("Masuk dengan Google belum tersedia pada versi purwarupa.")
+          setError("Masuk dengan Google belum tersedia.")
         }
         className="flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl border border-line bg-surface text-sm font-semibold transition hover:bg-black/[0.03]"
       >
