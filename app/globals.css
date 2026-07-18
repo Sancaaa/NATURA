@@ -14,8 +14,8 @@
   --color-warn: #d98a3d;
   --color-danger: #c0392b;
 
-  /* --font-jakarta di-inject next/font di <html>; fallback tetap ada. */
-  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif,
+  /* --font-quicksand di-inject next/font di <html>; fallback tetap ada. */
+  --font-sans: var(--font-quicksand), "Quicksand", ui-sans-serif,
     system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* Latar biru-lembut untuk hero (dipakai lewat bg-brand-soft dsb). */

@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
 
-// Font brand - dulu hanya disebut di CSS tapi tak pernah dimuat, sehingga
-// UI jatuh ke font sistem. Sekarang dimuat sungguhan dan diikat ke --font-sans.
-const jakarta = Plus_Jakarta_Sans({
+// Font brand - menggunakan Quicksand sesuai permintaan
+const quicksand = Quicksand({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-quicksand",
   display: "swap",
 });
 
@@ -31,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={jakarta.variable}>
+    <html lang="id" className={quicksand.variable}>
       <body>{children}</body>
     </html>
   );
