@@ -22,8 +22,8 @@ export default async function Beranda() {
     <div>
       <header className="flex items-center justify-between px-4 pt-5">
         <div>
-          <p className="text-sm text-muted">Halo,</p>
-          <h1 className="text-2xl font-extrabold">{nama} 👋</h1>
+          <p className="text-sm text-muted">Selamat datang kembali,</p>
+          <h1 className="text-2xl font-extrabold">{nama}</h1>
         </div>
         <Logo size={40} />
       </header>
@@ -49,7 +49,7 @@ export default async function Beranda() {
                   href={`/natulab/tanaman/${p.id}`}
                   className="w-36 shrink-0"
                 >
-                  <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-card">
+                  <div className="overflow-hidden rounded-2xl border border-line/80 bg-surface">
                     {p.gambarUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -62,7 +62,7 @@ export default async function Beranda() {
                         🌿
                       </div>
                     )}
-                    <div className="p-3">
+                    <div className="p-4">
                       <div className="truncate text-sm font-bold">
                         {p.namaLokal}
                       </div>

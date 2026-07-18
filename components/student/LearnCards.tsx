@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react"; // Mengganti ArrowUpRight dengan ExternalLink
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { StatusTugasBadge } from "@/components/student/StatusTugasBadge";
@@ -28,13 +28,14 @@ export function ModulCard({ item }: { item: LibraryItem }) {
   );
 }
 
+// Menyesuaikan ketebalan border kiri agar melengkung sempurna mengikuti kontainer
 const borderByStatus = {
-  terlambat: "border-l-danger",
-  selesai: "border-l-success",
-  belum: "border-l-accent",
+  terlambat: "border-l-[6px] border-l-danger",
+  selesai: "border-l-[6px] border-l-success",
+  belum: "border-l-[6px] border-l-accent",
 } as const;
 
-/** Kartu tugas dengan tepi kiri berwarna sesuai status (gaya referensi). */
+/** Kartu tugas dengan desain baru sesuai gambar referensi */
 export function TugasCard({ tugas }: { tugas: StudentAssignment }) {
   return (
     <Link
@@ -42,22 +43,40 @@ export function TugasCard({ tugas }: { tugas: StudentAssignment }) {
       className="group block"
     >
       <Card
-        className={`flex items-center gap-3 border-l-[5px] ${borderByStatus[tugas.status]} transition group-hover:shadow-card-hover`}
+        className={`flex items-center justify-between gap-3 p-3 rounded-2xl border border-line/60 bg-surface ${borderByStatus[tugas.status]} transition group-hover:shadow-card-hover`}
       >
-        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-2xl">
-          🧪
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-bold">{tugas.judul}</div>
-          <div className="truncate text-xs text-muted">
-            {tugas.kelas || "Tugas guru"}
-            {tugas.topik ? ` · ${tugas.topik}` : ""}
+        {/* Sisi Kiri: Gambar dan Detail Informasi */}
+        <div className="flex items-center gap-4 min-w-0 flex-1">
+          
+          {/* Wadah Gambar Tambahan (Menggantikan Emoji 🧪) */}
+          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-[1.5rem] bg-muted/10 border border-line/40">
+            {/* SILAHKAN GANTI URL DI BAWAH INI DENGAN LINK GAMBAR ANDA */}
+            <img
+              src="https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=150&h=150&q=80"
+              alt={tugas.judul}
+              className="h-full w-full object-cover"
+            />
           </div>
-          <span className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-primary">
-            Detail <ArrowUpRight className="h-3.5 w-3.5" />
-          </span>
+
+          {/* Konten Teks */}
+          <div className="min-w-0 flex-1">
+            <h3 className="truncate text-sm font-bold tracking-tight text-foreground">
+              {tugas.judul}
+            </h3>
+            <p className="truncate text-xs text-muted/80 mt-1">
+              {tugas.kelas || "Tugas guru"}
+              {tugas.topik ? ` · ${tugas.topik}` : ""}
+            </p>
+            <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 group-hover:text-blue-700 transition">
+              Detail <ExternalLink className="h-4 w-4" />
+            </span>
+          </div>
         </div>
-        <StatusTugasBadge status={tugas.status} />
+
+        {/* Sisi Kanan: Status Badge */}
+        <div className="shrink-0 pl-2">
+          <StatusTugasBadge status={tugas.status} />
+        </div>
       </Card>
     </Link>
   );

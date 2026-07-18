@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Microscope, ArrowRight } from "lucide-react";
+import { ExternalLink, Microscope, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import type { Plant } from "@/lib/db/plants";
 import type { LabTool } from "@/lib/db/tools";
@@ -18,7 +18,7 @@ function plantTag(p: Plant): string {
 export function PlantCard({ plant }: { plant: Plant }) {
   return (
     <Link href={`/natulab/tanaman/${plant.id}`} className="group block">
-      <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-card transition group-hover:shadow-card-hover">
+      <div className="overflow-hidden rounded-2xl border border-line/70 bg-surface shadow-card transition group-hover:shadow-card-hover">
         <div className="relative aspect-[5/4] overflow-hidden bg-gradient-to-br from-primary/15 via-primary/5 to-accent/10">
           {plant.gambarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -51,26 +51,28 @@ export function PlantCard({ plant }: { plant: Plant }) {
 export function ToolCard({ tool }: { tool: LabTool }) {
   return (
     <Link href={`/natulab/alat/${tool.id}`} className="group block">
-      <Card className="flex items-center gap-4 transition group-hover:shadow-card-hover">
+      <Card className="flex items-center p-3 gap-8 rounded-2xl transition group-hover:shadow-card-hover">
         {tool.gambarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={tool.gambarUrl}
             alt={tool.nama}
-            className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+            className="h-28 w-28 shrink-0 object-contain"
           />
         ) : (
-          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-accent/10 text-3xl">
+          <div className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-accent/10 text-4xl">
             ⚗️
           </div>
         )}
-        <div className="min-w-0 flex-1">
+        
+        <div className="min-w-0 flex-1 flex flex-col gap-1">
           <div className="font-bold">{tool.nama}</div>
           <p className="line-clamp-2 text-xs leading-relaxed text-muted">
             {tool.fungsi || "Alat laboratorium farmakognosi."}
           </p>
-          <span className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-primary">
-            Detail Alat <ArrowUpRight className="h-3.5 w-3.5" />
+          {/* Menggunakan ExternalLink untuk ikon panah di dalam kotak */}
+          <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+            Detail Alat <ExternalLink className="h-4 w-4" />
           </span>
         </div>
       </Card>
