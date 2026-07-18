@@ -83,9 +83,20 @@ export function PraktikumCard({ scenario }: { scenario: ScenarioDefinition }) {
   return (
     <Link href={`/natulab/praktikum/${scenario.id}`} className="group block">
       <Card className="overflow-hidden p-0 transition group-hover:shadow-card-hover">
-        <div className="relative grid aspect-[16/9] place-items-center bg-gradient-to-br from-primary via-[#2a49ff] to-primary-dark text-white">
-          <Microscope className="h-14 w-14 opacity-90" />
-          <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
+        <div className="relative grid aspect-[16/9] place-items-center overflow-hidden bg-gradient-to-br from-primary via-[#2a49ff] to-primary-dark text-white">
+          {scenario.thumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={scenario.thumbnail}
+              alt={scenario.judul}
+              className="h-full w-full object-cover transition group-hover:scale-105"
+            />
+          ) : (
+            <>
+              <Microscope className="h-14 w-14 opacity-90 transition group-hover:scale-110" />
+              <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
+            </>
+          )}
         </div>
         <div className="p-5">
           <h3 className="text-lg font-bold">{scenario.judul}</h3>

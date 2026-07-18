@@ -99,6 +99,7 @@ export interface ScenarioDefinition {
   id: string;
   judul: string;
   deskripsi?: string;
+  thumbnail?: string;
   steps: ScenarioStep[];
 }
 

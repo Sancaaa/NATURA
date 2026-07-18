@@ -13,6 +13,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
     judul: "Identifikasi Mikroskopis Serbuk Pati",
     deskripsi:
       "Uji kemurnian serbuk amilum di bawah mikroskop virtual - dari preparat hingga fokus.",
+    thumbnail: "/images/thumbnail_praktikum.png",
     steps: [
       {
         id: "intro",
@@ -55,6 +56,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         min: 0,
         max: 100,
         target: [68, 80],
+        specimen: "/images/spesimen_mikroskopis.png",
         caption: "Butir pati: elips konsentris dengan hilus di tengah.",
         feedbackBenar: "Fokus tepat - lanjut",
       },
@@ -63,7 +65,7 @@ export const SAMPLE_SCENARIOS: Record<string, ScenarioDefinition> = {
         tipe: "observe",
         instruksi:
           "Amati bentuk khas butir amilum: butir tunggal dengan lamela konsentris dan hilus. Bandingkan dengan gambar acuan.",
-        media: "", // kosong → placeholder; ganti gambar mikroskopis di produksi
+        media: "/images/spesimen_mikroskopis.png",
         feedbackBenar: "Ciri butir pati asli teramati.",
       },
       {
