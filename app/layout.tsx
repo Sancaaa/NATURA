@@ -11,7 +11,10 @@ const quicksand = Quicksand({
 });
 
 export const metadata: Metadata = {
-  title: "NATURA - Belajar Farmakognosi",
+  title: {
+    template: "%s — NATURA",
+    default: "NATURA — Belajar Farmakognosi",
+  },
   description:
     "Augmented reality untuk pembelajaran Farmakognosi siswa SMK Farmasi.",
   manifest: "/manifest.json",
