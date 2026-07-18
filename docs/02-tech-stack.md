@@ -90,8 +90,8 @@ Pemisahan peran node: **VPS** jadi permukaan publik (diakses siswa/guru dari int
 
 | Kegunaan | Model | Catatan |
 |---|---|---|
-| Tutor Q&A & pembuatan kuis (default) | **Gemini 2.5 Flash** (`gemini-2.5-flash`) | Cepat, murah, multimodal, mendukung Bahasa Indonesia. |
-| Tugas ringan/volume tinggi (hint, klasifikasi topik, ringkas) | **Gemini 2.5 Flash-Lite** (`gemini-2.5-flash-lite`) | Termurah/tercepat. |
+| Tutor Q&A & pembuatan kuis (default) | **Gemini Flash Latest** (`gemini-flash-latest`) | Cepat, murah, multimodal, mendukung Bahasa Indonesia. |
+| Tugas ringan/volume tinggi (hint, klasifikasi topik, ringkas) | **Gemini Flash Lite Latest** (`gemini-flash-lite-latest`) | Termurah/tercepat. |
 
 > Verifikasi ID model terbaru di dokumentasi Google saat implementasi (penamaan bisa berubah). Ada **free tier** (dengan batas laju) yang berguna untuk tahap mockup & pengembangan. Untuk produksi/skala kelas, gunakan tier berbayar (dan cek kebijakan penggunaan data — tier berbayar umumnya **tidak** memakai data untuk melatih model).
 
