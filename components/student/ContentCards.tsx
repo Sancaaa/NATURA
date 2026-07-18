@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Microscope } from "lucide-react";
+import { ArrowUpRight, Microscope, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import type { Plant } from "@/lib/db/plants";
 import type { LabTool } from "@/lib/db/tools";
@@ -99,7 +99,7 @@ export function PraktikumCard({ scenario }: { scenario: ScenarioDefinition }) {
               {scenario.steps.length} langkah
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-white">
-              Mulai Praktikum →
+              Mulai Praktikum <ArrowRight className="inline-block ml-1 h-4 w-4" />
             </span>
           </div>
         </div>

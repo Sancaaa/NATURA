@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { buttonClass } from "@/components/ui/Button";
-import { Clock, BarChart3, Info } from "lucide-react";
+import { Clock, BarChart3, Info, ArrowRight } from "lucide-react";
 import type { QuizForTaking } from "@/lib/db/quizzes";
 
 const instruksi = [
@@ -69,7 +69,7 @@ export function QuizIntro({
 
       <div className="sticky bottom-16 z-40 bg-bg/90 p-4 backdrop-blur">
         <Link href={startHref} className={`${buttonClass("primary", "lg")} w-full`}>
-          Mulai Kuis →
+          Mulai Kuis <ArrowRight className="inline-block ml-1 h-5 w-5" />
         </Link>
       </div>
     </div>

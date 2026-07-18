@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { buttonClass } from "@/components/ui/Button";
 import { DeleteAssignmentButton } from "@/components/teacher/DeleteAssignmentButton";
 import { formatDeadline } from "@/lib/format";
-import { Paperclip, Plus } from "lucide-react";
+import { Paperclip, Plus, ArrowRight } from "lucide-react";
 
 /**
  * Manajemen tugas lintas kelas. Form pembuatan tetap ada di /kelas/[id]
@@ -23,8 +23,7 @@ export default async function ManajemenTugas() {
       <div>
         <h1 className="text-2xl font-extrabold">Tugas</h1>
         <p className="text-sm text-muted">
-          Semua tugas dari seluruh kelasmu. Siswa melihatnya di NatuLearn →
-          Tugas dari Guru.
+          Semua tugas dari seluruh kelasmu. Siswa melihatnya di NatuLearn <ArrowRight className="inline-block mx-1 h-3.5 w-3.5" /> Tugas dari Guru.
         </p>
       </div>
 
@@ -98,7 +97,7 @@ export default async function ManajemenTugas() {
                       href={`/kelas/${t.classId}`}
                       className="ml-auto text-xs font-semibold text-primary hover:underline"
                     >
-                      Buka kelas →
+                      Buka kelas <ArrowRight className="inline-block ml-1 h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </Card>
