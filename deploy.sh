@@ -17,7 +17,7 @@ echo "==> Build Next.js"
 npm run build
 
 echo "==> Restart PM2"
-pm2 restart tomo --update-env
+pm2 restart natura --update-env
 
 echo "==> Save PM2"
 pm2 save
