@@ -150,12 +150,9 @@
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
-      <a-assets>
-        <a-asset-item id="arModel"></a-asset-item>
-      </a-assets>
-
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity id="targetEntity" mindar-image-target="targetIndex: 0">
@@ -191,29 +188,27 @@
     <script>
       (function () {
         var qs = new URLSearchParams(location.search);
-        var target = qs.get("target") || "";
-        var model = qs.get("model") || "";
-        var id = qs.get("id") || "";
-        var type = qs.get("type") === "tool" ? "alat" : "tanaman";
+        // Default ke kartu Sambiloto (satu-satunya target yang tersedia) agar
+        // /ar/viewer.html polos langsung berfungsi sebagai scanner generik.
+        // Jika kelak ada banyak kartu, gabungkan jadi satu .mind multi-target.
+        var target = qs.get("target") || "/ar/samiloto.mind";
+        var model = qs.get("model") || "/models/samiloto.glb";
 
-        var backEl = document.getElementById("back");
-        if (id) backEl.setAttribute("href", "/natulab/" + type + "/" + id);
+        document.getElementById("back").setAttribute("href", "/natulab");
 
-        if (target) {
-          document
-            .getElementById("scene")
-            .setAttribute(
-              "mindar-image",
-              "imageTargetSrc: " + target + "; uiScanning: no;",
-            );
-        }
-        if (model) {
-          document.getElementById("arModel").setAttribute("src", model);
-          document.getElementById("arGltf").setAttribute("src", "#arModel");
-        } else {
-          var g = document.getElementById("arGltf");
-          if (g && g.parentNode) g.parentNode.removeChild(g);
-        }
+        // uiLoading:no + uiScanning:no + loading-screen A-Frame dimatikan →
+        // kamera langsung jalan tanpa spinner yang bisa menggantung selamanya.
+        document
+          .getElementById("scene")
+          .setAttribute(
+            "mindar-image",
+            "imageTargetSrc: " + target + "; uiScanning: no; uiLoading: no; autoStart: true;",
+          );
+
+        // Muat GLB LANGSUNG pada model (bukan preload <a-assets>) supaya
+        // kamera tak menunggu unduhan; model besar mengalir di latar.
+        var g = document.getElementById("arGltf");
+        if (model && g) g.setAttribute("src", model);
       })();
     </script>
 
@@ -224,16 +219,8 @@
 
         var qs = new URLSearchParams(location.search);
         var type = qs.get("type") === "tool" ? "tool" : "plant";
-        var id = qs.get("id") || "";
-        var target = qs.get("target") || "";
-
-        var msgEl = document.getElementById("msg");
-        var msgText = document.getElementById("msg-text");
-        if (!target) {
-          msgText.textContent =
-            "Target AR (.mind) belum tersedia untuk konten ini. Kembali dan gunakan mode 3D.";
-          msgEl.setAttribute("data-show", "1");
-        }
+        // Default sama dengan script sinkron di atas (kartu Sambiloto).
+        var id = qs.get("id") || "sambiloto";
 
         // Label anotasi selalu menghadap kamera.
         AFRAME.registerComponent("face-camera", {

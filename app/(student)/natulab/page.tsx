@@ -26,7 +26,8 @@ export default async function NatuLab() {
           title="AR Visualization"
           description="Pindai spesimen untuk visualisasi 3D interaktif dalam lingkungan laboratorium nyata."
           ctaLabel="Mulai Pindai"
-          ctaHref="/natulab/ar"
+          ctaHref="/ar/viewer.html"
+          external
         />
 
         <section>

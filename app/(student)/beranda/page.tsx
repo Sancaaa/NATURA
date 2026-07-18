@@ -39,7 +39,8 @@ export default async function Beranda() {
           title="Pindai Kartu AR"
           description="Arahkan kamera ke kartu NATURA untuk memunculkan visualisasi 3D."
           ctaLabel="Mulai Pindai"
-          ctaHref="/natulab/ar"
+          ctaHref="/ar/viewer.html"
+          external
         />
 
         <section>
