@@ -47,12 +47,11 @@ export function TugasCard({ tugas }: { tugas: StudentAssignment }) {
       >
         {/* Sisi Kiri: Gambar dan Detail Informasi */}
         <div className="flex items-center gap-4 min-w-0 flex-1">
-          
           {/* Wadah Gambar Tambahan (Menggantikan Emoji 🧪) */}
           <div className="h-20 w-20 shrink-0 overflow-hidden rounded-[1.5rem] bg-muted/10 border border-line/40">
             {/* SILAHKAN GANTI URL DI BAWAH INI DENGAN LINK GAMBAR ANDA */}
             <img
-              src="https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=150&h=150&q=80"
+              src="/images/assignmentPreview.png"
               alt={tugas.judul}
               className="h-full w-full object-cover"
             />
